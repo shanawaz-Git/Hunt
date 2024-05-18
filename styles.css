@@ -6,7 +6,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   flex-direction: column;
 }
 
@@ -22,16 +22,21 @@ body {
 }
 
 .two-thirds {
-  width: 100%;
-  max-width: 800px;
+  width: 90%;
+  max-width: 1200px;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  margin-bottom: 20px;
 }
 
 h1 {
   text-align: center;
-  color: #333;
+  color: #444;
   font-size: 1.5em;
   margin-bottom: 20px;
-  color: #444;
 }
 
 form {
@@ -71,6 +76,9 @@ button {
   cursor: pointer;
   border: 1px solid #ccc;
   font-weight: bold;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 button:hover {
@@ -81,7 +89,6 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  table-layout: auto;
 }
 
 th,
@@ -89,7 +96,8 @@ td {
   border: 1px solid #ccc;
   padding: 10px;
   text-align: left;
-  word-wrap: break-word;
+  word-wrap: break-word; /* Ensure long words break to fit the cell */
+  white-space: normal; /* Ensure text wraps within cells */
 }
 
 th {
@@ -128,7 +136,8 @@ tbody tr:nth-child(even) {
 }
 
 @media (max-width: 600px) {
-  .container {
+  .container,
+  .two-thirds {
     width: 100%;
     padding: 10px;
   }
