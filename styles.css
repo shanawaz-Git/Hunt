@@ -7,19 +7,22 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  flex-direction: column;
 }
 
 .container {
-  width: 400px;
+  width: 90%;
+  max-width: 400px;
   padding: 20px;
   background-color: #fff;
   border: 1px solid #ccc;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
+  margin-bottom: 20px;
 }
 
 .two-thirds {
-  width: 66.67%;
+  width: 100%;
   max-width: 800px;
 }
 
@@ -53,6 +56,8 @@ button {
   font-size: 14px;
   background-color: #fff;
   color: #333;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 textarea {
@@ -72,20 +77,11 @@ button:hover {
   background-color: #ffd633;
 }
 
-input,
-textarea,
-select {
-  background-color: #f9f9f9;
-}
-
-label {
-  color: #444;
-}
-
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  table-layout: auto;
 }
 
 th,
@@ -93,6 +89,7 @@ td {
   border: 1px solid #ccc;
   padding: 10px;
   text-align: left;
+  word-wrap: break-word;
 }
 
 th {
@@ -102,13 +99,6 @@ th {
 
 tbody tr:nth-child(even) {
   background-color: #f9f9f9;
-}
-
-#viewNotes,
-#backToForm {
-  margin-top: 20px;
-  display: block;
-  width: 100%;
 }
 
 .pagination {
@@ -135,4 +125,22 @@ tbody tr:nth-child(even) {
 .pagination span {
   font-weight: bold;
   margin: 0 10px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: 100%;
+    padding: 10px;
+  }
+
+  table,
+  th,
+  td {
+    font-size: 12px;
+  }
+
+  .pagination button {
+    padding: 5px;
+    font-size: 12px;
+  }
 }
