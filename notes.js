@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function completeNote(noteId) {
-    fetch(`http://localhost:5000/post/notestaker/add`, {
+    fetch(`https://dyootify-server.vercel.app/post/notestaker/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
