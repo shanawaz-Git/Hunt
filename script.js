@@ -74,33 +74,8 @@ document.getElementById("NewUser").addEventListener("click", function (event) {
   window.location.href = "registeruser.html";
 });
 
-document.getElementById("regForm").addEventListener("submit", function (event) {
-  const UserName = document.getElementById("UserName").value;
-  const pin = document.getElementById("Pin").value;
-  const CnfPin = document.getElementById("CnfPin").value;
-  if (pin != CnfPin) {
-    alert("PIN and Confirm PIN should match!!");
-  } else {
-    const noteUser = {
-      UserName: UserName,
-      pin: pin,
-    };
-
-    fetch("https://dyootify-server.vercel.app/post/notestaker/regUser", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(noteUser),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        alert("User Updated successfully!");
-        window.location.href = "index.html";
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        alert("An error occurred while saving the note.");
-      });
-  }
+document.getElementById("ResetOTP").addEventListener("click", function (event) {
+  event.preventDefault();
+  alert("Please contact admin to reset OTP");
+  window.location.href = "index.html";
 });
