@@ -5,7 +5,7 @@ body {
   padding: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: 100vh;
   flex-direction: column;
 }
@@ -16,10 +16,11 @@ body {
   padding: 20px;
   background-color: #fff;
   border: 1px solid #ccc;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   margin: 20px auto; /* ✅ centers it horizontally */
-  box-sizing: border-box; /* ✅ ensures padding doesn't break layout */
+  box-sizing: border-box;
+  overflow-x: auto; /* ✅ ensures padding doesn't break layout */
 }
 
 .two-thirds {
@@ -30,7 +31,9 @@ body {
   border: 1px solid #ccc;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  margin-bottom: 20px;
+  margin: 20px auto;
+  box-sizing: border-box;
+  overflow-x: auto;
 }
 
 h1 {
@@ -90,6 +93,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  table-layout: auto;
 }
 
 th,
@@ -139,18 +143,25 @@ tbody tr:nth-child(even) {
 @media (max-width: 600px) {
   .container,
   .two-thirds {
-    width: 100%;
+    width: 95%;
     padding: 10px;
+    overflow-x: auto;
   }
 
-  table,
+  table {
+    font-size: 12px;
+    display: block; /* ✅ make table scrollable horizontally */
+    overflow-x: auto;
+    white-space: nowrap; /* ✅ keep cells inline for scroll */
+  }
+
   th,
   td {
-    font-size: 12px;
+    min-width: 100px; /* ✅ ensures consistent width in scroll */
   }
 
   .pagination button {
-    padding: 5px;
+    padding: 6px;
     font-size: 12px;
   }
 }
