@@ -32,6 +32,7 @@ document
       .then((response) => response.json())
       .then((data) => {
         alert("Note saved successfully!");
+        window.location.href = "notes.html";
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -39,6 +40,20 @@ document
       });
   });
 
+document.getElementById("createNote").addEventListener("click", function () {
+  const otp = document.getElementById("otp").value;
+  if (otp == "1234") {
+    window.location.href = "newnote.html";
+  } else {
+    alert("Invalid OTP!!!");
+  }
+});
+
 document.getElementById("viewNotes").addEventListener("click", function () {
-  window.location.href = "notes.html";
+  const otp = document.getElementById("otp").value;
+  if (otp == "1234") {
+    window.location.href = "notes.html";
+  } else {
+    alert("Invalid OTP!!!");
+  }
 });

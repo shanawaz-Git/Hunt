@@ -16,9 +16,10 @@ body {
   padding: 20px;
   background-color: #fff;
   border: 1px solid #ccc;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   border-radius: 4px;
-  margin-bottom: 20px;
+  margin: 20px auto; /* ✅ centers it horizontally */
+  box-sizing: border-box; /* ✅ ensures padding doesn't break layout */
 }
 
 .two-thirds {
