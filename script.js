@@ -57,3 +57,19 @@ document.getElementById("viewNotes").addEventListener("click", function () {
     alert("Invalid OTP!!!");
   }
 });
+
+document.getElementById("trouble").addEventListener("click", function (event) {
+  event.preventDefault(); // prevent form submission
+
+  // Show hidden elements
+  document.getElementById("trouble").style.display = "none";
+  document.getElementById("NewUser").style.display = "block";
+  document.getElementById("ResetOTP").style.display = "block";
+  document.querySelector('label[for="NewUser"]').style.display = "block";
+  document.querySelector('label[for="ResetOTP"]').style.display = "block";
+});
+
+document.getElementById("NewUser").addEventListener("click", function (event) {
+  event.preventDefault();
+  window.location.href = "registeruser.html";
+});

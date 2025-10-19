@@ -69,6 +69,18 @@ button {
   box-sizing: border-box;
 }
 
+#NewUser,
+#ResetOTP {
+  background-color: #f98669;
+}
+
+#NewUser,
+#ResetOTP,
+label[for="NewUser"],
+label[for="ResetOTP"] {
+  display: none;
+}
+
 textarea {
   resize: none;
   height: 100px;

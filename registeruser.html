@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register New User</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="/sticky-notes.png" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Registration Form</h1>
+      <form id="regForm">
+        <label for="UserName">UserName:</label>
+        <input type="name" id="UserName" name="UserName" required />
+        <label for="Pin">PIN:</label>
+        <input type="number" id="Pin" name="Pin" required />
+        <label for="CnfPin">Confirm PIN:</label>
+        <input type="number" id="CnfPin" name="CnfPin" required />
+
+        <button type="submit" id="Submit">Submit</button>
+      </form>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
