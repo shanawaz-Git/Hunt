@@ -35,21 +35,27 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
     });
 });
 
-document.getElementById("createNote").addEventListener("click", function () {
-  if (sessionStorage.getItem("gatePassKeyForNotes")) {
-    window.location.href = "newnote.html";
-  } else {
-    alert("Login First!!!");
-  }
-});
+document
+  .getElementById("createNote")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    if (sessionStorage.getItem("gatePassKeyForNotes")) {
+      window.location.href = "newnote.html";
+    } else {
+      alert("Login First!!!");
+    }
+  });
 
-document.getElementById("viewNotes").addEventListener("click", function () {
-  if (sessionStorage.getItem("gatePassKeyForNotes")) {
-    window.location.href = "notes.html";
-  } else {
-    alert("Login First!!!");
-  }
-});
+document
+  .getElementById("viewNotes")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    if (sessionStorage.getItem("gatePassKeyForNotes")) {
+      window.location.href = "notes.html";
+    } else {
+      alert("Login First!!!");
+    }
+  });
 
 document.getElementById("trouble").addEventListener("click", function (event) {
   event.preventDefault(); // prevent form submission
