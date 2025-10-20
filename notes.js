@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   document.getElementById("backToForm").addEventListener("click", function () {
-    window.location.href = "index.html";
+    window.location.href = "newnote.html";
   });
 
   // Add event listeners for filter inputs

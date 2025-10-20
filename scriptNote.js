@@ -39,3 +39,14 @@ document
         alert("An error occurred while saving the note.");
       });
   });
+
+document
+  .getElementById("viewNotes")
+  .addEventListener("click", function (event) {
+    event.preventDefault();
+    if (sessionStorage.getItem("gatePassKeyForNotes")) {
+      window.location.href = "notes.html";
+    } else {
+      alert("Login First!!!");
+    }
+  });
