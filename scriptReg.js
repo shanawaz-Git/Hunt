@@ -10,7 +10,7 @@ document.getElementById("regForm").addEventListener("submit", function (e) {
     return;
   } else {
     const noteUser = {
-      UserName: user,
+      userName: user,
       pin: pin,
     };
 
@@ -23,12 +23,12 @@ document.getElementById("regForm").addEventListener("submit", function (e) {
     })
       .then((response) => response.json())
       .then((data) => {
-        alert("User Updated successfully!");
+        alert("Status: " + data.message);
         window.location.href = "index.html";
       })
       .catch((error) => {
         console.error("Error:", error);
-        alert("An error occurred while saving the note.");
+        alert("An error occurred while registration.\nERROR: " + error);
       });
   }
 });

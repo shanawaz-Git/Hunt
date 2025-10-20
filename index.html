@@ -10,15 +10,17 @@
   <body>
     <div class="container">
       <h1>Note Taker</h1>
-      <form id="noteForm">
+      <form id="loginForm">
         <label for="UserName">UserName:</label>
         <input type="text" id="UserName" name="UserName" required />
         <label for="Pin">PIN:</label>
         <input type="text" id="Pin" name="Pin" required />
-
+        <button type="submit" id="formSubmit">Submit</button>
+        <br />
+        <br />
         <button id="createNote">Create New Note</button>
         <button id="viewNotes">View Notes</button>
-
+        <br />
         <br />
         <button id="trouble">Trouble!!!</button>
         <br />
@@ -29,8 +31,11 @@
           >Click Reset OTP If you want to reset your OTP...</label
         >
         <button id="ResetOTP">Reset OTP</button>
+        <br />
+        <button id="logout">Log Out</button>
       </form>
     </div>
-    <script src="script.js"></script>
+    <!-- <script src="script.js"></script> -->
+    <script src="scriptLogin.js"></script>
   </body>
 </html>

@@ -70,8 +70,13 @@ button {
 }
 
 #NewUser,
-#ResetOTP {
+#ResetOTP,
+#logout {
   background-color: #f98669;
+}
+
+#formSubmit {
+  background-color: #95e078;
 }
 
 #NewUser,
