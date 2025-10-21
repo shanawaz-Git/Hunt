@@ -48,5 +48,6 @@ document
       window.location.href = "notes.html";
     } else {
       alert("Login First!!!");
+      window.location.href = "index.html";
     }
   });

@@ -116,9 +116,17 @@ document.addEventListener("DOMContentLoaded", function () {
     loadNotes(currentPage);
   });
 
-  document.getElementById("backToForm").addEventListener("click", function () {
-    window.location.href = "newnote.html";
-  });
+  document
+    .getElementById("backToForm")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+      if (sessionStorage.getItem("gatePassKeyForNotes")) {
+        window.location.href = "newnote.html";
+      } else {
+        alert("Login First!!!");
+        window.location.href = "index.html";
+      }
+    });
 
   // Add event listeners for filter inputs
   document.getElementById("filterName").addEventListener("input", filterNotes);
