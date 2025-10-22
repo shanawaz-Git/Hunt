@@ -6,6 +6,11 @@ document.addEventListener("DOMContentLoaded", function () {
   let notes = [];
 
   function loadNotes(page) {
+    if (!sessionStorage.getItem("gatePassKeyForNotes")) {
+      alert("session ended, please login!!!");
+      window.location.href = "index.html";
+      return;
+    }
     fetch(
       `https://dyootify-server.vercel.app/notestaker/get?page=${page}&limit=${notesPerPage}`
     )
