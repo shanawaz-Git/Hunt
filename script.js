@@ -39,3 +39,9 @@ document
         alert("An error occurred while saving the note.");
       });
   });
+
+document.getElementById("logout").addEventListener("click", function (event) {
+  event.preventDefault();
+  sessionStorage.setItem("gatePassKeyForNotes", "");
+  window.location.href = "index.html";
+});

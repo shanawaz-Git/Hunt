@@ -75,6 +75,11 @@ button {
   background-color: #f98669;
 }
 
+#logout {
+  background-color: #f98669;
+  width: 12%;
+}
+
 #formSubmit {
   background-color: #95e078;
 }

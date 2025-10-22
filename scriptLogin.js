@@ -10,10 +10,6 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
     loginMode: true,
   };
 
-  //   sessionStorage.setItem("gatePassKeyForNotes", pin);
-  //   const gatePassKeyForNotes = sessionStorage.getItem("gatePassKeyForNotes");
-  //   alert("Stored Username: " + gatePassKeyForNotes);
-
   fetch("https://dyootify-server.vercel.app/post/notestaker/regUser", {
     method: "POST",
     headers: {
