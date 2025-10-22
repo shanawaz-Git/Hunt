@@ -157,6 +157,14 @@ tbody tr:nth-child(even) {
   margin: 0 10px;
 }
 
+.complete-btn {
+  color: green;
+}
+
+.incomplete-btn {
+  color: red;
+}
+
 @media (max-width: 600px) {
   .container,
   .two-thirds {

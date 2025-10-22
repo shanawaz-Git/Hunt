@@ -30,7 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     notes.forEach((note) => {
       const row = document.createElement("tr");
-      row.innerHTML = `
+      if (note.state == "active") {
+        row.innerHTML = `
                 <td>${note.name}</td>
                 <td>${note.cat}</td>
                 <td>${note.content}</td>
@@ -38,6 +39,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${note.time_stamp}</td>
                 <td><button class="complete-btn" data-id="${note._id}">Complete</button></td>
             `;
+      } else {
+        row.innerHTML = `
+                <td>${note.name}</td>
+                <td>${note.cat}</td>
+                <td>${note.content}</td>
+                <td>${note.state}</td>
+                <td>${note.time_stamp}</td>
+                <td><button class="incomplete-btn" data-id="${note._id}">Revert</button></td>
+            `;
+      }
       notesTableBody.appendChild(row);
     });
 
@@ -46,6 +57,13 @@ document.addEventListener("DOMContentLoaded", function () {
       button.addEventListener("click", function () {
         const noteId = this.getAttribute("data-id");
         completeNote(noteId);
+      });
+    });
+
+    document.querySelectorAll(".incomplete-btn").forEach((button) => {
+      button.addEventListener("click", function () {
+        const noteId = this.getAttribute("data-id");
+        incompleteNote(noteId);
       });
     });
   }
@@ -93,6 +111,32 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         if (data.success) {
           alert("Note marked as completed.");
+          loadNotes(currentPage);
+        } else {
+          alert("Failed to update the note.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while updating the note.");
+      });
+  }
+
+  function incompleteNote(noteId) {
+    fetch(`https://dyootify-server.vercel.app/post/notestaker/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        noteId: noteId,
+        state: "active",
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert("Note marked as Active again.");
           loadNotes(currentPage);
         } else {
           alert("Failed to update the note.");
