@@ -36,8 +36,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${note.cat}</td>
                 <td>${note.content}</td>
                 <td>${note.state}</td>
-                <td>${note.time_stamp}</td>
-                <td><button class="complete-btn" data-id="${note._id}">Complete</button></td>
+                <td>${note.time_stamp.split(",")[0]}</td>
+                <td><button class="complete-btn" data-id="${
+                  note._id
+                }">Complete</button></td>
             `;
       } else {
         row.innerHTML = `
@@ -45,8 +47,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${note.cat}</td>
                 <td>${note.content}</td>
                 <td>${note.state}</td>
-                <td>${note.time_stamp}</td>
-                <td><button class="incomplete-btn" data-id="${note._id}">Revert</button></td>
+                <td>${note.time_stamp.split(",")[0]}</td>
+                <td><button class="incomplete-btn" data-id="${
+                  note._id
+                }">Revert</button></td>
             `;
       }
       notesTableBody.appendChild(row);
@@ -55,8 +59,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Add event listeners for the complete buttons
     document.querySelectorAll(".complete-btn").forEach((button) => {
       button.addEventListener("click", function () {
+        var result = confirm(
+          'Click "OK" if the note is completed successfully.\n Click "CANCEL" if the note is closed incompletely.'
+        );
         const noteId = this.getAttribute("data-id");
-        completeNote(noteId);
+        completeNote(noteId, result);
       });
     });
 
@@ -96,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
     displayNotes(filteredNotes);
   }
 
-  function completeNote(noteId) {
+  function completeNote(noteId, result) {
     fetch(`https://dyootify-server.vercel.app/post/notestaker/add`, {
       method: "POST",
       headers: {
@@ -104,13 +111,13 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       body: JSON.stringify({
         noteId: noteId,
-        state: "completed",
+        state: result ? "Closed Complete" : "Closed Incomplete",
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          alert("Note marked as completed.");
+          alert("Note marked as closed.");
           loadNotes(currentPage);
         } else {
           alert("Failed to update the note.");
