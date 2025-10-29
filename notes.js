@@ -35,16 +35,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
     notes.forEach((note) => {
       const row = document.createElement("tr");
+
+      var clr = "";
+      const today = new Date();
+      const targetDate = new Date(note.eta);
+
+      // Calculate difference in days
+      const diffTime = targetDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      // Apply background color based on the remaining days
+      if (diffDays === 2) {
+        clr = "orange";
+      } else if (diffDays === 1) {
+        clr = "red";
+      } else if (diffDays > 3) {
+        clr = "green";
+      }
+
       if (note.state == "active") {
         row.innerHTML = `
                 <td>${note.name}</td>
                 <td>${note.cat}</td>
                 <td>${note.content}</td>
                 <td>${note.state}</td>
-                <td>${note.time_stamp.split(",")[0]}</td>
-                <td><button class="complete-btn" data-id="${
-                  note._id
-                }">Complete</button></td>
+                <td style="color: ${clr}">${note.eta}</td>
+                <td><button class="complete-btn" data-id="${note._id}">Complete</button></td>
             `;
       } else {
         row.innerHTML = `
@@ -52,10 +68,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${note.cat}</td>
                 <td>${note.content}</td>
                 <td>${note.state}</td>
-                <td>${note.time_stamp.split(",")[0]}</td>
-                <td><button class="incomplete-btn" data-id="${
-                  note._id
-                }">Revert</button></td>
+                <td>${note.eta}</td>
+                <td><button class="incomplete-btn" data-id="${note._id}">Revert</button></td>
             `;
       }
       notesTableBody.appendChild(row);

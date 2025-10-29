@@ -7,6 +7,7 @@ document
     const category = document.getElementById("category").value;
     const content = document.getElementById("content").value;
     const state = document.getElementById("state").value;
+    const eta = document.getElementById("eta").value;
     const now = new Date();
     const timestamp = new Intl.DateTimeFormat("en-US", {
       dateStyle: "short",
@@ -20,6 +21,7 @@ document
       content: content,
       state: state,
       time_stamp: timestamp,
+      eta: eta,
     };
 
     fetch("https://dyootify-server.vercel.app/post/notestaker/add", {
