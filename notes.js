@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${note.state}</td>
                 <td style="color: ${clr}">${note.eta}</td>
                 <td><button class="complete-btn" data-id="${note._id}">Complete</button></td>
+                <td></td>
             `;
       } else {
         row.innerHTML = `
@@ -70,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${note.state}</td>
                 <td>${note.eta}</td>
                 <td><button class="incomplete-btn" data-id="${note._id}">Revert</button></td>
+                <td><button class="deleteNote" data-id="${note._id}">🗑️</button></td>
             `;
       }
       notesTableBody.appendChild(row);
@@ -90,6 +92,16 @@ document.addEventListener("DOMContentLoaded", function () {
       button.addEventListener("click", function () {
         const noteId = this.getAttribute("data-id");
         incompleteNote(noteId);
+      });
+    });
+
+    document.querySelectorAll(".deleteNote").forEach((button) => {
+      button.addEventListener("click", function () {
+        var result = confirm(
+          'Note will be deleted permanently!!! \n Click "OK" to continue...'
+        );
+        const noteId = this.getAttribute("data-id");
+        if (result) deleteNote(noteId);
       });
     });
   }
@@ -148,6 +160,31 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
+  function deleteNote(noteId) {
+    fetch(`https://dyootify-server.vercel.app/post/notestaker/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        noteId: noteId,
+        deleteNote: true,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert("Note Deleted Successfully.");
+          loadNotes(currentPage);
+        } else {
+          alert("Failed to update the note.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while updating the note.");
+      });
+  }
   function incompleteNote(noteId) {
     fetch(`https://dyootify-server.vercel.app/post/notestaker/add`, {
       method: "POST",
