@@ -46,11 +46,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Apply background color based on the remaining days
       if (diffDays === 2) {
-        clr = "orange";
-      } else if (diffDays === 1) {
-        clr = "red";
+        clr = "color: orange; font-weight: bold";
+      } else if (diffDays <= 1) {
+        clr = "color: red; font-weight: bold";
       } else if (diffDays > 3) {
-        clr = "green";
+        clr = "color: green; font-weight: bold";
       }
 
       if (note.state == "active") {
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${note.cat}</td>
                 <td>${note.content}</td>
                 <td>${note.state}</td>
-                <td style="color: ${clr}">${note.eta}</td>
+                <td style="${clr}">${note.eta}</td>
                 <td><button class="complete-btn" data-id="${note._id}">Complete</button></td>
                 <td></td>
             `;
