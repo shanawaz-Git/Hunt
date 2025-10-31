@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((data) => {
         notes = data.notes; // Store the notes
-        displayNotes(notes);
+        displayNotes(notes, true);
         pageInfo.textContent = `Page ${data.currentPage} of ${data.totalPages}`;
 
         document.getElementById("prevPage").disabled = data.currentPage === 1;
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  function displayNotes(notes) {
+  function displayNotes(notes, first) {
     notesTableBody.innerHTML = ""; // Clear any existing rows
 
     notes.forEach((note) => {
@@ -64,7 +64,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td></td>
             `;
       } else {
-        row.innerHTML = `
+        if (!first)
+          row.innerHTML = `
                 <td>${note.name}</td>
                 <td>${note.cat}</td>
                 <td>${note.content}</td>
