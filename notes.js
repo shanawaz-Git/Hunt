@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${note.name}</td>
                 <td>${note.cat}</td>
                 <td>${note.content}</td>
-                <td>${note.state}</td>
+                <td style="background-color: yellow; font-weight: bold">Pending</td>
                 <td style="${clr}">${note.eta}</td>
                 <td><button class="complete-btn" data-id="${note._id}">Complete</button></td>
                 <td></td>

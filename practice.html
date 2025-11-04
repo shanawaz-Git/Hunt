@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML & CSS Practice Task</title>
+
+    <style>
+      /* CSS Styles */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+        line-height: 1.6;
+      }
+
+      header {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 2.5em;
+      }
+
+      h2 {
+        color: #333;
+        border-bottom: 2px solid #333;
+        padding-bottom: 5px;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 30px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      p {
+        color: #555;
+        margin-bottom: 15px;
+      }
+
+      .highlight {
+        background-color: yellow;
+        padding: 2px 5px;
+      }
+
+      ul,
+      ol {
+        margin-left: 20px;
+      }
+
+      li {
+        margin-bottom: 8px;
+      }
+
+      a {
+        color: #0066cc;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+        color: #0099ff;
+      }
+
+      .info-box {
+        background-color: #e7f3ff;
+        border-left: 5px solid #2196f3;
+        padding: 15px;
+        margin: 20px 0;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 20px auto;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #333;
+        color: white;
+      }
+
+      .button {
+        display: inline-block;
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin: 10px 0;
+      }
+
+      .button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Welcome to HTML & CSS Practice</h1>
+      <p>Learn the fundamentals of web development</p>
+    </header>
+
+    <div class="container">
+      <!-- Section 1: Introduction -->
+      <h2>Introduction to Web Development</h2>
+      <p>
+        This is a <strong>sample HTML page</strong> that demonstrates various
+        <em>basic HTML tags</em> and
+        <span class="highlight">CSS styling techniques</span>. Web development
+        involves creating structured content using HTML and styling it with CSS.
+      </p>
+
+      <p>
+        This page includes examples of: headings, paragraphs, <b>bold text</b>,
+        <i>italic text</i>, <u>underlined text</u>, lists, links, tables, and
+        more!
+      </p>
+
+      <!-- Section 2: Lists -->
+      <h2>Types of Lists</h2>
+      <h3>Unordered List</h3>
+      <ul>
+        <li>HTML structures web content</li>
+        <li>CSS styles the appearance</li>
+        <li>JavaScript adds interactivity</li>
+        <li>Responsive design ensures mobile compatibility</li>
+      </ul>
+
+      <h3>Ordered List</h3>
+      <ol>
+        <li>Learn HTML basics</li>
+        <li>Master CSS styling</li>
+        <li>Practice JavaScript</li>
+        <li>Build real projects</li>
+      </ol>
+
+      <!-- Section 3: Information Box -->
+      <div class="info-box">
+        <h3>Did You Know?</h3>
+        <p>
+          HTML stands for <mark>HyperText Markup Language</mark> and CSS stands
+          for <mark>Cascading Style Sheets</mark>. Together, they form the
+          foundation of web design.
+        </p>
+      </div>
+
+      <!-- Section 4: Links -->
+      <h2>Useful Links</h2>
+      <p>Here are some helpful resources:</p>
+      <ul>
+        <li>
+          <a href="https://www.w3schools.com" class="button"
+            >W3Schools Tutorial</a
+          >
+        </li>
+        <li>
+          <a href="https://developer.mozilla.org" class="button"
+            >MDN Web Docs</a
+          >
+        </li>
+      </ul>
+
+      <!-- Section 5: Table -->
+      <h2>HTML Tags Reference Table</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Tag</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>&lt;h1&gt;</td>
+            <td>Heading level 1</td>
+            <td>Main title</td>
+          </tr>
+          <tr>
+            <td>&lt;p&gt;</td>
+            <td>Paragraph</td>
+            <td>Text content</td>
+          </tr>
+          <tr>
+            <td>&lt;a&gt;</td>
+            <td>Hyperlink</td>
+            <td>Links to other pages</td>
+          </tr>
+          <tr>
+            <td>&lt;div&gt;</td>
+            <td>Division/Container</td>
+            <td>Groups elements</td>
+          </tr>
+          <tr>
+            <td>&lt;img&gt;</td>
+            <td>Image</td>
+            <td>Displays pictures</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Section 6: Text Formatting -->
+      <h2>Text Formatting Examples</h2>
+      <p>This text contains <sup>superscript</sup> and <sub>subscript</sub>.</p>
+      <p>Chemical formula: H<sub>2</sub>O</p>
+      <p>Mathematical expression: E = mc<sup>2</sup></p>
+      <p>
+        This is <del>deleted text</del> and this is <ins>inserted text</ins>.
+      </p>
+      <p>This is <small>smaller text</small> compared to normal text.</p>
+
+      <!-- Section 7: Blockquote -->
+      <h2>Quotation</h2>
+      <blockquote>
+        <p>"The best way to predict the future is to invent it." - Alan Kay</p>
+      </blockquote>
+
+      <hr />
+
+      <!-- Section 8: Form Elements -->
+      <h2>Practice Form</h2>
+      <form>
+        <label for="name">Name:</label><br />
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Enter your name"
+        /><br /><br />
+
+        <label for="email">Email:</label><br />
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Enter your email"
+        /><br /><br />
+
+        <label for="message">Message:</label><br />
+        <textarea
+          id="message"
+          name="message"
+          rows="4"
+          cols="50"
+          placeholder="Your message here"
+        ></textarea
+        ><br /><br />
+
+        <input type="submit" value="Submit" class="button" />
+      </form>
+    </div>
+
+    <footer>
+      <p>
+        &copy; 2025 HTML & CSS Practice Page | Created for Learning Purposes
+      </p>
+    </footer>
+  </body>
+</html>
