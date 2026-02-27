@@ -2,238 +2,293 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Our Moments 💕</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For My Rag-V 💕</title>
     <style>
         :root {
-            --primary-pink: #ff78aa;
-            --soft-pink: #ffeaf4;
-            --deep-rose: #d63384;
+            --primary: #ff4d8d;
+            --secondary: #ff78aa;
+            --bg-top: #ffdde1;
+            --bg-bottom: #ee9ca7;
+            --glass: rgba(255, 255, 255, 0.8);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            user-select: none; /* Prevents text highlighting while dragging */
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            user-select: none;
         }
 
         body {
-            background: linear-gradient(135deg, var(--soft-pink) 0%, #ffffff 100%);
-            text-align: center;
+            background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom), #ff9a9e, #fad0c4);
+            background-size: 100% 400%; /* For smooth color shifts on scroll */
+            color: #333;
             overflow-x: hidden;
-            color: #444;
+            scroll-behavior: smooth;
+        }
+
+        /* Modern Typography */
+        h1, h2 {
+            background: linear-gradient(45deg, #d63384, #ff4d8d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        section {
             min-height: 100vh;
-            touch-action: pan-y; /* Allows scrolling but captures horizontal drags */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            position: relative;
         }
 
-        header {
-            padding: 30px 10px 10px;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--deep-rose);
+        /* 1. HERO SECTION */
+        .hero-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            animation: fadeIn 1.5s ease-out;
         }
 
-        /* Interactive Carousel */
+        /* 2. ENHANCED CAROUSEL */
         .stage {
             width: 100%;
-            height: 350px;
+            height: 400px;
             perspective: 1200px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 20px;
+            touch-action: none;
         }
 
         .carousel {
-            width: 160px;
-            height: 220px;
+            width: 180px;
+            height: 250px;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.1s; /* Smoothness for dragging */
+            cursor: grab;
         }
 
         .carousel img {
             position: absolute;
-            width: 160px;
-            height: 220px;
+            width: 180px;
+            height: 250px;
             object-fit: cover;
-            border-radius: 12px;
-            border: 5px solid white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            pointer-events: none; /* Prevents image dragging from breaking the script */
+            border: 6px solid white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(255, 77, 141, 0.3);
+            transition: transform 0.3s;
         }
 
-        /* 7 Images - Dynamic spacing */
-        .carousel img:nth-child(1) { transform: rotateY(0deg) translateZ(280px); }
-        .carousel img:nth-child(2) { transform: rotateY(51.4deg) translateZ(280px); }
-        .carousel img:nth-child(3) { transform: rotateY(102.8deg) translateZ(280px); }
-        .carousel img:nth-child(4) { transform: rotateY(154.2deg) translateZ(280px); }
-        .carousel img:nth-child(5) { transform: rotateY(205.6deg) translateZ(280px); }
-        .carousel img:nth-child(6) { transform: rotateY(257deg) translateZ(280px); }
-        .carousel img:nth-child(7) { transform: rotateY(308.4deg) translateZ(280px); }
+        /* Position 7 images with a larger radius */
+        .carousel img:nth-child(1) { transform: rotateY(0deg) translateZ(300px); }
+        .carousel img:nth-child(2) { transform: rotateY(51deg) translateZ(300px); }
+        .carousel img:nth-child(3) { transform: rotateY(102deg) translateZ(300px); }
+        .carousel img:nth-child(4) { transform: rotateY(153deg) translateZ(300px); }
+        .carousel img:nth-child(5) { transform: rotateY(204deg) translateZ(300px); }
+        .carousel img:nth-child(6) { transform: rotateY(255deg) translateZ(300px); }
+        .carousel img:nth-child(7) { transform: rotateY(306deg) translateZ(300px); }
 
-        /* The Message Box */
-        .interactive-section {
+        /* 3. GAME UI */
+        .game-container {
+            background: var(--glass);
             padding: 20px;
-            max-width: 500px;
-            margin: 0 auto;
+            border-radius: 25px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
 
-        .reason-box {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(255, 120, 170, 0.2);
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            font-style: italic;
-            transition: 0.3s;
-            border: 2px dashed var(--primary-pink);
+        canvas {
+            border-radius: 15px;
+            background: rgba(255,255,255,0.5);
         }
 
-        .btn-interact {
-            background: var(--deep-rose);
+        .score-badge {
+            background: var(--primary);
             color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
-            transition: 0.2s;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: inline-block;
         }
 
-        .btn-interact:active { transform: scale(0.95); }
-
-        /* Heart Burst Particles */
-        .burst-heart {
+        /* 4. FLOATING ELEMENTS */
+        .floating-heart {
             position: fixed;
             pointer-events: none;
-            z-index: 999;
-            font-size: 20px;
-            animation: burst 0.8s ease-out forwards;
+            z-index: -1;
+            animation: floatUp linear infinite;
         }
 
-        @keyframes burst {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(1.5); opacity: 0; }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
-        .hint {
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 10px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+
+        /* SCROLL INDICATOR */
+        .indicator {
+            position: absolute;
+            bottom: 30px;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            color: var(--primary);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
     </style>
 </head>
-
 <body>
 
-    <header>Happy Valentine’s Day 💖</header>
-    <p class="hint">Try dragging the photos! ☝️</p>
-
-    <div class="stage" id="stage">
-        <div class="carousel" id="carousel">
-            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM.jpeg" />
-            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (1).jpeg" />
-            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (2).jpeg" />
-            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (3).jpeg" />
-            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (4).jpeg" />
-            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (5).jpeg" />
-            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (6).jpeg" />
+    <section>
+        <div class="hero-card">
+            <h1>Happy Valentine’s Day 💖</h1>
+            <p style="margin-top: 15px; font-style: italic;">To my favorite G.U.N.D.U</p>
+            <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">Scroll down for our magic world...</p>
         </div>
-    </div>
+        <div class="indicator">↓</div>
+    </section>
 
-    <div class="interactive-section">
-        <div class="reason-box" id="reason-display">
-            Click the button to see why you're amazing! ✨
+    <section>
+        <h2 style="margin-bottom: 40px;">Our Captured Moments</h2>
+        <div class="stage">
+            <div class="carousel" id="carousel">
+                <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM.jpeg" />
+                <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (1).jpeg" />
+                <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (2).jpeg" />
+                <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (3).jpeg" />
+                <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (4).jpeg" />
+                <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (5).jpeg" />
+                <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (6).jpeg" />
+            </div>
         </div>
-        <button class="btn-interact" onclick="nextReason()">Give me a reason! ❤️</button>
-    </div>
+        <p style="margin-top: 40px; font-weight: bold; color: var(--dark-pink);">Try spinning the photos! ☝️</p>
+    </section>
+
+    <section>
+        <div class="game-container">
+            <h2>Catch My Love ❤️</h2>
+            <div class="score-badge">Score: <span id="score">0</span></div>
+            <canvas id="game-canvas" width="320" height="380"></canvas>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: #777;">Tap the hearts!</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="hero-card" style="max-width: 80%;">
+            <h2>My Promise 🥋</h2>
+            <p style="line-height: 1.8; margin-top: 20px;">
+                Rag-V, you make every day feel like a celebration. Thank you for being the 
+                <b>Gorgeous, Unique, Nice-hearted, Delightful, and Unstoppable</b> person you are.
+            </p>
+            <p style="margin-top: 20px; font-weight: bold; color: var(--primary);">I Love You! ❤️</p>
+        </div>
+    </section>
 
     <script>
-        // 1. DRAG ROTATION LOGIC
-        const carousel = document.getElementById('carousel');
-        let currAngle = 0;
-        let startX = 0;
-        let isDragging = false;
-
-        // Auto-rotate initially
-        let autoSpin = setInterval(() => {
-            currAngle -= 0.5;
-            carousel.style.transform = `rotateY(${currAngle}deg)`;
-        }, 30);
-
-        function startDrag(e) {
-            isDragging = true;
-            startX = e.pageX || e.touches[0].pageX;
-            clearInterval(autoSpin);
+        // --- 1. FLOATING HEARTS GENERATOR ---
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = ['❤️','💖','✨','🌸','💕'][Math.floor(Math.random()*5)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+            heart.style.opacity = Math.random();
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
         }
+        setInterval(createHeart, 300);
 
-        function moveDrag(e) {
+        // --- 2. CAROUSEL DRAG + AUTO-SPIN ---
+        const carousel = document.getElementById('carousel');
+        let angle = 0;
+        let isDragging = false;
+        let startX = 0;
+        let autoSpin;
+
+        function startSpin() {
+            autoSpin = setInterval(() => {
+                angle -= 0.4;
+                carousel.style.transform = `rotateY(${angle}deg)`;
+            }, 30);
+        }
+        startSpin();
+
+        function handleStart(e) {
+            isDragging = true;
+            clearInterval(autoSpin);
+            startX = e.pageX || e.touches[0].pageX;
+        }
+        function handleMove(e) {
             if (!isDragging) return;
             const x = e.pageX || e.touches[0].pageX;
-            const diff = (x - startX) * 0.5;
-            currAngle += diff;
-            carousel.style.transform = `rotateY(${currAngle}deg)`;
+            angle += (x - startX) * 0.4;
+            carousel.style.transform = `rotateY(${angle}deg)`;
             startX = x;
         }
-
-        function stopDrag() { isDragging = false; }
-
-        window.addEventListener('mousedown', startDrag);
-        window.addEventListener('mousemove', moveDrag);
-        window.addEventListener('mouseup', stopDrag);
-        window.addEventListener('touchstart', startDrag);
-        window.addEventListener('touchmove', moveDrag);
-        window.addEventListener('touchend', stopDrag);
-
-        // 2. HEART BURST EFFECT
-        window.addEventListener('click', (e) => {
-            for (let i = 0; i < 8; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'burst-heart';
-                heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random()*4)];
-                heart.style.left = e.clientX + 'px';
-                heart.style.top = e.clientY + 'px';
-                
-                // Randomize trajectory
-                const tx = (Math.random() - 0.5) * 200 + 'px';
-                const ty = (Math.random() - 0.5) * 200 + 'px';
-                heart.style.setProperty('--tx', tx);
-                heart.style.setProperty('--ty', ty);
-                
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 800);
-            }
-        });
-
-        // 3. REASONS GENERATOR
-        const reasons = [
-            "You are my favorite G.U.N.D.U! 💫",
-            "The way you handle things is Unstoppable 🌟",
-            "Your heart is the Kindest I know ❤️",
-            "You make every moment Delightful 😊",
-            "You are Unique in the best way possible 🌸",
-            "Your smile is my favorite view 💖",
-            "Thank you for being my teammate in life 🥋"
-        ];
-        let reasonIdx = 0;
-
-        function nextReason() {
-            const box = document.getElementById('reason-display');
-            box.style.opacity = 0;
-            setTimeout(() => {
-                box.innerText = reasons[reasonIdx];
-                box.style.opacity = 1;
-                reasonIdx = (reasonIdx + 1) % reasons.length;
-            }, 200);
+        function handleEnd() {
+            isDragging = false;
+            startSpin();
         }
+
+        carousel.addEventListener('mousedown', handleStart);
+        window.addEventListener('mousemove', handleMove);
+        window.addEventListener('mouseup', handleEnd);
+        carousel.addEventListener('touchstart', handleStart);
+        window.addEventListener('touchmove', handleMove);
+        window.addEventListener('touchend', handleEnd);
+
+        // --- 3. CATCH THE LOVE GAME ---
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        let hearts = [];
+        let score = 0;
+
+        function spawn() {
+            hearts.push({ x: Math.random() * 280 + 20, y: -20, speed: Math.random() * 2 + 2 });
+        }
+        function update() {
+            ctx.clearRect(0,0,320,380);
+            hearts.forEach((h, i) => {
+                h.y += h.speed;
+                ctx.font = "24px Arial";
+                ctx.fillText("❤️", h.x, h.y);
+                if(h.y > 380) hearts.splice(i, 1);
+            });
+            requestAnimationFrame(update);
+        }
+        canvas.addEventListener('touchstart', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const tx = e.touches[0].clientX - rect.left;
+            const ty = e.touches[0].clientY - rect.top;
+            hearts.forEach((h, i) => {
+                if(Math.abs(tx - h.x) < 30 && Math.abs(ty - h.y) < 30) {
+                    hearts.splice(i, 1);
+                    score++;
+                    document.getElementById('score').innerText = score;
+                }
+            });
+        });
+        setInterval(spawn, 800);
+        update();
     </script>
 </body>
 </html>
