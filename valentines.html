@@ -1,129 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Our Moments 💕</title>
-
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      }
-
-      body {
-        background: linear-gradient(to bottom, #ffeaf4, #fff);
-        text-align: center;
-        overflow: hidden;
-        color: #444;
-      }
-
-      header {
-        padding: 25px 10px;
-        font-size: 1.6rem;
-        font-weight: 600;
-      }
-
-      /* Carousel container */
-      .carousel-container {
-        position: relative;
-        width: 100%;
-        height: 320px;
-        perspective: 1000px;
-        margin-top: 20px;
-      }
-
-      .carousel {
-        width: 200px;
-        height: 250px;
-        position: absolute;
-        top: 20px;
-        left: 50%;
-        transform-style: preserve-3d;
-        transform: translateX(-50%) rotateY(0deg);
-        animation: spin 20s linear infinite;
-      }
-
-      /* Pause on tap */
-      .carousel-container:active .carousel {
-        animation-play-state: paused;
-      }
-
-      .carousel img {
-        position: absolute;
-        width: 200px;
-        height: 250px;
-        object-fit: cover;
-        border-radius: 20px;
-        box-shadow: 0 10px 25px rgba(255, 120, 170, 0.4);
-      }
-
-      /* Position 7 images around circle */
-      .carousel img:nth-child(1) {
-        transform: rotateY(0deg) translateZ(300px);
-      }
-      .carousel img:nth-child(2) {
-        transform: rotateY(51deg) translateZ(300px);
-      }
-      .carousel img:nth-child(3) {
-        transform: rotateY(102deg) translateZ(300px);
-      }
-      .carousel img:nth-child(4) {
-        transform: rotateY(153deg) translateZ(300px);
-      }
-      .carousel img:nth-child(5) {
-        transform: rotateY(204deg) translateZ(300px);
-      }
-      .carousel img:nth-child(6) {
-        transform: rotateY(255deg) translateZ(300px);
-      }
-      .carousel img:nth-child(7) {
-        transform: rotateY(306deg) translateZ(300px);
-      }
-
-      @keyframes spin {
-        from {
-          transform: translateX(-50%) rotateY(0deg);
+        :root {
+            --primary-pink: #ff78aa;
+            --soft-pink: #ffeaf4;
+            --deep-rose: #d63384;
         }
-        to {
-          transform: translateX(-50%) rotateY(360deg);
-        }
-      }
 
-      .message {
-        margin-top: 40px;
-        padding: 20px;
-        font-size: 1rem;
-        line-height: 1.6;
-      }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--soft-pink) 0%, #ffffff 100%);
+            text-align: center;
+            overflow-x: hidden;
+            color: #444;
+            min-height: 100vh;
+        }
+
+        /* Floating Hearts Background */
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        header {
+            padding: 40px 10px 10px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--deep-rose);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        /* Carousel container */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            perspective: 1200px;
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel {
+            width: 180px;
+            height: 240px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: spin 25s linear infinite;
+            cursor: pointer;
+        }
+
+        /* Pause on hover/touch */
+        .carousel-container:hover .carousel, 
+        .carousel-container:active .carousel {
+            animation-play-state: paused;
+        }
+
+        .carousel img {
+            position: absolute;
+            width: 180px;
+            height: 240px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 4px solid white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: transform 0.5s;
+        }
+
+        /* 7 Images Positioning */
+        .carousel img:nth-child(1) { transform: rotateY(0deg) translateZ(280px); }
+        .carousel img:nth-child(2) { transform: rotateY(51.4deg) translateZ(280px); }
+        .carousel img:nth-child(3) { transform: rotateY(102.8deg) translateZ(280px); }
+        .carousel img:nth-child(4) { transform: rotateY(154.2deg) translateZ(280px); }
+        .carousel img:nth-child(5) { transform: rotateY(205.6deg) translateZ(280px); }
+        .carousel img:nth-child(6) { transform: rotateY(257deg) translateZ(280px); }
+        .carousel img:nth-child(7) { transform: rotateY(308.4deg) translateZ(280px); }
+
+        @keyframes spin {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+
+        .message-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            margin: 40px auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            line-height: 1.8;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .highlight {
+            color: var(--deep-rose);
+            font-weight: bold;
+        }
+
+        /* Special Button */
+        .btn-surprise {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 120, 170, 0.4);
+        }
+
+        .btn-surprise:hover {
+            transform: scale(1.05);
+            background: var(--deep-rose);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .heart {
+            position: absolute;
+            color: var(--primary-pink);
+            opacity: 0.6;
+            animation: float 6s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
     </style>
-  </head>
+</head>
 
-  <body>
+<body>
+    <div class="heart-bg" id="heart-bg"></div>
+
     <header>Happy Valentine’s Day 💖</header>
 
     <div class="carousel-container">
-      <div class="carousel">
-        <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM.jpeg" />
-        <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (1).jpeg" />
-        <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (2).jpeg" />
-        <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (3).jpeg" />
-        <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (4).jpeg" />
-        <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (5).jpeg" />
-        <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (6).jpeg" />
-      </div>
+        <div class="carousel">
+            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM.jpeg" alt="Moment 1">
+            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (1).jpeg" alt="Moment 2">
+            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (2).jpeg" alt="Moment 3">
+            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (3).jpeg" alt="Moment 4">
+            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (4).jpeg" alt="Moment 5">
+            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (5).jpeg" alt="Moment 6">
+            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (6).jpeg" alt="Moment 7">
+        </div>
     </div>
 
-    <div class="message">
-      Hello Rag-V 🥋, On this Valentine’s Day ❤️, I just want to remind you how
-      special you are to me. My G.U.N.D.U will always be - Gorgeous 💫 Unique 🌸
-      Nice-hearted ❤️ Delightful 😊 Unstoppable 🌟 Today isn’t just about love
-      in a big dramatic way - it’s about appreciating the person who makes my
-      days lighter, my smiles easier, and my moments better.
-      <br /><br />
-      Thank you for being my favorite person 😊
+    <div class="message-card">
+        Hello <span class="highlight">Rag-V 🥋</span>, <br>
+        On this Valentine’s Day ❤️, I just want to remind you how special you are to me. 
+        My <span class="highlight">G.U.N.D.U</span> will always be:
+        <br>
+        <strong>G</strong>orgeous 💫 | <strong>U</strong>nique 🌸 | <strong>N</strong>ice-hearted ❤️<br>
+        <strong>D</strong>elightful 😊 | <strong>U</strong>nstoppable 🌟
+        <br><br>
+        Today isn’t just about love in a big dramatic way—it’s about appreciating the person who makes my days lighter and my smiles easier.
+        <br><br>
+        <em>Thank you for being my favorite person 😊</em>
     </div>
-  </body>
+
+    <button class="btn-surprise" onclick="showLove()">Click for a Surprise!</button>
+
+    <script>
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            document.getElementById('heart-bg').appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        setInterval(createHeart, 400);
+
+        function showLove() {
+            alert("You're the best! I love you! ❤️✨");
+            // You can change this to a sweet audio file or a redirect to another memory!
+        }
+    </script>
+</body>
 </html>
