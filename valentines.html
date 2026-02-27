@@ -8,33 +8,24 @@
         :root {
             --primary: #ff4d8d;
             --secondary: #ff78aa;
-            --bg-top: #ffdde1;
-            --bg-bottom: #ee9ca7;
-            --glass: rgba(255, 255, 255, 0.8);
+            --glass: rgba(255, 255, 255, 0.85);
+            --accent: #d63384;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
             user-select: none;
         }
 
         body {
-            background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom), #ff9a9e, #fad0c4);
-            background-size: 100% 400%; /* For smooth color shifts on scroll */
+            background: linear-gradient(180deg, #ffdde1, #ee9ca7, #ff9a9e, #fad0c4);
+            background-size: 100% 400%;
             color: #333;
             overflow-x: hidden;
             scroll-behavior: smooth;
-        }
-
-        /* Modern Typography */
-        h1, h2 {
-            background: linear-gradient(45deg, #d63384, #ff4d8d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
         }
 
         section {
@@ -43,131 +34,99 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
             position: relative;
         }
 
-        /* 1. HERO SECTION */
         .hero-card {
             background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 40px;
+            backdrop-filter: blur(15px);
+            padding: 30px;
             border-radius: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 50px rgba(255, 77, 141, 0.2);
             text-align: center;
-            animation: fadeIn 1.5s ease-out;
+            border: 1px solid rgba(255,255,255,0.4);
+            max-width: 90%;
         }
 
-        /* 2. ENHANCED CAROUSEL */
-        .stage {
-            width: 100%;
-            height: 400px;
-            perspective: 1200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            touch-action: none;
-        }
+        h1 { background: linear-gradient(45deg, var(--accent), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.2rem; }
 
-        .carousel {
-            width: 180px;
-            height: 250px;
-            position: relative;
-            transform-style: preserve-3d;
-            cursor: grab;
-        }
-
-        .carousel img {
-            position: absolute;
-            width: 180px;
-            height: 250px;
-            object-fit: cover;
-            border: 6px solid white;
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(255, 77, 141, 0.3);
-            transition: transform 0.3s;
-        }
-
-        /* Position 7 images with a larger radius */
-        .carousel img:nth-child(1) { transform: rotateY(0deg) translateZ(300px); }
-        .carousel img:nth-child(2) { transform: rotateY(51deg) translateZ(300px); }
-        .carousel img:nth-child(3) { transform: rotateY(102deg) translateZ(300px); }
-        .carousel img:nth-child(4) { transform: rotateY(153deg) translateZ(300px); }
-        .carousel img:nth-child(5) { transform: rotateY(204deg) translateZ(300px); }
-        .carousel img:nth-child(6) { transform: rotateY(255deg) translateZ(300px); }
-        .carousel img:nth-child(7) { transform: rotateY(306deg) translateZ(300px); }
-
-        /* 3. GAME UI */
-        .game-container {
-            background: var(--glass);
-            padding: 20px;
-            border-radius: 25px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-        }
-
-        canvas {
-            border-radius: 15px;
-            background: rgba(255,255,255,0.5);
-        }
-
-        .score-badge {
-            background: var(--primary);
-            color: white;
-            padding: 5px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            display: inline-block;
-        }
-
-        /* 4. FLOATING ELEMENTS */
-        .floating-heart {
+        /* MUSIC TOGGLE */
+        .music-control {
             position: fixed;
-            pointer-events: none;
-            z-index: -1;
-            animation: floatUp linear infinite;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--glass);
+            padding: 10px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-size: 1.5rem;
         }
 
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        /* CAROUSEL */
+        .stage { width: 100%; height: 350px; perspective: 1200px; display: flex; justify-content: center; align-items: center; touch-action: none; }
+        .carousel { width: 160px; height: 220px; position: relative; transform-style: preserve-3d; }
+        .carousel img {
+            position: absolute; width: 160px; height: 220px; object-fit: cover;
+            border: 6px solid white; border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(214, 51, 132, 0.3);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .carousel img:nth-child(1) { transform: rotateY(0deg) translateZ(280px); }
+        .carousel img:nth-child(2) { transform: rotateY(51deg) translateZ(280px); }
+        .carousel img:nth-child(3) { transform: rotateY(102deg) translateZ(280px); }
+        .carousel img:nth-child(4) { transform: rotateY(153deg) translateZ(280px); }
+        .carousel img:nth-child(5) { transform: rotateY(204deg) translateZ(280px); }
+        .carousel img:nth-child(6) { transform: rotateY(255deg) translateZ(280px); }
+        .carousel img:nth-child(7) { transform: rotateY(306deg) translateZ(280px); }
+
+        /* GAME */
+        .game-area { position: relative; background: var(--glass); padding: 20px; border-radius: 25px; text-align: center; }
+        #game-canvas { border-radius: 15px; background: rgba(255,255,255,0.3); cursor: pointer; touch-action: none; }
+        .score-badge { background: var(--accent); color: white; padding: 5px 20px; border-radius: 20px; font-weight: bold; margin-bottom: 10px; display: inline-block; }
+
+        /* FLOATING TEXT ANIMATION */
+        .catch-msg {
+            position: absolute; color: var(--accent); font-weight: bold; font-size: 1.2rem;
+            pointer-events: none; animation: flyUp 0.8s ease-out forwards; z-index: 10;
+        }
+        @keyframes flyUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-50px); } }
+
+        /* OVERLAY FOR GAME WIN */
+        #win-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(214, 51, 132, 0.9); display: none;
+            flex-direction: column; align-items: center; justify-content: center;
+            color: white; z-index: 2000; text-align: center; padding: 20px;
         }
 
-        /* SCROLL INDICATOR */
-        .indicator {
-            position: absolute;
-            bottom: 30px;
-            font-size: 2rem;
-            animation: bounce 2s infinite;
-            color: var(--primary);
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
-        }
-
+        .floating-heart { position: fixed; top: -10%; z-index: -1; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
 <body>
 
+    <div class="music-control" onclick="toggleMusic()" id="musicBtn">🎵</div>
+    <audio id="bgMusic" loop>
+        <source src="./Perfect.mp3" type="audio/mpeg">
+    </audio>
+
     <section>
         <div class="hero-card">
-            <h1>Happy Valentine’s Day 💖</h1>
-            <p style="margin-top: 15px; font-style: italic;">To my favorite G.U.N.D.U</p>
-            <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">Scroll down for our magic world...</p>
+            <h1>Happy Valentine’s Day Rag-V 💖</h1>
+            <p style="margin-top:10px">Scroll down for your surprises...</p>
         </div>
-        <div class="indicator">↓</div>
     </section>
 
     <section>
-        <h2 style="margin-bottom: 40px;">Our Captured Moments</h2>
+        <h2 style="color: var(--accent); margin-bottom: 20px;">Our Memories</h2>
         <div class="stage">
             <div class="carousel" id="carousel">
                 <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM.jpeg" />
@@ -179,116 +138,104 @@
                 <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (6).jpeg" />
             </div>
         </div>
-        <p style="margin-top: 40px; font-weight: bold; color: var(--dark-pink);">Try spinning the photos! ☝️</p>
     </section>
 
-    <section>
-        <div class="game-container">
-            <h2>Catch My Love ❤️</h2>
-            <div class="score-badge">Score: <span id="score">0</span></div>
-            <canvas id="game-canvas" width="320" height="380"></canvas>
-            <p style="margin-top: 10px; font-size: 0.8rem; color: #777;">Tap the hearts!</p>
+    <section id="game-section">
+        <div class="game-area">
+            <div class="score-badge">Hearts Caught: <span id="score">0</span> / 23</div>
+            <div id="game-container" style="position: relative;">
+                <canvas id="game-canvas" width="320" height="400"></canvas>
+            </div>
+            <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">Catch 23 hearts for a secret message!</p>
         </div>
     </section>
 
-    <section>
-        <div class="hero-card" style="max-width: 80%;">
-            <h2>My Promise 🥋</h2>
-            <p style="line-height: 1.8; margin-top: 20px;">
-                Rag-V, you make every day feel like a celebration. Thank you for being the 
-                <b>Gorgeous, Unique, Nice-hearted, Delightful, and Unstoppable</b> person you are.
-            </p>
-            <p style="margin-top: 20px; font-weight: bold; color: var(--primary);">I Love You! ❤️</p>
-        </div>
-    </section>
+    <div id="win-overlay">
+        <h1 style="color: white; -webkit-text-fill-color: white; font-size: 3rem;">WINNER! 🏆</h1>
+        <p style="font-size: 1.4rem; margin: 20px 0;">You caught all my love!</p>
+        <p style="font-style: italic;">"Rag-V, just like this game, you've caught my heart forever. <br> You are my Gorgeous, Unique, Nice-hearted, Delightful, Unstoppable favorite person!"</p>
+        <button onclick="location.reload()" style="margin-top: 30px; padding: 10px 20px; border-radius: 20px; border: none; background: white; color: var(--accent); font-weight: bold;">Play Again ❤️</button>
+    </div>
 
     <script>
-        // --- 1. FLOATING HEARTS GENERATOR ---
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.className = 'floating-heart';
-            heart.innerHTML = ['❤️','💖','✨','🌸','💕'][Math.floor(Math.random()*5)];
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
-            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
-            heart.style.opacity = Math.random();
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 7000);
+        // --- MUSIC LOGIC ---
+        const music = document.getElementById('bgMusic');
+        function toggleMusic() {
+            if (music.paused) { music.play(); document.getElementById('musicBtn').innerText = '⏸️'; }
+            else { music.pause(); document.getElementById('musicBtn').innerText = '🎵'; }
         }
-        setInterval(createHeart, 300);
 
-        // --- 2. CAROUSEL DRAG + AUTO-SPIN ---
+        // --- CAROUSEL LOGIC ---
         const carousel = document.getElementById('carousel');
-        let angle = 0;
-        let isDragging = false;
-        let startX = 0;
-        let autoSpin;
-
-        function startSpin() {
-            autoSpin = setInterval(() => {
-                angle -= 0.4;
-                carousel.style.transform = `rotateY(${angle}deg)`;
-            }, 30);
-        }
+        let angle = 0, isDragging = false, startX = 0, autoSpin;
+        function startSpin() { autoSpin = setInterval(() => { angle -= 0.4; carousel.style.transform = `rotateY(${angle}deg)`; }, 30); }
         startSpin();
+        carousel.addEventListener('touchstart', (e) => { isDragging = true; clearInterval(autoSpin); startX = e.touches[0].pageX; });
+        window.addEventListener('touchmove', (e) => { if(!isDragging) return; let x = e.touches[0].pageX; angle += (x - startX) * 0.4; carousel.style.transform = `rotateY(${angle}deg)`; startX = x; });
+        window.addEventListener('touchend', () => { isDragging = false; startSpin(); });
 
-        function handleStart(e) {
-            isDragging = true;
-            clearInterval(autoSpin);
-            startX = e.pageX || e.touches[0].pageX;
-        }
-        function handleMove(e) {
-            if (!isDragging) return;
-            const x = e.pageX || e.touches[0].pageX;
-            angle += (x - startX) * 0.4;
-            carousel.style.transform = `rotateY(${angle}deg)`;
-            startX = x;
-        }
-        function handleEnd() {
-            isDragging = false;
-            startSpin();
-        }
-
-        carousel.addEventListener('mousedown', handleStart);
-        window.addEventListener('mousemove', handleMove);
-        window.addEventListener('mouseup', handleEnd);
-        carousel.addEventListener('touchstart', handleStart);
-        window.addEventListener('touchmove', handleMove);
-        window.addEventListener('touchend', handleEnd);
-
-        // --- 3. CATCH THE LOVE GAME ---
+        // --- GAME LOGIC ---
         const canvas = document.getElementById('game-canvas');
         const ctx = canvas.getContext('2d');
-        let hearts = [];
-        let score = 0;
+        const scoreEl = document.getElementById('score');
+        const winOverlay = document.getElementById('win-overlay');
+        const gameContainer = document.getElementById('game-container');
+        
+        let hearts = [], score = 0, gameActive = true;
+        const messages = ["Love you!", "You're cute!", "Got it!", "Nice!", "Special!", "✨", "❤️"];
 
-        function spawn() {
-            hearts.push({ x: Math.random() * 280 + 20, y: -20, speed: Math.random() * 2 + 2 });
+        function spawnHeart() { if(gameActive) hearts.push({ x: Math.random()*280+20, y: -20, s: Math.random()*2+2 }); }
+        
+        function showCatchEffect(x, y) {
+            const div = document.createElement('div');
+            div.className = 'catch-msg';
+            div.innerText = messages[Math.floor(Math.random()*messages.length)];
+            div.style.left = x + 'px';
+            div.style.top = y + 'px';
+            gameContainer.appendChild(div);
+            setTimeout(() => div.remove(), 800);
         }
+
         function update() {
-            ctx.clearRect(0,0,320,380);
+            if(!gameActive) return;
+            ctx.clearRect(0,0,320,400);
             hearts.forEach((h, i) => {
-                h.y += h.speed;
-                ctx.font = "24px Arial";
+                h.y += h.s;
+                ctx.font = "30px serif";
                 ctx.fillText("❤️", h.x, h.y);
-                if(h.y > 380) hearts.splice(i, 1);
+                if(h.y > 420) hearts.splice(i, 1);
             });
+            if(score >= 23) { gameActive = false; winOverlay.style.display = 'flex'; }
             requestAnimationFrame(update);
         }
+
         canvas.addEventListener('touchstart', (e) => {
             const rect = canvas.getBoundingClientRect();
             const tx = e.touches[0].clientX - rect.left;
             const ty = e.touches[0].clientY - rect.top;
             hearts.forEach((h, i) => {
-                if(Math.abs(tx - h.x) < 30 && Math.abs(ty - h.y) < 30) {
+                if(Math.abs(tx - h.x) < 40 && Math.abs(ty - h.y) < 40) {
                     hearts.splice(i, 1);
                     score++;
-                    document.getElementById('score').innerText = score;
+                    scoreEl.innerText = score;
+                    showCatchEffect(tx, ty);
                 }
             });
         });
-        setInterval(spawn, 800);
+
+        setInterval(spawnHeart, 800);
         update();
+
+        // --- BG HEARTS ---
+        setInterval(() => {
+            const h = document.createElement('div');
+            h.className = 'floating-heart';
+            h.innerHTML = '🌸';
+            h.style.left = Math.random()*100+'vw';
+            h.style.animationDuration = Math.random()*3+3+'s';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 6000);
+        }, 500);
     </script>
 </body>
 </html>
