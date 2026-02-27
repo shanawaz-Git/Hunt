@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Living Scorpio</title>
+<style>
+body {
+  margin: 0;
+  background: #111;
+  overflow: hidden;
+}
+canvas {
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+
+<script>
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+let mouse = { x: canvas.width/2, y: canvas.height/2 };
+
+document.addEventListener("mousemove", e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+
+const SEGMENTS = 35;
+const LENGTH = 12;
+
+let segments = [];
+
+for (let i = 0; i < SEGMENTS; i++) {
+  segments.push({
+    x: mouse.x,
+    y: mouse.y,
+    angle: 0
+  });
+}
+
+function update() {
+  // head follows mouse
+  let dx = mouse.x - segments[0].x;
+  let dy = mouse.y - segments[0].y;
+  segments[0].angle = Math.atan2(dy, dx);
+  segments[0].x += dx * 0.15;
+  segments[0].y += dy * 0.15;
+
+  // rest follow previous segment
+  for (let i = 1; i < SEGMENTS; i++) {
+    let prev = segments[i - 1];
+    let seg = segments[i];
+
+    let dx = prev.x - seg.x;
+    let dy = prev.y - seg.y;
+    seg.angle = Math.atan2(dy, dx);
+
+    seg.x = prev.x - Math.cos(seg.angle) * LENGTH;
+    seg.y = prev.y - Math.sin(seg.angle) * LENGTH;
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = "#fff";
+  ctx.lineWidth = 2;
+
+  // body line
+  ctx.beginPath();
+  ctx.moveTo(segments[0].x, segments[0].y);
+
+  for (let i = 1; i < SEGMENTS; i++) {
+    ctx.lineTo(segments[i].x, segments[i].y);
+  }
+
+  ctx.stroke();
+
+  // legs
+  for (let i = 5; i < 20; i += 3) {
+    let seg = segments[i];
+    let angle = seg.angle + Math.PI / 2;
+    let legLength = 15 + Math.sin(Date.now() * 0.005 + i) * 5;
+
+    ctx.beginPath();
+    ctx.moveTo(seg.x, seg.y);
+    ctx.lineTo(
+      seg.x + Math.cos(angle) * legLength,
+      seg.y + Math.sin(angle) * legLength
+    );
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(seg.x, seg.y);
+    ctx.lineTo(
+      seg.x - Math.cos(angle) * legLength,
+      seg.y - Math.sin(angle) * legLength
+    );
+    ctx.stroke();
+  }
+
+  // tail curl (last 10 segments)
+  for (let i = SEGMENTS - 10; i < SEGMENTS; i++) {
+    let seg = segments[i];
+    seg.x += Math.sin(Date.now() * 0.003 + i) * 0.5;
+    seg.y -= 0.3;
+  }
+}
+
+function animate() {
+  update();
+  draw();
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
