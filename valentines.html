@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Our Moments 💕</title>
     <style>
         :root {
@@ -15,7 +15,8 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none; /* Prevents text highlighting while dragging */
         }
 
         body {
@@ -24,67 +25,47 @@
             overflow-x: hidden;
             color: #444;
             min-height: 100vh;
-        }
-
-        /* Floating Hearts Background */
-        .heart-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            touch-action: pan-y; /* Allows scrolling but captures horizontal drags */
         }
 
         header {
-            padding: 40px 10px 10px;
-            font-size: 2rem;
+            padding: 30px 10px 10px;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--deep-rose);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
-            animation: fadeInDown 1s ease-out;
         }
 
-        /* Carousel container */
-        .carousel-container {
-            position: relative;
+        /* Interactive Carousel */
+        .stage {
             width: 100%;
-            height: 400px;
+            height: 350px;
             perspective: 1200px;
-            margin-top: 40px;
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-top: 20px;
         }
 
         .carousel {
-            width: 180px;
-            height: 240px;
+            width: 160px;
+            height: 220px;
             position: relative;
             transform-style: preserve-3d;
-            animation: spin 25s linear infinite;
-            cursor: pointer;
-        }
-
-        /* Pause on hover/touch */
-        .carousel-container:hover .carousel, 
-        .carousel-container:active .carousel {
-            animation-play-state: paused;
+            transition: transform 0.1s; /* Smoothness for dragging */
         }
 
         .carousel img {
             position: absolute;
-            width: 180px;
-            height: 240px;
+            width: 160px;
+            height: 220px;
             object-fit: cover;
-            border-radius: 15px;
-            border: 4px solid white;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            transition: transform 0.5s;
+            border-radius: 12px;
+            border: 5px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            pointer-events: none; /* Prevents image dragging from breaking the script */
         }
 
-        /* 7 Images Positioning */
+        /* 7 Images - Dynamic spacing */
         .carousel img:nth-child(1) { transform: rotateY(0deg) translateZ(280px); }
         .carousel img:nth-child(2) { transform: rotateY(51.4deg) translateZ(280px); }
         .carousel img:nth-child(3) { transform: rotateY(102.8deg) translateZ(280px); }
@@ -93,127 +74,165 @@
         .carousel img:nth-child(6) { transform: rotateY(257deg) translateZ(280px); }
         .carousel img:nth-child(7) { transform: rotateY(308.4deg) translateZ(280px); }
 
-        @keyframes spin {
-            from { transform: rotateY(0deg); }
-            to { transform: rotateY(360deg); }
-        }
-
-        .message-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            margin: 40px auto;
-            padding: 30px;
-            width: 90%;
+        /* The Message Box */
+        .interactive-section {
+            padding: 20px;
             max-width: 500px;
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            line-height: 1.8;
-            animation: fadeInUp 1.5s ease-out;
+            margin: 0 auto;
         }
 
-        .highlight {
-            color: var(--deep-rose);
-            font-weight: bold;
+        .reason-box {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(255, 120, 170, 0.2);
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-style: italic;
+            transition: 0.3s;
+            border: 2px dashed var(--primary-pink);
         }
 
-        /* Special Button */
-        .btn-surprise {
-            background: var(--primary-pink);
+        .btn-interact {
+            background: var(--deep-rose);
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 15px 30px;
             border-radius: 50px;
             font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 50px;
             cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(255, 120, 170, 0.4);
+            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
+            transition: 0.2s;
         }
 
-        .btn-surprise:hover {
-            transform: scale(1.05);
-            background: var(--deep-rose);
+        .btn-interact:active { transform: scale(0.95); }
+
+        /* Heart Burst Particles */
+        .burst-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            font-size: 20px;
+            animation: burst 0.8s ease-out forwards;
         }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes burst {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(1.5); opacity: 0; }
         }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .heart {
-            position: absolute;
-            color: var(--primary-pink);
-            opacity: 0.6;
-            animation: float 6s linear infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        .hint {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 10px;
         }
     </style>
 </head>
 
 <body>
-    <div class="heart-bg" id="heart-bg"></div>
 
     <header>Happy Valentine’s Day 💖</header>
+    <p class="hint">Try dragging the photos! ☝️</p>
 
-    <div class="carousel-container">
-        <div class="carousel">
-            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM.jpeg" alt="Moment 1">
-            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (1).jpeg" alt="Moment 2">
-            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (2).jpeg" alt="Moment 3">
-            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (3).jpeg" alt="Moment 4">
-            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (4).jpeg" alt="Moment 5">
-            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (5).jpeg" alt="Moment 6">
-            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (6).jpeg" alt="Moment 7">
+    <div class="stage" id="stage">
+        <div class="carousel" id="carousel">
+            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM.jpeg" />
+            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (1).jpeg" />
+            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (2).jpeg" />
+            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (3).jpeg" />
+            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (4).jpeg" />
+            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (5).jpeg" />
+            <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (6).jpeg" />
         </div>
     </div>
 
-    <div class="message-card">
-        Hello <span class="highlight">Rag-V 🥋</span>, <br>
-        On this Valentine’s Day ❤️, I just want to remind you how special you are to me. 
-        My <span class="highlight">G.U.N.D.U</span> will always be:
-        <br>
-        <strong>G</strong>orgeous 💫 | <strong>U</strong>nique 🌸 | <strong>N</strong>ice-hearted ❤️<br>
-        <strong>D</strong>elightful 😊 | <strong>U</strong>nstoppable 🌟
-        <br><br>
-        Today isn’t just about love in a big dramatic way—it’s about appreciating the person who makes my days lighter and my smiles easier.
-        <br><br>
-        <em>Thank you for being my favorite person 😊</em>
+    <div class="interactive-section">
+        <div class="reason-box" id="reason-display">
+            Click the button to see why you're amazing! ✨
+        </div>
+        <button class="btn-interact" onclick="nextReason()">Give me a reason! ❤️</button>
     </div>
 
-    <button class="btn-surprise" onclick="showLove()">Click for a Surprise!</button>
-
     <script>
-        // Create floating hearts
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
-            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
-            document.getElementById('heart-bg').appendChild(heart);
+        // 1. DRAG ROTATION LOGIC
+        const carousel = document.getElementById('carousel');
+        let currAngle = 0;
+        let startX = 0;
+        let isDragging = false;
 
-            setTimeout(() => {
-                heart.remove();
-            }, 6000);
+        // Auto-rotate initially
+        let autoSpin = setInterval(() => {
+            currAngle -= 0.5;
+            carousel.style.transform = `rotateY(${currAngle}deg)`;
+        }, 30);
+
+        function startDrag(e) {
+            isDragging = true;
+            startX = e.pageX || e.touches[0].pageX;
+            clearInterval(autoSpin);
         }
 
-        setInterval(createHeart, 400);
+        function moveDrag(e) {
+            if (!isDragging) return;
+            const x = e.pageX || e.touches[0].pageX;
+            const diff = (x - startX) * 0.5;
+            currAngle += diff;
+            carousel.style.transform = `rotateY(${currAngle}deg)`;
+            startX = x;
+        }
 
-        function showLove() {
-            alert("You're the best! I love you! ❤️✨");
-            // You can change this to a sweet audio file or a redirect to another memory!
+        function stopDrag() { isDragging = false; }
+
+        window.addEventListener('mousedown', startDrag);
+        window.addEventListener('mousemove', moveDrag);
+        window.addEventListener('mouseup', stopDrag);
+        window.addEventListener('touchstart', startDrag);
+        window.addEventListener('touchmove', moveDrag);
+        window.addEventListener('touchend', stopDrag);
+
+        // 2. HEART BURST EFFECT
+        window.addEventListener('click', (e) => {
+            for (let i = 0; i < 8; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'burst-heart';
+                heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random()*4)];
+                heart.style.left = e.clientX + 'px';
+                heart.style.top = e.clientY + 'px';
+                
+                // Randomize trajectory
+                const tx = (Math.random() - 0.5) * 200 + 'px';
+                const ty = (Math.random() - 0.5) * 200 + 'px';
+                heart.style.setProperty('--tx', tx);
+                heart.style.setProperty('--ty', ty);
+                
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 800);
+            }
+        });
+
+        // 3. REASONS GENERATOR
+        const reasons = [
+            "You are my favorite G.U.N.D.U! 💫",
+            "The way you handle things is Unstoppable 🌟",
+            "Your heart is the Kindest I know ❤️",
+            "You make every moment Delightful 😊",
+            "You are Unique in the best way possible 🌸",
+            "Your smile is my favorite view 💖",
+            "Thank you for being my teammate in life 🥋"
+        ];
+        let reasonIdx = 0;
+
+        function nextReason() {
+            const box = document.getElementById('reason-display');
+            box.style.opacity = 0;
+            setTimeout(() => {
+                box.innerText = reasons[reasonIdx];
+                box.style.opacity = 1;
+                reasonIdx = (reasonIdx + 1) % reasons.length;
+            }, 200);
         }
     </script>
 </body>
