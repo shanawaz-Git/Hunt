@@ -14,7 +14,7 @@
             --dark-gold: #947a44;
             --cream: #fffdf5;
             --ink: #2c3e50;
-            --glass: rgba(255, 255, 255, 0.85);
+            --glass: rgba(255, 255, 255, 0.9);
         }
 
         * {
@@ -30,29 +30,17 @@
             color: var(--ink);
             font-family: 'Prata', serif;
             overflow-x: hidden;
-            scroll-behavior: smooth;
-            cursor: url('https://cur.cursors-4u.net/others/oth-9/oth813.cur'), auto;
-        }
-
-        /* Ambient Bloom Overlay */
-        body::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at center, transparent, rgba(142, 124, 195, 0.05));
-            pointer-events: none;
-            z-index: 1;
+            overscroll-behavior-y: contain;
         }
 
         .wisteria-canopy {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 200px;
-            background: linear-gradient(180deg, rgba(142, 124, 195, 0.25) 0%, transparent 100%);
+            background: linear-gradient(180deg, rgba(142, 124, 195, 0.2) 0%, transparent 100%);
             pointer-events: none;
             z-index: 100;
         }
 
-        /* Cameo Music Toggle */
         .music-toggle {
             position: fixed;
             top: 25px;
@@ -60,17 +48,14 @@
             z-index: 1001;
             background: white;
             border: 2px solid var(--gold);
-            width: 60px;
-            height: 60px;
+            width: 60px; height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .music-toggle:hover { transform: rotate(15deg) scale(1.1); border-color: var(--dark-gold); }
 
         section {
             min-height: 100vh;
@@ -78,17 +63,16 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 100px 20px;
+            padding: 80px 20px;
             position: relative;
             z-index: 2;
         }
 
-        /* Society Card Refinement */
+        /* EXACT REPLICA OF YOUR SOCIETY CARD IMAGE */
         .society-card {
             width: 100%;
             max-width: 700px;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 70px 40px;
             border: 1px solid var(--gold);
             outline: 6px double var(--gold);
@@ -106,28 +90,28 @@
             transform: translateY(0);
         }
 
-        .drop-cap {
-            float: left;
-            font-family: 'Great Vibes', cursive;
-            font-size: 5rem;
-            line-height: 4rem;
-            padding-right: 10px;
-            color: var(--dark-gold);
-        }
-
         .society-header {
             font-family: 'Playfair Display', serif;
             font-variant: small-caps;
             letter-spacing: 6px;
             font-size: clamp(2.2rem, 7vw, 3.2rem);
-            color: var(--ink);
+            color: #2c3e50;
             margin-bottom: 5px;
+        }
+
+        .commemorative-tag {
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            font-weight: bold;
+            margin-bottom: 30px;
+            display: block;
         }
 
         .ornament-line {
             width: 250px;
             margin: 30px auto;
-            height: 2px;
+            height: 1px;
             background: linear-gradient(90deg, transparent, var(--gold), transparent);
         }
 
@@ -137,9 +121,20 @@
             font-size: 1.35rem;
             line-height: 2;
             color: #333;
+            text-align: center;
         }
 
-        /* Gallery Arena */
+        .drop-cap {
+            float: left;
+            font-family: 'Great Vibes', cursive;
+            font-size: 5rem;
+            line-height: 4rem;
+            padding-right: 12px;
+            color: var(--dark-gold);
+            margin-top: 5px;
+        }
+
+        /* --- STABLE CAROUSEL ARENA (TECHNICAL FIX) --- */
         .gallery-arena {
             width: 100%;
             height: 500px;
@@ -148,7 +143,9 @@
             justify-content: center;
             align-items: center;
             margin: 60px 0;
-            touch-action: pan-y;
+            /* Critical Fix: Disables page scroll jitter during interaction */
+            touch-action: none; 
+            cursor: grab;
         }
 
         .carousel-gilded {
@@ -156,7 +153,7 @@
             height: 300px;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.1s linear;
+            will-change: transform;
         }
 
         .carousel-gilded img {
@@ -169,26 +166,7 @@
             outline-offset: -10px;
             box-shadow: 0 15px 45px rgba(0,0,0,0.3);
             border-radius: 3px;
-            transition: filter 0.5s;
-        }
-
-        .carousel-gilded img:hover { filter: sepia(0%) contrast(110%); }
-
-        /* Falling Decorations with Depth */
-        .falling-decoration {
-            position: fixed;
-            pointer-events: none;
-            animation: fall linear infinite;
-        }
-
-        .layer-back { z-index: 0; filter: blur(2px); }
-        .layer-front { z-index: 1000; filter: blur(0px); }
-
-        @keyframes fall {
-            0% { transform: translateY(-15vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+            pointer-events: none; /* Stops image selection jitter */
         }
 
         .signature-section {
@@ -210,41 +188,53 @@
             font-size: 2rem;
             box-shadow: 3px 5px 15px rgba(0,0,0,0.4);
             font-family: 'Playfair Display', serif;
-            border: 2px solid rgba(0,0,0,0.1);
+        }
+
+        .falling-decoration {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
 
         @media (max-width: 768px) {
             .society-card { padding: 50px 25px; width: 92%; }
             .carousel-gilded { width: 170px; height: 240px; }
             .carousel-gilded img { width: 170px; height: 240px; }
+            .gallery-arena { height: 400px; }
         }
     </style>
 </head>
 <body>
 
     <div class="wisteria-canopy"></div>
-    
     <div class="music-toggle" onclick="toggleMusic()" id="musicBtn">🎻</div>
     <audio id="bgMusic" loop>
         <source src="./croppedBridgerton.mp3" type="audio/mpeg">
     </audio>
 
-    <section id="intro">
+    <section>
         <div class="society-card">
             <h1 class="society-header">Society Papers</h1>
-            <p style="font-size: 0.85rem; letter-spacing: 3px; margin-top: -5px; color: var(--gold); font-weight: bold;">SPECIAL COMMEMORATIVE EDITION</p>
+            <span class="commemorative-tag">SPECIAL COMMEMORATIVE EDITION</span>
             <div class="ornament-line"></div>
             <div class="proclamation-text">
                 <span class="drop-cap">D</span>earest Rag-V, they say that while many stars may attempt to shine, only a Diamond truly dazzles. In the grand ballroom of life, you have proven to be the most exquisite presence. I find myself quite breathless reliving every memory we have woven together.
             </div>
             <div class="ornament-line"></div>
-            <p style="font-variant: small-caps; letter-spacing: 2px; color: var(--dark-gold);">Witness our Grand Promenade below</p>
+            <p style="font-variant: small-caps; letter-spacing: 2px; color: var(--dark-gold); font-size: 0.9rem;">Witness our Grand Promenade below</p>
         </div>
     </section>
 
     <section>
-        <h2 style="font-family: 'Playfair Display'; font-style: italic; color: var(--dark-gold); margin-bottom: 40px; font-size: 2.2rem; letter-spacing: 1px;">The Grand Gallery</h2>
-        <div class="gallery-arena">
+        <h2 style="font-family: 'Playfair Display'; font-style: italic; color: var(--dark-gold); margin-bottom: 40px; font-size: 2.2rem;">The Grand Gallery</h2>
+        <div class="gallery-arena" id="arena">
             <div class="carousel-gilded" id="carousel">
                 <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM.jpeg" />
                 <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (1).jpeg" />
@@ -258,13 +248,13 @@
                 <img src="pic3.jpg" />
             </div>
         </div>
-        <p style="opacity: 0.6; font-size: 0.95rem; font-style: italic;">Swipe gently to turn the pages of our story</p>
+        <p style="opacity: 0.6; font-size: 0.95rem; font-style: italic;">Swipe the photos to turn the pages</p>
     </section>
 
-    <section id="outro">
+    <section>
         <div class="society-card">
             <p class="proclamation-text" style="font-size: 1.6rem; line-height: 1.6;">
-                "You are Gorgeous, Unique, Nice-hearted, Delightful, and utterly Unstoppable. <br> You are, and shall always be, my greatest treasure."
+                "You are Gorgeous, Unique, Nice-hearted, Delightful, and utterly Unstoppable."
             </p>
             <div class="signature-section">Yours Truly, Forever.</div>
             <div class="wax-seal">R</div>
@@ -278,81 +268,70 @@
             else { music.pause(); document.getElementById('musicBtn').innerText = '🎻'; }
         }
 
-        // --- DYNAMIC CAROUSEL LOGIC ---
+        // --- TECHNICAL SMOOTHING ---
         const carousel = document.getElementById('carousel');
+        const arena = document.getElementById('arena');
         const images = carousel.getElementsByTagName('img');
         const imgCount = images.length;
         const angleStep = 360 / imgCount;
-        const radius = window.innerWidth < 768 ? 280 : 450;
+        const radius = window.innerWidth < 768 ? 260 : 450;
         
-        // Initial Image Placement
         for(let i = 0; i < imgCount; i++) {
             images[i].style.transform = `rotateY(${i * angleStep}deg) translateZ(${radius}px)`;
         }
 
-        let angle = 0, isDragging = false, startX = 0, autoSpin;
+        let angle = 0, isDragging = false, startX = 0;
 
-        function startSpin() { 
-            autoSpin = setInterval(() => { 
-                angle -= 0.2; 
-                carousel.style.transform = `rotateY(${angle}deg)`; 
-            }, 30); 
+        function animate() {
+            if (!isDragging) {
+                angle -= 0.15;
+                carousel.style.transform = `rotateY(${angle}deg)`;
+            }
+            requestAnimationFrame(animate);
         }
-        startSpin();
+        requestAnimationFrame(animate);
 
-        const handleStart = (e) => {
+        const start = (e) => {
             isDragging = true;
-            clearInterval(autoSpin);
             startX = e.touches ? e.touches[0].pageX : e.pageX;
         };
 
-        const handleMove = (e) => {
+        const move = (e) => {
             if(!isDragging) return;
+            // Prevent shivering by blocking browser-default vertical scroll during interaction
+            if (e.cancelable) e.preventDefault();
             const x = e.touches ? e.touches[0].pageX : e.pageX;
-            const sensitivity = 0.25;
-            angle += (x - startX) * sensitivity;
+            angle += (x - startX) * 0.35;
             carousel.style.transform = `rotateY(${angle}deg)`;
             startX = x;
         };
 
-        const handleEnd = () => {
-            isDragging = false;
-            startSpin();
-        };
+        arena.addEventListener('touchstart', start, { passive: false });
+        window.addEventListener('touchmove', move, { passive: false });
+        window.addEventListener('touchend', () => isDragging = false);
+        arena.addEventListener('mousedown', start);
+        window.addEventListener('mousemove', move);
+        window.addEventListener('mouseup', () => isDragging = false);
 
-        carousel.addEventListener('touchstart', handleStart);
-        window.addEventListener('touchmove', handleMove);
-        window.addEventListener('touchend', handleEnd);
-        carousel.addEventListener('mousedown', handleStart);
-        window.addEventListener('mousemove', handleMove);
-        window.addEventListener('mouseup', handleEnd);
-
-        // --- MAXIMALIST FALLING DECORATIONS ---
-        const createDeco = () => {
+        // Flower animation
+        setInterval(() => {
             const el = document.createElement('div');
-            const isFront = Math.random() > 0.5;
-            el.className = `falling-decoration ${isFront ? 'layer-front' : 'layer-back'}`;
-            
-            const icons = ['🌸', '🪻', '🐝', '✨', '🌹', '🌿', '💎'];
-            el.innerHTML = icons[Math.floor(Math.random()*icons.length)];
+            el.className = 'falling-decoration';
+            el.innerHTML = ['🌸', '🪻', '✨', '🌹'][Math.floor(Math.random()*4)];
             el.style.left = Math.random() * 100 + 'vw';
-            el.style.fontSize = (Math.random() * 20 + (isFront ? 20 : 10)) + 'px';
-            el.style.animationDuration = (Math.random() * 4 + 6) + 's';
-            el.style.opacity = Math.random() * 0.5 + 0.3;
-            
+            el.style.fontSize = Math.random() * 15 + 15 + 'px';
+            el.style.animationDuration = Math.random() * 3 + 5 + 's';
             document.body.appendChild(el);
-            setTimeout(() => el.remove(), 10000);
-        };
-        setInterval(createDeco, 400);
+            setTimeout(() => el.remove(), 8000);
+        }, 500);
 
-        // --- SCROLL REVEAL ---
+        // Scroll reveal
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('visible');
             });
         }, { threshold: 0.1 });
-
-        document.querySelectorAll('.society-card').forEach(card => observer.observe(card));
+        document.querySelectorAll('.society-card').forEach(c => observer.observe(c));
     </script>
 </body>
 </html>
