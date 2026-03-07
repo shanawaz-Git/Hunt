@@ -7,219 +7,257 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap');
 
+        :root {
+            --gold: #c5a059;
+            --dark-blue: #2c3e50;
+            --paper-cream: #fffdfa;
+        }
+
         body {
-            background-color: #e5e5e5; /* Gray background to make the paper pop */
+            background-color: #e5e5e5;
             margin: 0;
-            padding: 20px;
+            padding: 10px; /* Minimal padding for mobile edges */
             display: flex;
             justify-content: center;
             font-family: 'EB Garamond', serif;
         }
 
-        /* The Paper Sheet */
         .newspaper-container {
-            background-color: #fff;
-            max-width: 800px;
+            background-color: var(--paper-cream);
+            max-width: 850px;
             width: 100%;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            border: 1px solid #333;
+            padding: clamp(10px, 3vw, 20px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            box-sizing: border-box;
+            border: 1px solid #dcdcdc;
+            margin: 10px auto;
+        }
+
+        .outer-border {
+            border: 1px solid var(--gold);
+            padding: 3px;
+        }
+
+        .inner-border {
+            border: 2px solid var(--gold);
+            padding: clamp(20px, 5vw, 40px) clamp(15px, 4vw, 30px);
             position: relative;
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             box-sizing: border-box;
         }
 
-        /* The Dotted Border Frame */
-        .border-frame {
-            border: 4px double #000;
-            padding: 20px;
-            height: 100%;
+        /* Header Area */
+        .header-top {
             position: relative;
+            width: 140px;
+            height: 110px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
         }
 
-        /* Cameo Silhouette */
-        .cameo {
+        .wreath {
+            position: absolute;
+            width: 130px;
+            height: auto;
+            opacity: 0.9;
+            z-index: 1;
+        }
+
+        .cameo-circle {
             width: 80px;
             height: 80px;
+            background: white;
             border: 2px solid #000;
             border-radius: 50%;
-            margin: 0 auto 15px;
+            z-index: 2;
             display: flex;
-            align-items: center;
             justify-content: center;
-            background: #fff;
-            position: relative;
-        }
-        
-        /* Simple CSS Silhouette */
-        .cameo::after {
-            content: '';
-            width: 50px;
-            height: 60px;
-            background: #000;
-            clip-path: ellipse(45% 50% at 50% 50%);
-            border-radius: 50% 50% 10% 10%;
+            align-items: center;
+            overflow: hidden;
         }
 
-        .header-title {
-            text-align: center;
-            border-bottom: 2px solid #000;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
+        .cameo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* This ensures your uploaded image fits the circle */
         }
 
-        .header-title h1 {
+        .main-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.5rem, 6vw, 2.5rem);
-            font-style: italic;
+            font-size: clamp(1.8rem, 7vw, 3.8rem);
+            color: var(--dark-blue);
+            text-transform: uppercase;
+            letter-spacing: clamp(3px, 1vw, 8px);
             margin: 0;
-            letter-spacing: 1px;
+            text-align: center;
+            font-weight: 700;
+            line-height: 1.1;
         }
 
-        .header-title h2 {
+        .sub-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1rem, 4vw, 1.8rem);
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            margin: 5px 0;
-        }
-
-        .date-line {
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #000;
-            padding-bottom: 10px;
-        }
-
-        .sub-header {
-            text-align: center;
-            text-transform: uppercase;
-            font-size: 0.75rem;
+            font-size: clamp(0.65rem, 2.5vw, 0.9rem);
+            color: var(--gold);
             letter-spacing: 3px;
-            border-bottom: 2px solid #000;
-            padding-bottom: 5px;
-            margin-bottom: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 8px;
+            text-align: center;
         }
 
-        /* Two Column Layout for Desktop */
+        #dynamic-date {
+            font-family: 'EB Garamond', serif;
+            font-weight: bold;
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+            margin-top: 12px;
+            color: #333;
+            font-style: italic;
+        }
+
+        .divider-gold {
+            width: 60%;
+            max-width: 250px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 20px auto;
+        }
+
+        /* Article Body - Responsive Grid */
         .article-body {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            grid-template-columns: 1fr 1fr; /* Two columns on desktop */
+            gap: 25px;
             text-align: justify;
-            line-height: 1.5;
+            line-height: 1.6;
+            width: 100%;
+            color: #333;
+            margin-top: 10px;
         }
 
         .article-column p {
-            margin-top: 0;
             margin-bottom: 15px;
-            font-size: 1.05rem;
+            font-size: clamp(1rem, 2.2vw, 1.15rem);
+            margin-top: 0;
         }
 
         .drop-cap {
             float: left;
-            font-family: 'Playfair Display', serif;
-            font-size: 4rem;
-            line-height: 0.8;
-            padding-right: 8px;
-            margin-top: 4px;
-        }
-
-        .highlight-text {
-            font-weight: bold;
-            text-decoration: underline;
+            font-family: 'Pinyon Script', cursive;
+            font-size: clamp(4rem, 12vw, 5.5rem);
+            color: var(--gold);
+            line-height: 0.7;
+            padding-right: 12px;
+            margin-top: 10px;
         }
 
         .footer-sig {
-            margin-top: 30px;
+            margin-top: 20px;
             text-align: left;
         }
 
         .signature-name {
             font-family: 'Pinyon Script', cursive;
-            font-size: 2rem;
+            font-size: clamp(2rem, 6vw, 2.8rem);
             display: block;
             margin-top: 5px;
+            color: #000;
         }
 
-        .lavender-icon {
-            text-align: right;
-            font-size: 2rem;
-            margin-top: -20px;
+        /* Responsive Corner Accents */
+        .corner-floral {
+            position: absolute;
+            width: clamp(60px, 15vw, 110px);
+            height: auto;
+            opacity: 0.4;
+            pointer-events: none;
         }
 
-        /* Mobile Adjustments */
-        @media (max-width: 650px) {
-            .article-body {
-                grid-template-columns: 1fr;
-            }
-            .newspaper-container {
-                padding: 20px;
-            }
-            .border-frame {
-                padding: 10px;
-            }
-        }
+        .bottom-left { bottom: 5px; left: 5px; }
+        .bottom-right { bottom: 5px; right: 5px; transform: scaleX(-1); }
 
         .return-btn {
             display: block;
             text-align: center;
-            margin-top: 20px;
-            color: #666;
+            margin: 25px 0;
+            color: #888;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-variant: small-caps;
+            letter-spacing: 1px;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 650px) {
+            .article-body { 
+                grid-template-columns: 1fr; /* Stack columns on mobile */
+                gap: 0;
+            }
+            .inner-border { padding: 25px 15px 60px 15px; } /* Space for floral at bottom */
+            .header-top { transform: scale(0.9); }
         }
     </style>
 </head>
 <body>
 
-    <div style="width: 100%; max-width: 800px;">
+    <div style="width: 100%; max-width: 850px;">
         <div class="newspaper-container">
-            <div class="border-frame">
-                
-                <div class="cameo"></div>
-
-                <div class="header-title">
-                    <h1>Lady Whistledown's</h1>
-                    <h2>Society Papers</h2>
-                </div>
-
-                <div class="date-line">
-                    The Year of Our Lord, 2026
-                </div>
-
-                <div class="sub-header">
-                    Extraordinary People, Extraordinary News
-                </div>
-
-                <div class="article-body">
-                    <div class="article-column">
-                        <p><span class="drop-cap">D</span>earest Gentle Reader, it has often been said that while many stars attempt to shine, only a true Diamond truly dazzles. This author has recently come into possession of a series of confessions regarding a certain <strong>Rag-V</strong>—a Diamond who appears to have changed the very perspective of one admirer's soul.</p>
-
-                        <p>It seems our subject is known by a most curious and affectionate title: <strong>G.U.N.D.U.</strong>—Gorgeous, Unique, Nice-hearted, Delightful, and Unstoppable. A title that, much like the wearer, carries a weight of perfection that few in Mayfair could hope to match.</p>
-
-                        <p>This Author finds it most touching that such a bond has been cemented by a series of thoughtful tributes—tokens of affection ranging from <em>Kashmir Jumkas</em> and <em>Attar</em> to <em>Crochet Bouquets</em> and <em>Real Flowers</em>. Each gift, it seems, is a chapter in a story of a life fundamentally changed.</p>
-                    </div>
-
-                    <div class="article-column">
-                        <p>For the admirer in question, this Diamond is not merely a friend, but a "Home"—a safe harbor of understanding that belongs to her alone. There are those who speak of soulmates as if they are found only in dreams, but I am told of a vision where a happy, healthy life filled with laughter was so real one could almost hear it.</p>
-
-                        <p>It is a sincere prayer to the heavens to hold a hand for life, to fix what is broken, and to care for a soul that truly deserves the world. As the season continues, we shall see if destiny aligns with these heartfelt resolutions. For now, let us celebrate a love that refuses to be ordinary.</p>
-
-                        <div class="footer-sig">
-                            Yours truly,<br>
-                            <span class="signature-name">Lady Whistledown</span>
+            <div class="outer-border">
+                <div class="inner-border">
+                    
+                    <div class="header-top">
+                        <img src="https://img.icons8.com/ios/100/c5a059/laurel-wreath.png" class="wreath" alt="">
+                        <div class="cameo-circle">
+                            <img src="Silhouette.jpg" alt="Diamond Silhouette">
                         </div>
-                        <div class="lavender-icon">🌿</div>
                     </div>
+
+                    <h1 class="main-title">Society Papers</h1>
+                    <div class="sub-title">Special Commemorative Edition</div>
+                    <div id="dynamic-date"></div>
+
+                    <div class="divider-gold"></div>
+
+                    <div class="article-body">
+                        <div class="article-column">
+                            <p><span class="drop-cap">D</span>earest Gentle Reader, it has often been said that while many stars attempt to shine, only a true Diamond truly dazzles. This author has recently come into possession of a series of confessions regarding a certain <strong>Rag-V</strong>—a Diamond who appears to have changed the very perspective of one admirer's soul.</p>
+
+                            <p>It seems our subject is known by a most curious and affectionate title: <strong>G.U.N.D.U.</strong>—Gorgeous, Unique, Nice-hearted, Delightful, and Unstoppable. A title that, much like the wearer, carries a weight of perfection that few in Mayfair could hope to match.</p>
+
+                            <p>This Author finds it most touching that such a bond has been cemented by a series of thoughtful tributes—tokens of affection ranging from <em>Kashmir Jumkas</em> and <em>Attar</em> to <em>Crochet Bouquets</em> and <em>Real Flowers</em>. Each gift, it seems, is a chapter in a story of a life fundamentally changed.</p>
+                        </div>
+
+                        <div class="article-column">
+                            <p>For the admirer in question, this Diamond is not merely a friend, but a "Home"—a safe harbor of understanding that belongs to her alone. There are those who speak of soulmates as if they are found only in dreams, but I am told of a vision where a happy, healthy life filled with laughter was so real one could almost hear it.</p>
+                            
+                            <p>It is a sincere prayer to the heavens to hold a hand for life, to fix what is broken, and to care for a soul that truly deserves the world. As the season continues, we shall see if destiny aligns with these heartfelt resolutions. For now, let us celebrate a love that refuses to be ordinary.</p>
+
+                            <div class="footer-sig">
+                                Yours truly,<br>
+                                <span class="signature-name">Lady Whistledown</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <img src="https://img.icons8.com/ios/100/c5a059/flower-bouquet.png" class="corner-floral bottom-left" alt="">
+                    <img src="https://img.icons8.com/ios/100/c5a059/flower-bouquet.png" class="corner-floral bottom-right" alt="">
+
                 </div>
             </div>
         </div>
         
         <a href="bridgerton.html" class="return-btn">← Return to the Promenade</a>
     </div>
+
+    <script>
+        // Automatic Date Script
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('dynamic-date').textContent = new Date().toLocaleDateString('en-US', options);
+    </script>
 
 </body>
 </html>
