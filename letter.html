@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lady Whistledown's Society Papers</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap');
+
+        body {
+            background-color: #e5e5e5; /* Gray background to make the paper pop */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            font-family: 'EB Garamond', serif;
+        }
+
+        /* The Paper Sheet */
+        .newspaper-container {
+            background-color: #fff;
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid #333;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        /* The Dotted Border Frame */
+        .border-frame {
+            border: 4px double #000;
+            padding: 20px;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Cameo Silhouette */
+        .cameo {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            position: relative;
+        }
+        
+        /* Simple CSS Silhouette */
+        .cameo::after {
+            content: '';
+            width: 50px;
+            height: 60px;
+            background: #000;
+            clip-path: ellipse(45% 50% at 50% 50%);
+            border-radius: 50% 50% 10% 10%;
+        }
+
+        .header-title {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+        }
+
+        .header-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 6vw, 2.5rem);
+            font-style: italic;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .header-title h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1rem, 4vw, 1.8rem);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin: 5px 0;
+        }
+
+        .date-line {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 10px;
+        }
+
+        .sub-header {
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+        }
+
+        /* Two Column Layout for Desktop */
+        .article-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            text-align: justify;
+            line-height: 1.5;
+        }
+
+        .article-column p {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .drop-cap {
+            float: left;
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            line-height: 0.8;
+            padding-right: 8px;
+            margin-top: 4px;
+        }
+
+        .highlight-text {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .footer-sig {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .signature-name {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 2rem;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .lavender-icon {
+            text-align: right;
+            font-size: 2rem;
+            margin-top: -20px;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 650px) {
+            .article-body {
+                grid-template-columns: 1fr;
+            }
+            .newspaper-container {
+                padding: 20px;
+            }
+            .border-frame {
+                padding: 10px;
+            }
+        }
+
+        .return-btn {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-variant: small-caps;
+        }
+    </style>
+</head>
+<body>
+
+    <div style="width: 100%; max-width: 800px;">
+        <div class="newspaper-container">
+            <div class="border-frame">
+                
+                <div class="cameo"></div>
+
+                <div class="header-title">
+                    <h1>Lady Whistledown's</h1>
+                    <h2>Society Papers</h2>
+                </div>
+
+                <div class="date-line">
+                    The Year of Our Lord, 2026
+                </div>
+
+                <div class="sub-header">
+                    Extraordinary People, Extraordinary News
+                </div>
+
+                <div class="article-body">
+                    <div class="article-column">
+                        <p><span class="drop-cap">D</span>earest Gentle Reader, it has often been said that while many stars attempt to shine, only a true Diamond truly dazzles. This author has recently come into possession of a series of confessions regarding a certain <strong>Rag-V</strong>—a Diamond who appears to have changed the very perspective of one admirer's soul.</p>
+
+                        <p>It seems our subject is known by a most curious and affectionate title: <strong>G.U.N.D.U.</strong>—Gorgeous, Unique, Nice-hearted, Delightful, and Unstoppable. A title that, much like the wearer, carries a weight of perfection that few in Mayfair could hope to match.</p>
+
+                        <p>This Author finds it most touching that such a bond has been cemented by a series of thoughtful tributes—tokens of affection ranging from <em>Kashmir Jumkas</em> and <em>Attar</em> to <em>Crochet Bouquets</em> and <em>Real Flowers</em>. Each gift, it seems, is a chapter in a story of a life fundamentally changed.</p>
+                    </div>
+
+                    <div class="article-column">
+                        <p>For the admirer in question, this Diamond is not merely a friend, but a "Home"—a safe harbor of understanding that belongs to her alone. There are those who speak of soulmates as if they are found only in dreams, but I am told of a vision where a happy, healthy life filled with laughter was so real one could almost hear it.</p>
+
+                        <p>It is a sincere prayer to the heavens to hold a hand for life, to fix what is broken, and to care for a soul that truly deserves the world. As the season continues, we shall see if destiny aligns with these heartfelt resolutions. For now, let us celebrate a love that refuses to be ordinary.</p>
+
+                        <div class="footer-sig">
+                            Yours truly,<br>
+                            <span class="signature-name">Lady Whistledown</span>
+                        </div>
+                        <div class="lavender-icon">🌿</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <a href="bridgerton.html" class="return-btn">← Return to the Promenade</a>
+    </div>
+
+</body>
+</html>
