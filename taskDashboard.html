@@ -399,7 +399,7 @@
   }
   .modal-overlay.show .modal { transform: translateY(0) scale(1); }
   .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.4rem; }
-  .modal-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--text-dark); transition: color 0.4s; }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--text-dark); transition: color 0.4t; }
   .modal-close {
     background: rgba(206,147,216,0.12); border: none; border-radius: 50%;
     width: 32px; height: 32px; cursor: pointer; font-size: 1rem;
@@ -523,6 +523,61 @@
     h1 { font-size: 1.4rem; }
     .header-right { gap: 0.5rem; }
   }
+
+  /* ══════════════════════════════════════
+     ✦ ADDED: DUE DATE CRITICALITY BADGES
+  ══════════════════════════════════════ */
+
+  /* Left coloured accent border per urgency level */
+  .card.crit-overdue { border-left: 3px solid #e57373; box-shadow: 0 3px 14px var(--shadow), -2px 0 10px rgba(229,83,83,0.25); }
+  .card.crit-today   { border-left: 3px solid #ff9800; box-shadow: 0 3px 14px var(--shadow), -2px 0 10px rgba(255,152,0,0.22); }
+  .card.crit-soon    { border-left: 3px solid #f4c27a; box-shadow: 0 3px 14px var(--shadow), -2px 0 8px rgba(244,194,122,0.2); }
+  .card.crit-week    { border-left: 3px solid #90caf9; box-shadow: 0 3px 14px var(--shadow), -2px 0 8px rgba(144,202,249,0.18); }
+
+  /* Badge pill */
+  .due-badge {
+    display: inline-flex; align-items: center; gap: 0.22rem;
+    font-size: 0.62rem; font-weight: 800;
+    padding: 0.16rem 0.48rem; border-radius: 50px;
+    letter-spacing: 0.3px; text-transform: uppercase;
+    white-space: nowrap; flex-shrink: 0;
+    animation: badgePulse 2.2s ease-in-out infinite;
+  }
+  /* Only overdue & today pulse — soon/week are static */
+  .card.crit-soon .due-badge,
+  .card.crit-week .due-badge { animation: none; }
+
+  @keyframes badgePulse {
+    0%,100% { opacity: 1;    transform: scale(1);    }
+    50%      { opacity: 0.72; transform: scale(0.96); }
+  }
+
+  /* Light mode badge colours */
+  .due-badge.overdue { background: rgba(229,83,83,0.12);   color: #c62828; border: 1px solid rgba(229,83,83,0.3); }
+  .due-badge.today   { background: rgba(255,152,0,0.12);   color: #e65100; border: 1px solid rgba(255,152,0,0.3); }
+  .due-badge.soon    { background: rgba(244,194,122,0.18); color: #a06000; border: 1px solid rgba(244,194,122,0.4); }
+  .due-badge.week    { background: rgba(144,202,249,0.18); color: #0d6db7; border: 1px solid rgba(144,202,249,0.38); }
+
+  /* Dark mode badge colours */
+  [data-theme="dark"] .due-badge.overdue { background: rgba(229,83,83,0.2);   color: #ff6b6b; border-color: rgba(229,83,83,0.4); }
+  [data-theme="dark"] .due-badge.today   { background: rgba(255,152,0,0.2);   color: #ffab40; border-color: rgba(255,152,0,0.4); }
+  [data-theme="dark"] .due-badge.soon    { background: rgba(244,194,122,0.2); color: #ffcc70; border-color: rgba(244,194,122,0.4); }
+  [data-theme="dark"] .due-badge.week    { background: rgba(144,202,249,0.2); color: #90caf9; border-color: rgba(144,202,249,0.4); }
+
+  /* No urgency shown on done / cancelled cards */
+  .col-done   .card.crit-overdue,
+  .col-done   .card.crit-today,
+  .col-done   .card.crit-soon,
+  .col-done   .card.crit-week,
+  .col-cancel .card.crit-overdue,
+  .col-cancel .card.crit-today,
+  .col-cancel .card.crit-soon,
+  .col-cancel .card.crit-week {
+    border-left: 1.5px solid var(--border-card);
+    box-shadow: 0 3px 14px var(--shadow);
+  }
+  .col-done   .due-badge,
+  .col-cancel .due-badge { display: none; }
 </style>
 </head>
 <body>
@@ -836,6 +891,20 @@ function render() {
   board.innerHTML = '';
   COLUMNS.forEach(col => {
     const colTasks = tasks.filter(t => t.status === col.id);
+
+    /* ✦ ADDED: sort cards by criticality — overdue first, then today, soon, week, normal */
+    const critOrder = { 'crit-overdue':0, 'crit-today':1, 'crit-soon':2, 'crit-week':3, '':4 };
+    colTasks.sort((a,b) => {
+      const ca = getCriticality(a.date, a.status);
+      const cb = getCriticality(b.date, b.status);
+      return (critOrder[ca ? ca.cardCls : ''] ?? 4) - (critOrder[cb ? cb.cardCls : ''] ?? 4);
+    });
+
+    /* ✦ ADDED: warning icon on blocked column count when it has tasks */
+    const countHtml = col.id === 'block' && colTasks.length
+      ? `<span class="col-count" style="background:rgba(232,176,96,0.25);color:#a06000;">⚠️ ${colTasks.length}</span>`
+      : `<span class="col-count">${colTasks.length}</span>`;
+
     const el = document.createElement('div');
     el.className = `column ${col.cls}`;
     el.dataset.col = col.id;
@@ -846,7 +915,7 @@ function render() {
       <div class="col-header">
         <div class="col-dot"></div>
         <span class="col-title">${col.emoji} ${col.label}</span>
-        <span class="col-count">${colTasks.length}</span>
+        ${countHtml}
         <button class="col-add-btn" title="Add task" onclick="openModal('${col.id}')">＋</button>
       </div>
       <div class="col-body" id="colBody-${col.id}">
@@ -860,12 +929,33 @@ function render() {
   renderStats();
 }
 
+/* ══════════════════════════════════════
+   ✦ ADDED: CRITICALITY HELPER
+   Returns urgency info based on days to due date.
+   Returns null for done/cancel or no date (no badge shown).
+══════════════════════════════════════ */
+function getCriticality(dateStr, status) {
+  if (!dateStr || status === 'done' || status === 'cancel') return null;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const due   = new Date(dateStr + 'T00:00:00');
+  const days  = Math.round((due - today) / 86400000);
+  if (days < 0)   return { cardCls:'crit-overdue', badgeCls:'overdue', icon:'🔴', label:`${Math.abs(days)}d overdue` };
+  if (days === 0) return { cardCls:'crit-today',   badgeCls:'today',   icon:'🟠', label:'Due today' };
+  if (days <= 3)  return { cardCls:'crit-soon',    badgeCls:'soon',    icon:'🟡', label:`${days}d left` };
+  if (days <= 7)  return { cardCls:'crit-week',    badgeCls:'week',    icon:'🔵', label:`${days}d left` };
+  return null;
+}
+
 function cardHTML(t) {
   const dateStr  = t.date ? `📅 ${formatDate(t.date)}` : '';
   const tagsHtml = (t.tags||[]).map(tag => {
     const m = TAG_META[tag]; return m ? `<span class="tag ${m.cls}">${m.label}</span>` : '';
   }).join('');
-  return `<div class="card" id="card-${t.id}" draggable="true"
+  /* ✦ ADDED: compute criticality and inject card class + badge */
+  const crit     = getCriticality(t.date, t.status);
+  const critCls  = crit ? ` ${crit.cardCls}` : '';
+  const critBadge= crit ? `<span class="due-badge ${crit.badgeCls}">${crit.icon} ${crit.label}</span>` : '';
+  return `<div class="card${critCls}" id="card-${t.id}" draggable="true"
                ondragstart="handleDragStart(event,'${t.id}')"
                ondragend="handleDragEnd()">
     <div class="card-top">
@@ -875,7 +965,10 @@ function cardHTML(t) {
     ${t.desc ? `<div class="card-desc">${escHtml(t.desc)}</div>` : ''}
     <div class="card-footer">
       <div class="card-tags">${tagsHtml}</div>
-      ${dateStr ? `<div class="card-date">${dateStr}</div>` : ''}
+      <div style="display:flex;align-items:center;gap:0.35rem;flex-wrap:wrap;justify-content:flex-end;">
+        ${critBadge}
+        ${dateStr ? `<div class="card-date">${dateStr}</div>` : ''}
+      </div>
     </div>
   </div>`;
 }
@@ -888,14 +981,21 @@ function formatDate(str) {
   return new Date(str+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'});
 }
 function renderStats() {
-  const total = tasks.length;
-  const done  = tasks.filter(t=>t.status==='done').length;
-  const prog  = tasks.filter(t=>t.status==='prog').length;
-  const block = tasks.filter(t=>t.status==='block').length;
+  const total   = tasks.length;
+  const done    = tasks.filter(t=>t.status==='done').length;
+  const prog    = tasks.filter(t=>t.status==='prog').length;
+  const block   = tasks.filter(t=>t.status==='block').length;
+  /* ✦ ADDED: count overdue — active tasks whose date is strictly in the past */
+  const today   = new Date(); today.setHours(0,0,0,0);
+  const overdue = tasks.filter(t => {
+    if (!t.date || t.status==='done' || t.status==='cancel') return false;
+    return new Date(t.date+'T00:00:00') < today;
+  }).length;
   document.getElementById('headerStats').innerHTML = `
     <div class="stat-pill"><span class="dot" style="background:#5bbcb4"></span>${done} Done</div>
     <div class="stat-pill"><span class="dot" style="background:#c97de0"></span>${prog} Active</div>
     ${block?`<div class="stat-pill"><span class="dot" style="background:#e8b060"></span>${block} Blocked</div>`:''}
+    ${overdue?`<div class="stat-pill" style="border-color:rgba(229,83,83,0.4);background:rgba(229,83,83,0.08);"><span class="dot" style="background:#e53935"></span><span style="color:#c62828;font-weight:800;">${overdue} Overdue</span></div>`:''}
     <div class="stat-pill"><span class="dot" style="background:#f48faa"></span>${total} Total</div>`;
 }
 
