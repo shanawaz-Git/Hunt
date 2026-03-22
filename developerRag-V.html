@@ -44,6 +44,10 @@
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
+html {
+  overflow-x: hidden; /* must be on BOTH html and body for iOS Safari */
+}
+
 body {
   font-family: 'Lora', Georgia, serif;
   background: var(--paper);
@@ -86,6 +90,7 @@ body::before {
   padding: 24px 40px 18px;
   border-bottom: 1px solid var(--ink);
   position: relative;
+  overflow: hidden;
 }
 .masthead-eyebrow {
   font-family: 'Josefin Sans', sans-serif;
@@ -98,12 +103,14 @@ body::before {
 }
 .masthead-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-size: clamp(1.5rem, 4.5vw, 4rem);
   font-weight: 900;
   letter-spacing: -1px;
-  line-height: 1;
+  line-height: 1.1;
   color: var(--ink);
   text-transform: uppercase;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .masthead-rule {
   display: flex;
@@ -117,7 +124,7 @@ body::before {
 .masthead-rule::before, .masthead-rule::after {
   content: '';
   height: 1px;
-  width: 120px;
+  width: clamp(40px, 8vw, 120px);
   background: var(--ink);
 }
 .masthead-subtitle {
@@ -288,9 +295,11 @@ body::before {
 }
 .col-header-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-size: clamp(1.1rem, 2.5vw, 2rem);
   font-style: italic;
   color: var(--ink);
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* ── LESSON CARD ── */
@@ -663,32 +672,70 @@ pre.code-display .prop { color: var(--c-prop); }
   .editor-pane textarea {
     border-right:none;
     border-bottom:1px solid rgba(255,255,255,0.08);
-    resize: none; /* touch screens can't drag resize handles */
+    resize: none;
     min-height: 160px;
   }
   .editor-preview { min-height: 180px; }
-  .masthead-top, .masthead-bottom { flex-direction:column; align-items:flex-start; gap:6px; padding:10px 16px; }
-  .masthead-center { padding:16px 16px 12px; }
-  .masthead-edition { display:none; } /* too cramped on mobile */
-  .section-tabs { width:100%; }
-  .tab-btn { padding:10px 0; flex:1; text-align:center; font-size:10px; letter-spacing:1.5px; }
-  .lesson-card { padding:20px 16px; }
-  .lesson-card::after { left:16px; right:16px; }
-  .card-ornament { font-size:36px; top:12px; right:12px; }
+
+  /* masthead */
+  .masthead-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px 16px;
+    font-size: 9px;
+  }
+  .masthead-top span { gap: 8px; flex-wrap: wrap; }
+  .masthead-center {
+    padding: 14px 16px 10px;
+  }
+  .masthead-title {
+    font-size: clamp(1.25rem, 7.5vw, 2rem);
+    letter-spacing: 0;
+    line-height: 1.15;
+  }
+  .masthead-eyebrow { font-size: 8px; letter-spacing: 3px; }
+  .masthead-subtitle { font-size: 0.85rem; }
+  .masthead-rule { margin: 6px 0 5px; }
+  .masthead-bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+  }
+  .masthead-edition { display:none; }
+  .section-tabs { width:100%; border-top: 1px solid var(--border-light); }
+  .tab-btn {
+    padding: 10px 0;
+    flex: 1;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  /* content */
+  .column-header { margin-bottom:16px; padding-bottom:12px; }
+  .col-header-pre { font-size: 8px; letter-spacing: 2px; }
+  .lesson-card { padding:18px 14px; }
+  .lesson-card::after { left:14px; right:14px; }
+  .lesson-h2 { font-size: 1.3rem; }
+  .lesson-intro { font-size: 0.95rem; }
+  .card-ornament { font-size:32px; top:10px; right:10px; }
   .cheat-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-  .editor-wrap { margin:16px -16px 4px; border-left:none; border-right:none; } /* full bleed on mobile */
-  .quiz-box { padding:18px 16px; }
-  .tip-box, .note-box, .warn-box { padding:12px 14px; }
-  .column-header { margin-bottom:20px; }
+  .editor-wrap { margin:16px 0 4px; } /* no negative margin — avoids overflow */
+  .quiz-box { padding:16px 14px; }
+  .tip-box, .note-box, .warn-box { padding:12px 12px; }
   .ref-table th { font-size:8px; padding:8px 10px; }
   .ref-table td { font-size:12.5px; padding:8px 10px; }
+  .section-divider { margin: 24px 0 18px; }
 }
 
-/* Extra small phones (iPhone SE etc.) */
+/* Extra small phones (iPhone SE, 320px) */
 @media (max-width:400px) {
-  .masthead-title { font-size:1.8rem; }
-  .lesson-h2 { font-size:1.3rem; }
-  .tab-btn { font-size:9px; letter-spacing:0.5px; padding:10px 4px; }
+  .masthead-title { font-size: clamp(1.1rem, 7vw, 1.5rem); }
+  .lesson-h2 { font-size:1.2rem; }
+  .tab-btn { font-size:9px; letter-spacing:0.5px; }
+  .lesson-card { padding: 16px 12px; }
 }
 </style>
 </head>
