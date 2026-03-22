@@ -1,0 +1,3464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Whistledown Web Gazette — A Society Guide to HTML, CSS & JS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════
+   THE WHISTLEDOWN WEB GAZETTE
+   A Victorian Newspaper Theme
+════════════════════════════════════════ */
+:root {
+  --paper:        #f8f5ee;
+  --paper-dark:   #ede8da;
+  --ink:          #151008;
+  --ink-mid:      #3a3020;
+  --ink-light:    #6b5e42;
+  --sepia:        #8a6c2a;
+  --sepia-light:  #c4a34e;
+  --rule:         #1a140a; /* border colour for horizontal rules */
+  --border:       #bfab88;
+  --border-light: #ddd0b0;
+  --card:         #ffffff;
+  --highlight:    #fdf7e4;
+  --code-bg:      #141008;
+  --shadow:       0 2px 16px rgba(26,20,10,0.10);
+
+  /* syntax colours – warm tones on dark bg */
+  --c-tag:   #f0a05a;
+  --c-attr:  #f5cc60;
+  --c-val:   #7ecfa0;
+  --c-kw:    #f08080;
+  --c-fn:    #f5d080;
+  --c-str:   #7ecfa0;
+  --c-cm:    #c8bda8;
+  --c-num:   #c5b0f8;
+  --c-sel:   #f08080;
+  --c-prop:  #f0a05a;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Lora', Georgia, serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* subtle paper texture */
+body::before {
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23f8f5ee'/%3E%3Ccircle cx='1' cy='1' r='0.6' fill='%23e8e0cc' opacity='0.4'/%3E%3C/svg%3E");
+}
+
+/* ── MASTHEAD ── */
+.masthead {
+  background: var(--card);
+  border-bottom: 3px double var(--ink);
+  padding: 0;
+  position: relative;
+  z-index: 1;
+}
+.masthead-top {
+  border-bottom: 1px solid var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 40px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+.masthead-top span { display:flex; align-items:center; gap:16px; }
+.masthead-center {
+  text-align: center;
+  padding: 24px 40px 18px;
+  border-bottom: 1px solid var(--ink);
+  position: relative;
+}
+.masthead-eyebrow {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--sepia);
+  margin-bottom: 8px;
+  display: block;
+}
+.masthead-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+.masthead-rule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  margin: 10px 0 8px;
+  color: var(--sepia);
+  font-size: 1.1rem;
+}
+.masthead-rule::before, .masthead-rule::after {
+  content: '';
+  height: 1px;
+  width: 120px;
+  background: var(--ink);
+}
+.masthead-subtitle {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink-mid);
+  letter-spacing: 0.5px;
+}
+.masthead-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 40px;
+}
+.section-tabs {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* hide scrollbar on Firefox */
+}
+.section-tabs::-webkit-scrollbar { display: none; } /* hide scrollbar on Chrome/Safari */
+.tab-btn {
+  padding: 10px 28px;
+  border: none;
+  background: none;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  position: relative;
+  touch-action: manipulation; /* removes 300ms tap delay on mobile */
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active {
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom-color: var(--ink);
+}
+.masthead-edition {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+
+/* ── LAYOUT ── */
+.app-layout {
+  display: flex;
+  min-height: calc(100vh - 180px);
+  position: relative;
+  z-index: 1;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: var(--card);
+  border-right: 1px solid var(--ink);
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 0 0 40px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sepia) var(--paper-dark);
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--sepia); }
+
+.sidebar-head {
+  padding: 16px 20px 12px;
+  border-bottom: 3px double var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+.sidebar-head-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.sidebar-head-sub {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-top: 2px;
+}
+
+
+.sidebar-section-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--card);
+  background: var(--ink-mid);
+  padding: 6px 20px;
+  margin-top: 4px;
+}
+.sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 20px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  color: var(--ink-mid);
+  font-family: 'Lora', serif;
+  font-size: 12.5px;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+  border-bottom: 1px solid var(--border-light);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.sidebar-item:hover {
+  background: var(--highlight);
+  border-left-color: var(--sepia);
+  color: var(--ink);
+}
+.sidebar-item.active {
+  background: var(--highlight);
+  border-left-color: var(--ink);
+  color: var(--ink);
+  font-weight: 600;
+}
+.sidebar-item .dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink:0;
+}
+.dot-html { background: #c0471e; }
+.dot-css  { background: #2e7d4f; }
+.dot-js   { background: #8a6c2a; }
+
+/* ── MAIN ── */
+.main-content {
+  flex: 1;
+  padding: 36px 52px;
+  max-width: 1000px;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── NEWSPAPER COLUMN HEADER ── */
+.column-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 3px double var(--ink);
+}
+.col-header-pre {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--sepia);
+  margin-bottom: 6px;
+}
+.col-header-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-style: italic;
+  color: var(--ink);
+}
+
+/* ── LESSON CARD ── */
+.lesson-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--ink);
+  border-radius: 0;
+  padding: 28px 32px;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+.lesson-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 32px; right: 32px;
+  height: 1px;
+  background: var(--border-light);
+}
+
+/* colour bar per topic */
+.card-html { border-top-color: #c0471e; }
+.card-css  { border-top-color: #2e7d4f; }
+.card-js   { border-top-color: #8a6c2a; }
+
+.card-ornament {
+  position: absolute; top: 16px; right: 24px;
+  font-family: 'Playfair Display', serif;
+  font-size: 48px; opacity: 0.04;
+  color: var(--ink); pointer-events: none;
+}
+.lesson-tag {
+  display: inline-block;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px; letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border: 1px solid;
+  margin-bottom: 12px;
+}
+.tag-beginner    { border-color: #c0471e; color: #c0471e; background: #fff5f2; }
+.tag-intermediate{ border-color: #2e7d4f; color: #2e7d4f; background: #f0fbf4; }
+.tag-concept     { border-color: var(--sepia); color: var(--sepia); background: var(--highlight); }
+
+.lesson-h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+  line-height: 1.25;
+}
+.lesson-intro {
+  font-family: 'Lora', serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--sepia);
+  margin-bottom: 20px;
+  padding: 10px 16px;
+  border-left: 3px solid var(--sepia-light);
+  background: var(--highlight);
+  line-height: 1.6;
+}
+.lesson-body {
+  font-family: 'Lora', serif;
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--ink-mid);
+}
+.lesson-body p { margin-bottom: 14px; color: var(--ink-mid); }
+.lesson-body ul, .lesson-body ol { margin: 10px 0 14px 22px; }
+.lesson-body li { margin-bottom: 7px; color: var(--ink-mid); }
+.lesson-body strong { color: var(--ink); font-weight: 600; }
+.lesson-body em { color: var(--sepia); }
+
+h3.sub-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 22px 0 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: 0.3px;
+}
+
+/* ── CODE DISPLAY ── */
+.code-label {
+  display: block;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px; letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--sepia);
+  margin-bottom: 4px;
+}
+pre.code-display {
+  background: var(--code-bg);
+  border-left: 4px solid var(--sepia);
+  border-radius: 0 4px 4px 0;
+  padding: 20px 24px;
+  margin: 12px 0 16px;
+  overflow-x: auto;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13.5px;
+  line-height: 2;
+  color: #e8dfc8;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+pre.code-display .tag  { color: var(--c-tag); font-weight:600; }
+pre.code-display .attr { color: var(--c-attr); }
+pre.code-display .val  { color: var(--c-val); }
+pre.code-display .kw   { color: var(--c-kw); font-weight:600; }
+pre.code-display .fn   { color: var(--c-fn); }
+pre.code-display .str  { color: var(--c-str); }
+pre.code-display .cm   { color: var(--c-cm); font-style:italic; font-weight:500; }
+pre.code-display .num  { color: var(--c-num); }
+pre.code-display .sel  { color: var(--c-sel); font-weight:600; }
+pre.code-display .prop { color: var(--c-prop); }
+
+.inline-code {
+  font-family: 'Courier New', monospace;
+  font-size: 12.5px;
+  background: var(--paper-dark);
+  color: #8a3010;
+  padding: 1px 7px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+/* ── TIP / NOTE / WARN BOXES ── */
+.tip-box, .note-box, .warn-box {
+  display: flex; gap: 12px; align-items: flex-start;
+  border-radius: 0; padding: 14px 18px;
+  margin: 14px 0; font-size: 13.5px; line-height: 1.7;
+}
+.tip-box  { background:#fffcf0; border:1px solid #d4a82a; border-left:4px solid #d4a82a; }
+.tip-box p { color:#5a3e00; margin:0; }
+.tip-box strong { color:#3a2800; }
+.note-box { background:#f0fbf5; border:1px solid #2e7d4f; border-left:4px solid #2e7d4f; }
+.note-box p { color:#1a4a2a; margin:0; }
+.warn-box { background:#fff5f2; border:1px solid #c0471e; border-left:4px solid #c0471e; }
+.warn-box p { color:#5a1a08; margin:0; }
+.tip-icon { font-size:17px; flex-shrink:0; margin-top:1px; }
+
+/* ── TABLE ── */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 14px 0;
+}
+.ref-table {
+  width:100%; border-collapse:collapse;
+  margin:0; font-size:13.5px;
+  border:1px solid var(--border);
+  min-width: 480px;
+}
+.ref-table th {
+  background: var(--ink);
+  color: var(--paper);
+  padding:10px 14px;
+  text-align:left;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size:9px; letter-spacing:2.5px;
+  text-transform:uppercase; font-weight:600;
+}
+.ref-table td {
+  padding:10px 14px;
+  border-bottom:1px solid var(--border-light);
+  color: var(--ink-mid);
+  font-family: 'Lora', serif;
+  font-size:13.5px; line-height:1.6;
+  vertical-align:top;
+}
+.ref-table tr:last-child td { border-bottom:none; }
+.ref-table tr:nth-child(even) td { background: var(--highlight); }
+.ref-table code {
+  font-family:'Courier New', monospace;
+  background: var(--code-bg);
+  color: #f0a05a;
+  padding:2px 7px; border-radius:2px; font-size:12px;
+}
+
+/* ── LIVE EDITOR ── */
+.editor-wrap {
+  border: 1px solid var(--ink);
+  border-top: 3px solid var(--ink);
+  margin: 22px 0 4px;
+  background: var(--ink);
+}
+.editor-header {
+  display: flex; align-items:center; justify-content:space-between;
+  padding: 8px 18px;
+  background: var(--ink);
+}
+.editor-dots { display:flex; gap:6px; }
+.editor-dot { width:11px; height:11px; border-radius:50%; }
+.editor-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size:10px; letter-spacing:3px; text-transform:uppercase;
+  color: rgba(255,255,255,0.45);
+}
+.run-btn {
+  padding: 8px 20px;
+  background: var(--sepia-light);
+  border: none; border-radius: 0;
+  color: var(--ink);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 36px; /* minimum tap target for mobile */
+}
+.run-btn:hover, .run-btn:active { background: #e0bb60; }
+
+.editor-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #0f0b06;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.editor-pane { position:relative; }
+.editor-pane textarea {
+  width:100%; min-height:200px;
+  padding: 18px 20px;
+  background: #0f0b06;
+  border: none;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  resize: vertical;
+  font-family:'Courier New', monospace;
+  font-size: 13.5px;
+  color: #f0e8d0;
+  caret-color: var(--sepia-light);
+  -webkit-text-fill-color: #f0e8d0;
+  line-height: 1.75;
+  outline: none;
+  tab-size: 2;
+}
+.editor-pane textarea::placeholder { color:rgba(255,255,255,0.2); }
+.editor-pane-label {
+  font-family:'Josefin Sans',sans-serif;
+  font-size:8px; letter-spacing:2px; text-transform:uppercase;
+  color:rgba(255,255,255,0.3);
+  padding:5px 18px 0;
+  background:#0f0b06;
+}
+.editor-preview {
+  background:white; min-height:200px;
+  border:none; width:100%; display:block;
+}
+.editor-preview-label {
+  font-family:'Josefin Sans',sans-serif;
+  font-size:8px; letter-spacing:2px; text-transform:uppercase;
+  color:rgba(255,255,255,0.3);
+  padding:5px 18px 0;
+  background:#0f0b06;
+}
+
+/* ── QUIZ ── */
+.quiz-box {
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  padding: 24px 28px;
+  margin: 20px 0;
+  color: white;
+}
+.quiz-title {
+  font-family:'Playfair Display', serif;
+  font-size:1rem; color: var(--sepia-light);
+  margin-bottom:14px;
+  display:flex; align-items:center; gap:10px;
+  text-transform:uppercase; letter-spacing:1px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+  padding-bottom:10px;
+}
+.quiz-q {
+  font-family:'Lora', serif;
+  font-size:14px; line-height:1.65;
+  color:rgba(255,255,255,0.9); margin-bottom:16px;
+}
+.quiz-options { display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
+.quiz-option {
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:0; padding:10px 16px;
+  cursor:pointer; font-family:'Lora',serif;
+  font-size:13.5px; color:rgba(255,255,255,0.8);
+  transition:background 0.18s, border-color 0.18s;
+  display:flex; align-items:center; gap:10px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.quiz-option:hover { background:rgba(196,163,78,0.2); border-color:var(--sepia-light); }
+.quiz-option.correct { background:rgba(46,125,79,0.3); border-color:#5dbf7e; color:#b0f0c8; }
+.quiz-option.wrong   { background:rgba(192,71,30,0.25); border-color:#e07050; color:#f5c5b0; }
+.quiz-feedback {
+  font-family:'Lora',serif; font-size:13px;
+  padding:10px 14px; display:none; line-height:1.5; border-radius:0;
+}
+.quiz-feedback.show { display:block; }
+.quiz-feedback.ok   { background:rgba(46,125,79,0.2); color:#90d8a8; }
+.quiz-feedback.bad  { background:rgba(192,71,30,0.2); color:#f0a898; }
+
+/* ── SECTION DIVIDER ── */
+.section-divider {
+  display:flex; align-items:center; gap:12px;
+  margin:36px 0 28px; color:var(--sepia);
+}
+.section-divider::before, .section-divider::after {
+  content:''; flex:1; height:1px; background:var(--border);
+}
+.section-divider span {
+  font-family:'Playfair Display', serif;
+  font-size:1rem; font-style:italic;
+  color:var(--sepia); white-space:nowrap;
+}
+
+/* ── CHEATSHEET GRID ── */
+.cheat-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap:10px; margin:14px 0;
+}
+.cheat-item {
+  background: var(--code-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-left: 3px solid var(--sepia);
+  padding:12px 14px;
+}
+.cheat-code {
+  font-family:'Courier New', monospace;
+  font-size:12.5px; color:#f0a05a;
+  margin-bottom:5px; font-weight:600;
+}
+.cheat-desc {
+  font-size:12px; color:rgba(255,255,255,0.85);
+  line-height:1.55; font-family:'Lora',serif;
+}
+
+/* ── FOOTER ── */
+.site-footer {
+  background: var(--ink);
+  color: rgba(255,255,255,0.45);
+  text-align:center; padding:24px;
+  font-family:'Lora',serif; font-style:italic; font-size:0.95rem;
+  position:relative; z-index:1;
+  border-top: 3px double rgba(255,255,255,0.15);
+}
+.site-footer span { color:var(--sepia-light); }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width:7px; height:7px; }
+::-webkit-scrollbar-track { background:var(--paper-dark); }
+::-webkit-scrollbar-thumb { background:var(--sepia); border-radius:0; }
+
+/* ── RESPONSIVE ── */
+@media (max-width:900px) {
+  .sidebar { display:none; }
+  .main-content { padding:20px 16px; }
+  .editor-body { grid-template-columns:1fr; }
+  .editor-pane textarea {
+    border-right:none;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    resize: none; /* touch screens can't drag resize handles */
+    min-height: 160px;
+  }
+  .editor-preview { min-height: 180px; }
+  .masthead-top, .masthead-bottom { flex-direction:column; align-items:flex-start; gap:6px; padding:10px 16px; }
+  .masthead-center { padding:16px 16px 12px; }
+  .masthead-edition { display:none; } /* too cramped on mobile */
+  .section-tabs { width:100%; }
+  .tab-btn { padding:10px 0; flex:1; text-align:center; font-size:10px; letter-spacing:1.5px; }
+  .lesson-card { padding:20px 16px; }
+  .lesson-card::after { left:16px; right:16px; }
+  .card-ornament { font-size:36px; top:12px; right:12px; }
+  .cheat-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  .editor-wrap { margin:16px -16px 4px; border-left:none; border-right:none; } /* full bleed on mobile */
+  .quiz-box { padding:18px 16px; }
+  .tip-box, .note-box, .warn-box { padding:12px 14px; }
+  .column-header { margin-bottom:20px; }
+  .ref-table th { font-size:8px; padding:8px 10px; }
+  .ref-table td { font-size:12.5px; padding:8px 10px; }
+}
+
+/* Extra small phones (iPhone SE etc.) */
+@media (max-width:400px) {
+  .masthead-title { font-size:1.8rem; }
+  .lesson-h2 { font-size:1.3rem; }
+  .tab-btn { font-size:9px; letter-spacing:0.5px; padding:10px 4px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ MASTHEAD ══════════ -->
+<header class="masthead">
+  <div class="masthead-top">
+    <span>
+      <span>Vol. I &nbsp;·&nbsp; No. 1</span>
+      <span>Est. This Very Season</span>
+    </span>
+    <span>
+      <span>📜 Beginner to Intermediate</span>
+      <span>Published for the Discerning Student</span>
+    </span>
+  </div>
+  <div class="masthead-center">
+    <span class="masthead-eyebrow">The Society's Official Correspondence on the Matter of</span>
+    <div class="masthead-title">The Whistledown Web Gazette</div>
+    <div class="masthead-rule">✦ ✦ ✦</div>
+    <div class="masthead-subtitle">"Dear Gentle Reader — HTML, CSS &amp; JavaScript, laid bare for all of Society to learn."</div>
+  </div>
+  <div class="masthead-bottom">
+    <div class="section-tabs">
+      <button class="tab-btn active" onclick="switchTab('html')">§ HTML</button>
+      <button class="tab-btn" onclick="switchTab('css')">§ CSS</button>
+      <button class="tab-btn" onclick="switchTab('js')">§ JavaScript</button>
+    </div>
+    <div class="masthead-edition">Your Personal Gazette — Open in Any Browser</div>
+  </div>
+</header>
+
+<!-- ══════════ LAYOUT ══════════ -->
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-head">
+      <div class="sidebar-head-title">Table of Contents</div>
+      <div class="sidebar-head-sub">Navigate by Section</div>
+    </div>
+
+    <div class="sidebar-section-title">§ HTML</div>
+    <div class="sidebar-item" onclick="switchTab('html');jumpTo('html-basics')"><div class="dot dot-html"></div>Page Structure</div>
+    <div class="sidebar-item" onclick="switchTab('html');jumpTo('html-text')"><div class="dot dot-html"></div>Text Elements</div>
+    <div class="sidebar-item" onclick="switchTab('html');jumpTo('html-links')"><div class="dot dot-html"></div>Links &amp; Images</div>
+    <div class="sidebar-item" onclick="switchTab('html');jumpTo('html-lists')"><div class="dot dot-html"></div>Lists</div>
+    <div class="sidebar-item" onclick="switchTab('html');jumpTo('html-forms')"><div class="dot dot-html"></div>Forms</div>
+    <div class="sidebar-item" onclick="switchTab('html');jumpTo('html-tables')"><div class="dot dot-html"></div>Tables</div>
+    <div class="sidebar-item" onclick="switchTab('html');jumpTo('html-semantic')"><div class="dot dot-html"></div>Semantic HTML</div>
+    <div class="sidebar-item" onclick="switchTab('html');jumpTo('html-attrs')"><div class="dot dot-html"></div>Attributes</div>
+    <div class="sidebar-item" onclick="switchTab('html');jumpTo('html-meta')"><div class="dot dot-html"></div>Meta &amp; Head</div>
+    <div class="sidebar-item" onclick="switchTab('html');jumpTo('html-entities')"><div class="dot dot-html"></div>HTML Entities</div>
+    <div class="sidebar-item" onclick="switchTab('html');jumpTo('html-media')"><div class="dot dot-html"></div>Video &amp; Audio</div>
+    <div class="sidebar-item" onclick="switchTab('html');jumpTo('html-formvalidation')"><div class="dot dot-html"></div>Validation &amp; Dropdowns</div>
+
+    <div class="sidebar-section-title">§ CSS</div>
+    <div class="sidebar-item" onclick="switchTab('css');jumpTo('css-selectors')"><div class="dot dot-css"></div>Selectors</div>
+    <div class="sidebar-item" onclick="switchTab('css');jumpTo('css-box')"><div class="dot dot-css"></div>Box Model</div>
+    <div class="sidebar-item" onclick="switchTab('css');jumpTo('css-display')"><div class="dot dot-css"></div>Display &amp; Position</div>
+    <div class="sidebar-item" onclick="switchTab('css');jumpTo('css-flex')"><div class="dot dot-css"></div>Flexbox</div>
+    <div class="sidebar-item" onclick="switchTab('css');jumpTo('css-grid')"><div class="dot dot-css"></div>CSS Grid</div>
+    <div class="sidebar-item" onclick="switchTab('css');jumpTo('css-color')"><div class="dot dot-css"></div>Colors &amp; Typography</div>
+    <div class="sidebar-item" onclick="switchTab('css');jumpTo('css-anim')"><div class="dot dot-css"></div>Transitions &amp; Animations</div>
+    <div class="sidebar-item" onclick="switchTab('css');jumpTo('css-responsive')"><div class="dot dot-css"></div>Responsive Design</div>
+    <div class="sidebar-item" onclick="switchTab('css');jumpTo('css-vars')"><div class="dot dot-css"></div>CSS Variables</div>
+    <div class="sidebar-item" onclick="switchTab('css');jumpTo('css-pseudo')"><div class="dot dot-css"></div>Pseudo-classes</div>
+    <div class="sidebar-item" onclick="switchTab('css');jumpTo('css-effects')"><div class="dot dot-css"></div>Overflow, Shadows &amp; Object-fit</div>
+    <div class="sidebar-item" onclick="switchTab('css');jumpTo('css-zindex-calc')"><div class="dot dot-css"></div>Z-index &amp; CSS Functions</div>
+
+    <div class="sidebar-section-title">§ JavaScript</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-vars')"><div class="dot dot-js"></div>Variables &amp; Types</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-operators')"><div class="dot dot-js"></div>Operators</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-conditions')"><div class="dot dot-js"></div>Conditionals</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-loops')"><div class="dot dot-js"></div>Loops</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-functions')"><div class="dot dot-js"></div>Functions</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-arrays')"><div class="dot dot-js"></div>Arrays &amp; Methods</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-objects')"><div class="dot dot-js"></div>Objects</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-dom')"><div class="dot dot-js"></div>DOM Manipulation</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-events')"><div class="dot dot-js"></div>Events</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-es6')"><div class="dot dot-js"></div>ES6+ Modern JS</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-async')"><div class="dot dot-js"></div>Async &amp; Fetch</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-storage')"><div class="dot dot-js"></div>LocalStorage</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-errors')"><div class="dot dot-js"></div>Error Handling</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-strings')"><div class="dot dot-js"></div>String Methods</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-numbers-math')"><div class="dot dot-js"></div>Numbers, Math &amp; Console</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-scope')"><div class="dot dot-js"></div>Scope &amp; Hoisting</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-classes')"><div class="dot dot-js"></div>Classes &amp; OOP</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-timers')"><div class="dot dot-js"></div>setTimeout &amp; setInterval</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-json')"><div class="dot dot-js"></div>JSON</div>
+    <div class="sidebar-item" onclick="switchTab('js');jumpTo('js-map-set')"><div class="dot dot-js"></div>Map &amp; Set</div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- ════════════ HTML PANEL ════════════ -->
+    <div class="tab-panel active" id="panel-html">
+      <div class="column-header">
+        <div class="col-header-pre">First Dispatch — The Structure of Things</div>
+        <div class="col-header-title">A Complete Account of HyperText Markup Language</div>
+      </div>
+
+      <!-- 1. BASICS -->
+      <div class="lesson-card card-html" id="html-basics">
+        <div class="card-ornament">HTML</div>
+        <div class="lesson-tag tag-beginner">Beginner · Lesson 1</div>
+        <h2 class="lesson-h2">Page Structure — The Skeleton of Every Webpage</h2>
+        <p class="lesson-intro">"Just as every debutante must be properly presented, every webpage must be properly structured."</p>
+        <div class="lesson-body">
+          <p>Every webpage is a text document that a browser reads and turns into what you see. HTML (HyperText Markup Language) uses <strong>tags</strong> — wrapped in angle brackets <span class="inline-code">&lt; &gt;</span> — to describe content.</p>
+          <p>Think of HTML as the skeleton of a house — it gives structure, but not beauty (that is CSS's job!).</p>
+          <h3 class="sub-heading">The Boilerplate — Always Start With This!</h3>
+          <span class="code-label">Standard HTML5 Template</span>
+<pre class="code-display"><span class="tag">&lt;!DOCTYPE html&gt;</span>        <span class="cm">← Tells browser "this is HTML5"</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="val">"en"</span><span class="tag">&gt;</span>         <span class="cm">← Root element, lang = language</span>
+  <span class="tag">&lt;head&gt;</span>               <span class="cm">← Info ABOUT the page (not visible)</span>
+    <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>        <span class="cm">← Supports all characters</span>
+    <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"viewport"</span> <span class="attr">content</span>=<span class="val">"width=device-width, initial-scale=1"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;title&gt;</span>My Page<span class="tag">&lt;/title&gt;</span>        <span class="cm">← Browser tab title</span>
+  <span class="tag">&lt;/head&gt;</span>
+  <span class="tag">&lt;body&gt;</span>               <span class="cm">← Everything VISIBLE goes here</span>
+    <span class="tag">&lt;h1&gt;</span>Hello World!<span class="tag">&lt;/h1&gt;</span>
+  <span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></pre>
+          <div class="tip-box">
+            <div class="tip-icon">💡</div>
+            <p><strong>Remember:</strong> Most HTML tags come in pairs — an <em>opening tag</em> <span class="inline-code">&lt;p&gt;</span> and a <em>closing tag</em> <span class="inline-code">&lt;/p&gt;</span>. The slash / before the tag name closes it. Some tags are <em>self-closing</em> like <span class="inline-code">&lt;img&gt;</span>, <span class="inline-code">&lt;br&gt;</span>, <span class="inline-code">&lt;input&gt;</span>.</p>
+          </div>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots">
+              <div class="editor-dot" style="background:#e05a4e"></div>
+              <div class="editor-dot" style="background:#e0b84e"></div>
+              <div class="editor-dot" style="background:#4eae6a"></div>
+            </div>
+            <span class="editor-title">✦ Try It Yourself — Edit &amp; See Live ✦</span>
+            <button class="run-btn" onclick="runEditor('ed1')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="ed1-code" spellcheck="false">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My First Page&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello, I am learning HTML!&lt;/h1&gt;
+    &lt;p&gt;This is my very first paragraph.&lt;/p&gt;
+    &lt;p&gt;HTML is like writing a letter 💌&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="ed1-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. TEXT -->
+      <div class="lesson-card card-html" id="html-text">
+        <div class="card-ornament">Aa</div>
+        <div class="lesson-tag tag-beginner">Beginner · Lesson 2</div>
+        <h2 class="lesson-h2">Text Elements — The Words of the Web</h2>
+        <p class="lesson-intro">"Words have power, darling. Choose your tags wisely."</p>
+        <div class="lesson-body">
+          <div class="table-scroll"><table class="ref-table">
+            <tr><th>Tag</th><th>Meaning</th><th>Result</th></tr>
+            <tr><td><code>&lt;h1&gt; to &lt;h6&gt;</code></td><td>Headings (h1 = biggest, h6 = smallest)</td><td>Bold, large text</td></tr>
+            <tr><td><code>&lt;p&gt;</code></td><td>Paragraph</td><td>Block of text</td></tr>
+            <tr><td><code>&lt;strong&gt;</code></td><td>Important text</td><td><strong>Bold</strong></td></tr>
+            <tr><td><code>&lt;em&gt;</code></td><td>Emphasis</td><td><em>Italic</em></td></tr>
+            <tr><td><code>&lt;br&gt;</code></td><td>Line break (self-closing)</td><td>New line</td></tr>
+            <tr><td><code>&lt;hr&gt;</code></td><td>Horizontal rule</td><td>A dividing line</td></tr>
+            <tr><td><code>&lt;span&gt;</code></td><td>Inline container</td><td>Groups inline text</td></tr>
+            <tr><td><code>&lt;blockquote&gt;</code></td><td>Quote from source</td><td>Indented quote</td></tr>
+            <tr><td><code>&lt;code&gt;</code></td><td>Inline code</td><td>Monospace font</td></tr>
+            <tr><td><code>&lt;pre&gt;</code></td><td>Preformatted text</td><td>Preserves spaces &amp; newlines</td></tr>
+            <tr><td><code>&lt;sup&gt;</code> / <code>&lt;sub&gt;</code></td><td>Superscript / Subscript</td><td>H₂O, x²</td></tr>
+            <tr><td><code>&lt;mark&gt;</code></td><td>Highlighted text</td><td><mark>Highlighted</mark></td></tr>
+          </table></div>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ Try Text Elements ✦</span>
+            <button class="run-btn" onclick="runEditor('ed2')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="ed2-code" spellcheck="false">&lt;h1&gt;Biggest Heading&lt;/h1&gt;
+&lt;h2&gt;Smaller Heading&lt;/h2&gt;
+&lt;h3&gt;Even Smaller&lt;/h3&gt;
+&lt;p&gt;A &lt;strong&gt;bold word&lt;/strong&gt; and &lt;em&gt;italic&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Water formula: H&lt;sub&gt;2&lt;/sub&gt;O&lt;/p&gt;
+&lt;p&gt;Math: x&lt;sup&gt;2&lt;/sup&gt; + y&lt;sup&gt;2&lt;/sup&gt;&lt;/p&gt;
+&lt;mark&gt;This text is highlighted!&lt;/mark&gt;
+&lt;hr&gt;
+&lt;blockquote&gt;"The pen is mightier than the sword."&lt;/blockquote&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="ed2-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. LINKS & IMAGES -->
+      <div class="lesson-card card-html" id="html-links">
+        <div class="card-ornament">🔗</div>
+        <div class="lesson-tag tag-beginner">Beginner · Lesson 3</div>
+        <h2 class="lesson-h2">Links &amp; Images — Connecting the World</h2>
+        <p class="lesson-intro">"A good connection, whether in society or on the web, opens countless doors."</p>
+        <div class="lesson-body">
+          <h3 class="sub-heading">Links — The <span class="inline-code">&lt;a&gt;</span> Tag</h3>
+          <p>The anchor tag creates clickable links. The <strong>href</strong> attribute tells it <em>where</em> to go.</p>
+<pre class="code-display"><span class="cm">&lt;!-- Basic link --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"https://google.com"</span><span class="tag">&gt;</span>Visit Google<span class="tag">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Opens in new tab --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"https://google.com"</span> <span class="attr">target</span>=<span class="val">"_blank"</span><span class="tag">&gt;</span>Open in New Tab<span class="tag">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Link to section on same page --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"#section-id"</span><span class="tag">&gt;</span>Jump to Section<span class="tag">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Email link --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"mailto:hello&#64;example.com"</span><span class="tag">&gt;</span>Email Me<span class="tag">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Phone link --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"tel:+1234567890"</span><span class="tag">&gt;</span>Call Me<span class="tag">&lt;/a&gt;</span></pre>
+
+          <h3 class="sub-heading">Images — The <span class="inline-code">&lt;img&gt;</span> Tag</h3>
+          <p>Images are self-closing. The <strong>alt</strong> attribute describes the image for screen readers and when images fail to load — always include it!</p>
+<pre class="code-display"><span class="tag">&lt;img</span>
+  <span class="attr">src</span>=<span class="val">"photo.jpg"</span>         <span class="cm">← source (path or URL)</span>
+  <span class="attr">alt</span>=<span class="val">"A garden in bloom"</span> <span class="cm">← description (required!)</span>
+  <span class="attr">width</span>=<span class="val">"400"</span>            <span class="cm">← width in pixels</span>
+  <span class="attr">height</span>=<span class="val">"300"</span>           <span class="cm">← height in pixels</span>
+<span class="tag">&gt;</span></pre>
+          <div class="note-box">
+            <div class="tip-icon">📌</div>
+            <p>Always set <strong>width and height</strong> on images — it prevents layout shifts while the page loads (known as CLS in web performance).</p>
+          </div>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ Links &amp; Images ✦</span>
+            <button class="run-btn" onclick="runEditor('ed3')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="ed3-code" spellcheck="false">&lt;h2&gt;Links&lt;/h2&gt;
+&lt;a href="https://google.com" target="_blank"&gt;
+  Visit Google (opens new tab)
+&lt;/a&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;a href="mailto:me@example.com"&gt;Send Email&lt;/a&gt;
+
+&lt;h2&gt;Image from URL&lt;/h2&gt;
+&lt;img
+  src="https://picsum.photos/220/130"
+  alt="A random beautiful photo"
+  width="220" height="130"
+&gt;
+&lt;p&gt;Click the link and see the image!&lt;/p&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="ed3-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. LISTS -->
+      <div class="lesson-card card-html" id="html-lists">
+        <div class="card-ornament">≡</div>
+        <div class="lesson-tag tag-beginner">Beginner · Lesson 4</div>
+        <h2 class="lesson-h2">Lists — Organising with Grace</h2>
+        <p class="lesson-intro">"A well-organised list, like a well-planned ball, leaves nothing to chance."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">&lt;!-- Unordered list (bullet points) --&gt;</span>
+<span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Roses<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Violets<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Lavender<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span>
+
+<span class="cm">&lt;!-- Ordered list (numbered) --&gt;</span>
+<span class="tag">&lt;ol&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Write HTML<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Style with CSS<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Add JavaScript<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ol&gt;</span>
+
+<span class="cm">&lt;!-- Nested list --&gt;</span>
+<span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Frontend
+    <span class="tag">&lt;ul&gt;</span>
+      <span class="tag">&lt;li&gt;</span>HTML<span class="tag">&lt;/li&gt;</span>
+      <span class="tag">&lt;li&gt;</span>CSS<span class="tag">&lt;/li&gt;</span>
+    <span class="tag">&lt;/ul&gt;</span>
+  <span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span>
+
+<span class="cm">&lt;!-- Description list --&gt;</span>
+<span class="tag">&lt;dl&gt;</span>
+  <span class="tag">&lt;dt&gt;</span>HTML<span class="tag">&lt;/dt&gt;</span>
+  <span class="tag">&lt;dd&gt;</span>Structure of webpages<span class="tag">&lt;/dd&gt;</span>
+  <span class="tag">&lt;dt&gt;</span>CSS<span class="tag">&lt;/dt&gt;</span>
+  <span class="tag">&lt;dd&gt;</span>Style and beauty of webpages<span class="tag">&lt;/dd&gt;</span>
+<span class="tag">&lt;/dl&gt;</span></pre>
+        </div>
+      </div>
+
+      <!-- 5. FORMS -->
+      <div class="lesson-card card-html" id="html-forms">
+        <div class="card-ornament">✉</div>
+        <div class="lesson-tag tag-beginner">Beginner · Lesson 5</div>
+        <h2 class="lesson-h2">Forms — Gathering Information</h2>
+        <p class="lesson-intro">"A properly filled calling card is the beginning of every great acquaintance."</p>
+        <div class="lesson-body">
+          <p>Forms collect user input. Every input should have a <strong>&lt;label&gt;</strong> — this helps accessibility and clicking the label focuses the input.</p>
+          <div class="table-scroll"><table class="ref-table">
+            <tr><th>Input Type</th><th>What It Creates</th></tr>
+            <tr><td><code>type="text"</code></td><td>Single-line text box</td></tr>
+            <tr><td><code>type="password"</code></td><td>Hidden characters</td></tr>
+            <tr><td><code>type="email"</code></td><td>Email (validates format on submit)</td></tr>
+            <tr><td><code>type="number"</code></td><td>Numbers only</td></tr>
+            <tr><td><code>type="checkbox"</code></td><td>Tick box (select multiple)</td></tr>
+            <tr><td><code>type="radio"</code></td><td>Select exactly one from a group</td></tr>
+            <tr><td><code>type="range"</code></td><td>Slider control</td></tr>
+            <tr><td><code>type="date"</code></td><td>Date picker</td></tr>
+            <tr><td><code>type="color"</code></td><td>Colour picker</td></tr>
+            <tr><td><code>type="file"</code></td><td>File upload button</td></tr>
+            <tr><td><code>type="submit"</code></td><td>Form submit button</td></tr>
+          </table></div>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ Build a Form ✦</span>
+            <button class="run-btn" onclick="runEditor('ed5')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="ed5-code" spellcheck="false">&lt;form&gt;
+  &lt;label for="name"&gt;Your Name:&lt;/label&gt;&lt;br&gt;
+  &lt;input type="text" id="name" placeholder="Lady Whistledown"&gt;&lt;br&gt;&lt;br&gt;
+
+  &lt;label for="email"&gt;Email:&lt;/label&gt;&lt;br&gt;
+  &lt;input type="email" id="email" placeholder="lady@ton.com"&gt;&lt;br&gt;&lt;br&gt;
+
+  &lt;label&gt;Favourite Season:&lt;/label&gt;&lt;br&gt;
+  &lt;input type="radio" name="season" value="spring"&gt; Spring 🌸&lt;br&gt;
+  &lt;input type="radio" name="season" value="summer"&gt; Summer ☀️&lt;br&gt;&lt;br&gt;
+
+  &lt;label for="bio"&gt;About You:&lt;/label&gt;&lt;br&gt;
+  &lt;textarea id="bio" rows="3" placeholder="Tell us..."&gt;&lt;/textarea&gt;&lt;br&gt;&lt;br&gt;
+
+  &lt;input type="color" value="#8a6c2a"&gt;
+  &lt;label&gt; Favourite colour&lt;/label&gt;&lt;br&gt;&lt;br&gt;
+
+  &lt;button type="submit"&gt;Send ✉&lt;/button&gt;
+&lt;/form&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="ed5-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. TABLES -->
+      <div class="lesson-card card-html" id="html-tables">
+        <div class="card-ornament">⊞</div>
+        <div class="lesson-tag tag-beginner">Beginner · Lesson 6</div>
+        <h2 class="lesson-h2">Tables — Data in Rows &amp; Columns</h2>
+        <p class="lesson-intro">"Every good hostess knows how to set a proper table."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="tag">&lt;table&gt;</span>
+  <span class="tag">&lt;thead&gt;</span>                    <span class="cm">← Header row section</span>
+    <span class="tag">&lt;tr&gt;</span>                    <span class="cm">← Table Row</span>
+      <span class="tag">&lt;th&gt;</span>Name<span class="tag">&lt;/th&gt;</span>           <span class="cm">← Table Header cell (bold)</span>
+      <span class="tag">&lt;th&gt;</span>Score<span class="tag">&lt;/th&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/thead&gt;</span>
+  <span class="tag">&lt;tbody&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;td&gt;</span>Daphne<span class="tag">&lt;/td&gt;</span>         <span class="cm">← Table Data cell</span>
+      <span class="tag">&lt;td&gt;</span>98<span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;td</span> <span class="attr">colspan</span>=<span class="val">"2"</span><span class="tag">&gt;</span>Spans 2 columns<span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/tbody&gt;</span>
+  <span class="tag">&lt;tfoot&gt;</span>
+    <span class="tag">&lt;tr&gt;</span><span class="tag">&lt;td&gt;</span>Total<span class="tag">&lt;/td&gt;</span><span class="tag">&lt;td&gt;</span>98<span class="tag">&lt;/td&gt;</span><span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/tfoot&gt;</span>
+<span class="tag">&lt;/table&gt;</span></pre>
+          <div class="tip-box">
+            <div class="tip-icon">💡</div>
+            <p>Use tables <strong>only for tabular data</strong> — like a spreadsheet. Never use them to lay out your page design. Use CSS Flexbox or Grid for layouts instead.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. SEMANTIC -->
+      <div class="lesson-card card-html" id="html-semantic">
+        <div class="card-ornament">§</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · Lesson 7</div>
+        <h2 class="lesson-h2">Semantic HTML — Meaningful Structure</h2>
+        <p class="lesson-intro">"In polite society, every word carries meaning. So too must every HTML tag."</p>
+        <div class="lesson-body">
+          <p>Semantic tags tell both the browser AND developers what role each piece of content plays. They improve <strong>accessibility</strong>, <strong>SEO</strong>, and code readability.</p>
+<pre class="code-display"><span class="tag">&lt;header&gt;</span>               <span class="cm">← Site logo, nav bar at top</span>
+  <span class="tag">&lt;nav&gt;</span>                <span class="cm">← Navigation links</span>
+    <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"/"</span><span class="tag">&gt;</span>Home<span class="tag">&lt;/a&gt;</span>
+  <span class="tag">&lt;/nav&gt;</span>
+<span class="tag">&lt;/header&gt;</span>
+
+<span class="tag">&lt;main&gt;</span>                 <span class="cm">← Primary page content (only one per page!)</span>
+  <span class="tag">&lt;section&gt;</span>           <span class="cm">← A thematic group (should have a heading)</span>
+    <span class="tag">&lt;article&gt;</span>         <span class="cm">← Self-contained content (blog post, card)</span>
+      <span class="tag">&lt;h2&gt;</span>Post Title<span class="tag">&lt;/h2&gt;</span>
+      <span class="tag">&lt;p&gt;</span>Content...<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;/article&gt;</span>
+  <span class="tag">&lt;/section&gt;</span>
+  <span class="tag">&lt;aside&gt;</span>             <span class="cm">← Related sidebar content</span>
+    <span class="tag">&lt;p&gt;</span>Related posts<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;/aside&gt;</span>
+<span class="tag">&lt;/main&gt;</span>
+
+<span class="tag">&lt;footer&gt;</span>               <span class="cm">← Page footer (copyright, links)</span>
+  <span class="tag">&lt;p&gt;</span>&amp;copy; 2024<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/footer&gt;</span>
+
+<span class="tag">&lt;figure&gt;</span>              <span class="cm">← Image + caption container</span>
+  <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"..."</span> <span class="attr">alt</span>=<span class="val">"..."</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;figcaption&gt;</span>Caption text<span class="tag">&lt;/figcaption&gt;</span>
+<span class="tag">&lt;/figure&gt;</span></pre>
+          <div class="table-scroll"><table class="ref-table">
+            <tr><th>Tag</th><th>Use it for</th><th>Why not just &lt;div&gt;?</th></tr>
+            <tr><td><code>&lt;header&gt;</code></td><td>Page/section top area</td><td>Screen readers announce "banner"</td></tr>
+            <tr><td><code>&lt;nav&gt;</code></td><td>Navigation menus</td><td>Screen readers announce "navigation"</td></tr>
+            <tr><td><code>&lt;main&gt;</code></td><td>Main unique content</td><td>Screen readers can skip to it</td></tr>
+            <tr><td><code>&lt;article&gt;</code></td><td>Independent content</td><td>Could be shared on its own</td></tr>
+            <tr><td><code>&lt;aside&gt;</code></td><td>Related side content</td><td>Google understands sidebars</td></tr>
+            <tr><td><code>&lt;footer&gt;</code></td><td>Bottom of page/section</td><td>SEO &amp; accessibility context</td></tr>
+          </table></div>
+        </div>
+      </div>
+
+      <!-- 8. ATTRIBUTES -->
+      <div class="lesson-card card-html" id="html-attrs">
+        <div class="card-ornament">attr</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · Lesson 8</div>
+        <h2 class="lesson-h2">HTML Attributes — Extra Information on Tags</h2>
+        <p class="lesson-intro">"It is not enough to be present — one must bring something of substance."</p>
+        <div class="lesson-body">
+          <p>Attributes go inside the opening tag and provide extra information. Format: <span class="inline-code">attribute="value"</span></p>
+          <div class="table-scroll"><table class="ref-table">
+            <tr><th>Attribute</th><th>Purpose</th><th>Example</th></tr>
+            <tr><td><code>id</code></td><td>Unique identifier — one per page</td><td><code>&lt;div id="hero"&gt;</code></td></tr>
+            <tr><td><code>class</code></td><td>Reusable CSS/JS hook (multiple allowed)</td><td><code>&lt;p class="intro bold"&gt;</code></td></tr>
+            <tr><td><code>style</code></td><td>Inline CSS (avoid when possible)</td><td><code>&lt;p style="color:red"&gt;</code></td></tr>
+            <tr><td><code>data-*</code></td><td>Custom data storage for JavaScript</td><td><code>&lt;div data-user-id="42"&gt;</code></td></tr>
+            <tr><td><code>hidden</code></td><td>Hides element completely</td><td><code>&lt;p hidden&gt;</code></td></tr>
+            <tr><td><code>title</code></td><td>Tooltip text on hover</td><td><code>&lt;abbr title="HTML"&gt;H&lt;/abbr&gt;</code></td></tr>
+            <tr><td><code>aria-label</code></td><td>Accessibility label for screen readers</td><td><code>&lt;button aria-label="Close"&gt;</code></td></tr>
+            <tr><td><code>tabindex</code></td><td>Keyboard navigation order</td><td><code>&lt;div tabindex="0"&gt;</code></td></tr>
+          </table></div>
+          <div class="warn-box">
+            <div class="tip-icon">⚠️</div>
+            <p>Use <strong>id</strong> for unique things. Use <strong>class</strong> for repeating patterns. An <code>id</code> must be unique — only one element per page can have a given id value.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. META & HEAD -->
+      <div class="lesson-card card-html" id="html-meta">
+        <div class="card-ornament">&lt;/&gt;</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · Lesson 9</div>
+        <h2 class="lesson-h2">Meta &amp; Head — The Envelope of Every Page</h2>
+        <p class="lesson-intro">"What goes inside the envelope matters as much as what is written upon it."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="tag">&lt;head&gt;</span>
+  <span class="cm">&lt;!-- Character encoding --&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Mobile responsiveness --&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"viewport"</span> <span class="attr">content</span>=<span class="val">"width=device-width, initial-scale=1"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- SEO description --&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"description"</span> <span class="attr">content</span>=<span class="val">"My wonderful webpage"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Social media sharing (Open Graph) --&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:title"</span> <span class="attr">content</span>=<span class="val">"My Page"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:image"</span> <span class="attr">content</span>=<span class="val">"thumb.jpg"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Page title (browser tab) --&gt;</span>
+  <span class="tag">&lt;title&gt;</span>My Amazing Page<span class="tag">&lt;/title&gt;</span>
+
+  <span class="cm">&lt;!-- Link CSS file --&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"stylesheet"</span> <span class="attr">href</span>=<span class="val">"style.css"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Favicon (tab icon) --&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"icon"</span> <span class="attr">href</span>=<span class="val">"favicon.ico"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Google Fonts --&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">href</span>=<span class="val">"https://fonts.googleapis.com/css2?family=Roboto&display=swap"</span> <span class="attr">rel</span>=<span class="val">"stylesheet"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/head&gt;</span></pre>
+          <div class="quiz-box">
+            <div class="quiz-title">📰 Quick Quiz</div>
+            <div class="quiz-q">Which tag is used to make text bold AND indicate it is <em>important</em> (not just visually bold)?</div>
+            <div class="quiz-options" id="q1">
+              <div class="quiz-option" onclick="checkQuiz('q1',this,false)">○ &lt;b&gt;</div>
+              <div class="quiz-option" onclick="checkQuiz('q1',this,true)" data-correct="true">○ &lt;strong&gt;</div>
+              <div class="quiz-option" onclick="checkQuiz('q1',this,false)">○ &lt;bold&gt;</div>
+              <div class="quiz-option" onclick="checkQuiz('q1',this,false)">○ &lt;em&gt;</div>
+            </div>
+            <div class="quiz-feedback" id="q1-fb"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HTML LESSON 10: ENTITIES -->
+      <div class="lesson-card card-html" id="html-entities">
+        <div class="card-ornament">&amp;</div>
+        <div class="lesson-tag tag-beginner">Beginner · Lesson 10</div>
+        <h2 class="lesson-h2">HTML Entities — Special Characters</h2>
+        <p class="lesson-intro">"Some characters are so special they must be introduced by their proper title."</p>
+        <div class="lesson-body">
+          <p>Some characters have special meaning in HTML — like <span class="inline-code">&lt;</span> and <span class="inline-code">&gt;</span> which are used for tags. To display them as text, use <strong>HTML entities</strong>.</p>
+          <div class="table-scroll"><table class="ref-table">
+            <tr><th>Character</th><th>Entity Name</th><th>Entity Number</th><th>Displays as</th></tr>
+            <tr><td>Less than</td><td><code>&amp;lt;</code></td><td><code>&amp;#60;</code></td><td>&lt;</td></tr>
+            <tr><td>Greater than</td><td><code>&amp;gt;</code></td><td><code>&amp;#62;</code></td><td>&gt;</td></tr>
+            <tr><td>Ampersand</td><td><code>&amp;amp;</code></td><td><code>&amp;#38;</code></td><td>&amp;</td></tr>
+            <tr><td>Quote</td><td><code>&amp;quot;</code></td><td><code>&amp;#34;</code></td><td>&quot;</td></tr>
+            <tr><td>Non-breaking space</td><td><code>&amp;nbsp;</code></td><td><code>&amp;#160;</code></td><td>( space that won't wrap)</td></tr>
+            <tr><td>Copyright ©</td><td><code>&amp;copy;</code></td><td><code>&amp;#169;</code></td><td>©</td></tr>
+            <tr><td>Registered ®</td><td><code>&amp;reg;</code></td><td><code>&amp;#174;</code></td><td>®</td></tr>
+            <tr><td>Euro €</td><td><code>&amp;euro;</code></td><td><code>&amp;#8364;</code></td><td>€</td></tr>
+            <tr><td>Em dash —</td><td><code>&amp;mdash;</code></td><td><code>&amp;#8212;</code></td><td>—</td></tr>
+            <tr><td>Ellipsis …</td><td><code>&amp;hellip;</code></td><td><code>&amp;#8230;</code></td><td>…</td></tr>
+            <tr><td>Heart ♥</td><td><code>&amp;hearts;</code></td><td><code>&amp;#9829;</code></td><td>♥</td></tr>
+          </table></div>
+          <div class="tip-box">
+            <div class="tip-icon">💡</div>
+            <p>Always use <span class="inline-code">&amp;lt;</span> and <span class="inline-code">&amp;gt;</span> when showing HTML code examples inside your webpage — otherwise the browser will try to parse them as real tags!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- HTML LESSON 11: MEDIA -->
+      <div class="lesson-card card-html" id="html-media">
+        <div class="card-ornament">▶</div>
+        <div class="lesson-tag tag-beginner">Beginner · Lesson 11</div>
+        <h2 class="lesson-h2">Media Elements — Video &amp; Audio</h2>
+        <p class="lesson-intro">"A picture speaks a thousand words; a moving picture speaks a thousand more."</p>
+        <div class="lesson-body">
+          <h3 class="sub-heading">Video — <span class="inline-code">&lt;video&gt;</span></h3>
+<pre class="code-display"><span class="tag">&lt;video</span>
+  <span class="attr">src</span>=<span class="val">"movie.mp4"</span>
+  <span class="attr">width</span>=<span class="val">"640"</span>
+  <span class="attr">height</span>=<span class="val">"360"</span>
+  <span class="attr">controls</span>             <span class="cm">← shows play/pause/volume controls</span>
+  <span class="attr">autoplay</span>             <span class="cm">← plays automatically (muted required)</span>
+  <span class="attr">muted</span>                <span class="cm">← starts muted</span>
+  <span class="attr">loop</span>                 <span class="cm">← plays on loop</span>
+  <span class="attr">poster</span>=<span class="val">"thumb.jpg"</span>  <span class="cm">← thumbnail before play</span>
+<span class="tag">&gt;</span>
+  <span class="cm">&lt;!-- Multiple formats for browser compatibility --&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">src</span>=<span class="val">"movie.mp4"</span>  <span class="attr">type</span>=<span class="val">"video/mp4"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">src</span>=<span class="val">"movie.webm"</span> <span class="attr">type</span>=<span class="val">"video/webm"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Your browser does not support video.<span class="tag">&lt;/p&gt;</span>  <span class="cm">← fallback text</span>
+<span class="tag">&lt;/video&gt;</span></pre>
+
+          <h3 class="sub-heading">Audio — <span class="inline-code">&lt;audio&gt;</span></h3>
+<pre class="code-display"><span class="tag">&lt;audio</span> <span class="attr">controls</span> <span class="attr">loop</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">src</span>=<span class="val">"song.mp3"</span>  <span class="attr">type</span>=<span class="val">"audio/mpeg"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">src</span>=<span class="val">"song.ogg"</span>  <span class="attr">type</span>=<span class="val">"audio/ogg"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/audio&gt;</span>
+
+<span class="cm">&lt;!-- Embedding YouTube / external video with iframe --&gt;</span>
+<span class="tag">&lt;iframe</span>
+  <span class="attr">width</span>=<span class="val">"560"</span> <span class="attr">height</span>=<span class="val">"315"</span>
+  <span class="attr">src</span>=<span class="val">"https://www.youtube.com/embed/VIDEO_ID"</span>
+  <span class="attr">allowfullscreen</span>
+<span class="tag">&gt;&lt;/iframe&gt;</span></pre>
+        </div>
+      </div>
+
+      <!-- HTML LESSON 12: FORM VALIDATION + SELECT -->
+      <div class="lesson-card card-html" id="html-formvalidation">
+        <div class="card-ornament">✓</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · Lesson 12</div>
+        <h2 class="lesson-h2">Form Validation &amp; Dropdowns</h2>
+        <p class="lesson-intro">"One must verify the authenticity of every calling card before granting admission."</p>
+        <div class="lesson-body">
+          <h3 class="sub-heading">Validation Attributes</h3>
+          <div class="table-scroll"><table class="ref-table">
+            <tr><th>Attribute</th><th>What it does</th><th>Example</th></tr>
+            <tr><td><code>required</code></td><td>Field must not be empty</td><td><code>&lt;input required&gt;</code></td></tr>
+            <tr><td><code>minlength</code></td><td>Minimum character count</td><td><code>&lt;input minlength="8"&gt;</code></td></tr>
+            <tr><td><code>maxlength</code></td><td>Maximum character count</td><td><code>&lt;input maxlength="20"&gt;</code></td></tr>
+            <tr><td><code>min</code> / <code>max</code></td><td>Min/max value for number/date</td><td><code>&lt;input type="number" min="1" max="100"&gt;</code></td></tr>
+            <tr><td><code>pattern</code></td><td>Regex the value must match</td><td><code>&lt;input pattern="[A-Za-z]+"&gt;</code></td></tr>
+            <tr><td><code>type="email"</code></td><td>Validates email format automatically</td><td><code>&lt;input type="email"&gt;</code></td></tr>
+            <tr><td><code>type="url"</code></td><td>Validates URL format</td><td><code>&lt;input type="url"&gt;</code></td></tr>
+            <tr><td><code>disabled</code></td><td>Greyed out, not submittable</td><td><code>&lt;input disabled&gt;</code></td></tr>
+            <tr><td><code>readonly</code></td><td>Visible but not editable</td><td><code>&lt;input readonly&gt;</code></td></tr>
+            <tr><td><code>autocomplete</code></td><td>Browser autofill hint</td><td><code>&lt;input autocomplete="email"&gt;</code></td></tr>
+          </table></div>
+
+          <h3 class="sub-heading">Dropdowns — <span class="inline-code">&lt;select&gt;</span></h3>
+<pre class="code-display"><span class="cm">&lt;!-- Basic dropdown --&gt;</span>
+<span class="tag">&lt;select</span> <span class="attr">name</span>=<span class="val">"season"</span> <span class="attr">id</span>=<span class="val">"season"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">""</span><span class="tag">&gt;</span>-- Choose a season --<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"1"</span><span class="tag">&gt;</span>Season One<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"2"</span> <span class="attr">selected</span><span class="tag">&gt;</span>Season Two<span class="tag">&lt;/option&gt;</span>  <span class="cm">← pre-selected</span>
+  <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"3"</span> <span class="attr">disabled</span><span class="tag">&gt;</span>Season Three<span class="tag">&lt;/option&gt;</span>  <span class="cm">← greyed out</span>
+<span class="tag">&lt;/select&gt;</span>
+
+<span class="cm">&lt;!-- Grouped options --&gt;</span>
+<span class="tag">&lt;select&gt;</span>
+  <span class="tag">&lt;optgroup</span> <span class="attr">label</span>=<span class="val">"Bridgertons"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;option&gt;</span>Daphne<span class="tag">&lt;/option&gt;</span>
+    <span class="tag">&lt;option&gt;</span>Anthony<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;/optgroup&gt;</span>
+  <span class="tag">&lt;optgroup</span> <span class="attr">label</span>=<span class="val">"Featheringtons"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;option&gt;</span>Penelope<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;/optgroup&gt;</span>
+<span class="tag">&lt;/select&gt;</span>
+
+<span class="cm">&lt;!-- Multi-select (hold Ctrl/Cmd to pick multiple) --&gt;</span>
+<span class="tag">&lt;select</span> <span class="attr">multiple</span> <span class="attr">size</span>=<span class="val">"4"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;option&gt;</span>HTML<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;option&gt;</span>CSS<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;option&gt;</span>JavaScript<span class="tag">&lt;/option&gt;</span>
+<span class="tag">&lt;/select&gt;</span></pre>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ Validation &amp; Dropdown ✦</span>
+            <button class="run-btn" onclick="runEditor('ed12')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="ed12-code" spellcheck="false">&lt;form style="font-family:sans-serif;padding:16px"&gt;
+  &lt;label&gt;Name (required, 2-30 chars):&lt;/label&gt;&lt;br&gt;
+  &lt;input type="text" required minlength="2" maxlength="30"
+    placeholder="Lady Whistledown"&gt;&lt;br&gt;&lt;br&gt;
+
+  &lt;label&gt;Age (18-99):&lt;/label&gt;&lt;br&gt;
+  &lt;input type="number" min="18" max="99"&gt;&lt;br&gt;&lt;br&gt;
+
+  &lt;label&gt;Email:&lt;/label&gt;&lt;br&gt;
+  &lt;input type="email" required placeholder="you@example.com"&gt;&lt;br&gt;&lt;br&gt;
+
+  &lt;label&gt;Favourite Season:&lt;/label&gt;&lt;br&gt;
+  &lt;select&gt;
+    &lt;option value=""&gt;-- Choose --&lt;/option&gt;
+    &lt;option value="1"&gt;Season One&lt;/option&gt;
+    &lt;option value="2" selected&gt;Season Two&lt;/option&gt;
+    &lt;option value="3"&gt;Season Three&lt;/option&gt;
+  &lt;/select&gt;&lt;br&gt;&lt;br&gt;
+
+  &lt;button type="submit"&gt;Submit ✦&lt;/button&gt;
+  &lt;small&gt; (Try submitting empty — watch validation!)&lt;/small&gt;
+&lt;/form&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="ed12-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end HTML panel -->
+
+    <!-- ════════════ CSS PANEL ════════════ -->
+    <div class="tab-panel" id="panel-css">
+      <div class="column-header">
+        <div class="col-header-pre">Second Dispatch — The Art of Presentation</div>
+        <div class="col-header-title">A Complete Account of Cascading Style Sheets</div>
+      </div>
+
+      <!-- CSS Selectors -->
+      <div class="lesson-card card-css" id="css-selectors">
+        <div class="card-ornament">CSS</div>
+        <div class="lesson-tag tag-beginner">Beginner · CSS 1</div>
+        <h2 class="lesson-h2">Selectors — Targeting Elements with Precision</h2>
+        <p class="lesson-intro">"You must know exactly whom you are addressing before speaking."</p>
+        <div class="lesson-body">
+          <p>CSS selectors tell the browser <em>which</em> HTML elements to style. The rule format is:</p>
+<pre class="code-display"><span class="sel">selector</span> {
+  <span class="prop">property</span>: <span class="val">value</span>;
+  <span class="prop">another-property</span>: <span class="val">value</span>;
+}</pre>
+          <div class="table-scroll"><table class="ref-table">
+            <tr><th>Selector</th><th>Targets</th><th>Example</th></tr>
+            <tr><td><code>p</code></td><td>All &lt;p&gt; elements</td><td><code>p { color: red; }</code></td></tr>
+            <tr><td><code>.class</code></td><td>Elements with that class</td><td><code>.hero { font-size: 2rem; }</code></td></tr>
+            <tr><td><code>#id</code></td><td>Element with that id</td><td><code>#header { background: blue; }</code></td></tr>
+            <tr><td><code>*</code></td><td>Every element</td><td><code>* { box-sizing: border-box; }</code></td></tr>
+            <tr><td><code>a, p</code></td><td>Multiple elements</td><td><code>h1, h2 { font-weight: bold; }</code></td></tr>
+            <tr><td><code>div p</code></td><td>p inside any div (descendant)</td><td><code>nav a { color: white; }</code></td></tr>
+            <tr><td><code>div &gt; p</code></td><td>Direct child p only</td><td><code>ul &gt; li { list-style: none; }</code></td></tr>
+            <tr><td><code>input[type="text"]</code></td><td>Attribute selector</td><td><code>input[required] { border: red; }</code></td></tr>
+          </table></div>
+          <h3 class="sub-heading">Specificity — Who Wins When Rules Conflict?</h3>
+          <div class="cheat-grid">
+            <div class="cheat-item"><div class="cheat-code">!important</div><div class="cheat-desc">👑 Overrides everything — use very rarely</div></div>
+            <div class="cheat-item"><div class="cheat-code">style="..."</div><div class="cheat-desc">Inline styles — specificity: 1000</div></div>
+            <div class="cheat-item"><div class="cheat-code">#id</div><div class="cheat-desc">ID selector — specificity: 100</div></div>
+            <div class="cheat-item"><div class="cheat-code">.class</div><div class="cheat-desc">Class selector — specificity: 10</div></div>
+            <div class="cheat-item"><div class="cheat-code">element</div><div class="cheat-desc">Tag selector — specificity: 1</div></div>
+          </div>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ Try CSS Selectors ✦</span>
+            <button class="run-btn" onclick="runEditor('css1')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="css1-code" spellcheck="false">&lt;style&gt;
+  p { color: #333; font-family: sans-serif; }
+  .highlight { background: #fdf5e0; padding: 4px 8px; border-left: 3px solid #8a6c2a; }
+  #special { color: #8a3010; font-weight: bold; font-size: 1.2em; }
+  .box a { color: #2e7d4f; font-weight: bold; }
+&lt;/style&gt;
+
+&lt;p&gt;I am a normal paragraph.&lt;/p&gt;
+&lt;p class="highlight"&gt;I have the highlight class!&lt;/p&gt;
+&lt;p id="special"&gt;I have a unique ID!&lt;/p&gt;
+&lt;div class="box"&gt;
+  &lt;a href="#"&gt;Link inside .box (green!)&lt;/a&gt;
+&lt;/div&gt;
+&lt;a href="#"&gt;Link outside .box (default blue)&lt;/a&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="css1-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOX MODEL -->
+      <div class="lesson-card card-css" id="css-box">
+        <div class="card-ornament">□</div>
+        <div class="lesson-tag tag-beginner">Beginner · CSS 2</div>
+        <h2 class="lesson-h2">The Box Model — Every Element is a Box</h2>
+        <p class="lesson-intro">"Every gift comes in a box: the present itself, wrapping paper, padding, and the space between."</p>
+        <div class="lesson-body">
+          <p>Every HTML element is a rectangular box made of 4 layers from inside out:</p>
+          <div style="background:#141008;border-radius:4px;padding:20px;margin:16px 0;text-align:center;font-family:'Courier New',monospace;font-size:12px;">
+            <div style="border:2px solid #8a6c2a;padding:18px;color:#c4a34e;">
+              <div style="font-size:9px;letter-spacing:2px;color:#8a6c2a;margin-bottom:6px;text-transform:uppercase;">Margin (outside, transparent)</div>
+              <div style="border:2px solid #c4a34e;padding:14px;color:#f0e8c8;">
+                <div style="font-size:9px;letter-spacing:2px;color:#c4a34e;margin-bottom:6px;text-transform:uppercase;">Border</div>
+                <div style="border:2px solid #7ecfa0;padding:12px;color:#7ecfa0;">
+                  <div style="font-size:9px;letter-spacing:2px;color:#7ecfa0;margin-bottom:6px;text-transform:uppercase;">Padding</div>
+                  <div style="background:rgba(240,160,90,0.2);padding:10px;color:#f0a05a;">CONTENT</div>
+                </div>
+              </div>
+            </div>
+          </div>
+<pre class="code-display"><span class="sel">.box</span> {
+  <span class="cm">/* Content */</span>
+  <span class="prop">width</span>: <span class="val">300px</span>;
+  <span class="prop">height</span>: <span class="val">150px</span>;
+
+  <span class="cm">/* Padding — space INSIDE the border */</span>
+  <span class="prop">padding</span>: <span class="val">20px</span>;                   <span class="cm">← all 4 sides equal</span>
+  <span class="prop">padding</span>: <span class="val">10px 20px</span>;              <span class="cm">← top/bottom  left/right</span>
+  <span class="prop">padding</span>: <span class="val">5px 10px 15px 20px</span>;    <span class="cm">← top  right  bottom  left</span>
+
+  <span class="cm">/* Border */</span>
+  <span class="prop">border</span>: <span class="val">2px solid #333</span>;          <span class="cm">← width style color</span>
+  <span class="prop">border-radius</span>: <span class="val">8px</span>;              <span class="cm">← rounded corners</span>
+
+  <span class="cm">/* Margin — space OUTSIDE the border */</span>
+  <span class="prop">margin</span>: <span class="val">16px auto</span>;               <span class="cm">← auto centres horizontally</span>
+
+  <span class="cm">/* IMPORTANT: include padding in width calculation */</span>
+  <span class="prop">box-sizing</span>: <span class="val">border-box</span>;          <span class="cm">← always use this!</span>
+}</pre>
+          <div class="tip-box">
+            <div class="tip-icon">💡</div>
+            <p>Always add <span class="inline-code">* { box-sizing: border-box; }</span> to the top of every CSS file. It makes widths include padding and border — far more intuitive than the default.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- DISPLAY & POSITION -->
+      <div class="lesson-card card-css" id="css-display">
+        <div class="card-ornament">⊡</div>
+        <div class="lesson-tag tag-beginner">Beginner · CSS 3</div>
+        <h2 class="lesson-h2">Display &amp; Position — Placing Elements on the Page</h2>
+        <p class="lesson-intro">"Know your place in the room — and know how to hold it."</p>
+        <div class="lesson-body">
+          <h3 class="sub-heading">Display Property</h3>
+          <div class="table-scroll"><table class="ref-table">
+            <tr><th>Value</th><th>Behaviour</th><th>Default for</th></tr>
+            <tr><td><code>block</code></td><td>Full width, new line before/after</td><td>div, p, h1–h6, section</td></tr>
+            <tr><td><code>inline</code></td><td>Width of content, stays in line</td><td>span, a, strong, em</td></tr>
+            <tr><td><code>inline-block</code></td><td>Inline but accepts width/height</td><td>Buttons, badges</td></tr>
+            <tr><td><code>flex</code></td><td>Flexbox layout for children</td><td>Navigation, card rows</td></tr>
+            <tr><td><code>grid</code></td><td>Grid layout for children</td><td>Page layouts, galleries</td></tr>
+            <tr><td><code>none</code></td><td>Completely hidden, removed from layout</td><td>Hidden menus</td></tr>
+          </table></div>
+          <h3 class="sub-heading">Position Property</h3>
+          <div class="table-scroll"><table class="ref-table">
+            <tr><th>Value</th><th>Behaviour</th><th>When to use</th></tr>
+            <tr><td><code>static</code></td><td>Default — normal document flow</td><td>Most elements</td></tr>
+            <tr><td><code>relative</code></td><td>Offset from its normal position</td><td>Small nudges; parent for absolute children</td></tr>
+            <tr><td><code>absolute</code></td><td>Positioned relative to nearest positioned ancestor</td><td>Tooltips, badges, overlays</td></tr>
+            <tr><td><code>fixed</code></td><td>Relative to viewport — stays on scroll</td><td>Sticky nav bars, floating buttons</td></tr>
+            <tr><td><code>sticky</code></td><td>Normal flow until scroll threshold</td><td>Table headers, sticky section titles</td></tr>
+          </table></div>
+<pre class="code-display"><span class="cm">/* Perfect centring with absolute */</span>
+<span class="sel">.parent</span> { <span class="prop">position</span>: <span class="val">relative</span>; }
+<span class="sel">.child</span>  {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">top</span>: <span class="val">50%</span>;  <span class="prop">left</span>: <span class="val">50%</span>;
+  <span class="prop">transform</span>: <span class="val">translate(-50%, -50%)</span>;
+}
+
+<span class="cm">/* Fixed nav bar */</span>
+<span class="sel">nav</span> {
+  <span class="prop">position</span>: <span class="val">fixed</span>;
+  <span class="prop">top</span>: <span class="val">0</span>;  <span class="prop">left</span>: <span class="val">0</span>;  <span class="prop">right</span>: <span class="val">0</span>;
+  <span class="prop">z-index</span>: <span class="val">100</span>;   <span class="cm">← sits on top of everything</span>
+}</pre>
+        </div>
+      </div>
+
+      <!-- FLEXBOX -->
+      <div class="lesson-card card-css" id="css-flex">
+        <div class="card-ornament">⇄</div>
+        <div class="lesson-tag tag-beginner">Beginner · CSS 4</div>
+        <h2 class="lesson-h2">Flexbox — The Dance of Alignment</h2>
+        <p class="lesson-intro">"The most elegant dance requires each partner to know their role and direction."</p>
+        <div class="lesson-body">
+          <p>Flexbox arranges items in a <strong>row or column</strong>. Apply <span class="inline-code">display: flex</span> to the <em>parent</em> container.</p>
+<pre class="code-display"><span class="sel">.container</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-direction</span>: <span class="val">row</span>;         <span class="cm">← row | column | row-reverse | column-reverse</span>
+  <span class="prop">justify-content</span>: <span class="val">center</span>;    <span class="cm">← flex-start | flex-end | center | space-between | space-evenly</span>
+  <span class="prop">align-items</span>: <span class="val">center</span>;        <span class="cm">← flex-start | flex-end | center | stretch</span>
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;            <span class="cm">← nowrap | wrap (items wrap to next line)</span>
+  <span class="prop">gap</span>: <span class="val">16px</span>;                  <span class="cm">← space between items</span>
+}
+
+<span class="sel">.item</span> {
+  <span class="prop">flex</span>: <span class="val">1</span>;                    <span class="cm">← grow to fill space equally</span>
+  <span class="prop">flex-grow</span>: <span class="val">2</span>;              <span class="cm">← grow twice as much as siblings with flex-grow:1</span>
+  <span class="prop">order</span>: <span class="val">2</span>;                  <span class="cm">← change visual order without changing HTML</span>
+  <span class="prop">align-self</span>: <span class="val">flex-end</span>;     <span class="cm">← override parent align-items for this one item</span>
+}</pre>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ Flex Playground ✦</span>
+            <button class="run-btn" onclick="runEditor('css4')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="css4-code" spellcheck="false">&lt;style&gt;
+  .flex-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+    background: #f8f5ee;
+    padding: 20px;
+    height: 120px;
+    border: 1px solid #bfab88;
+  }
+  .flex-item {
+    background: #8a3010;
+    color: white;
+    padding: 14px 18px;
+    font-family: sans-serif;
+    font-size: 14px;
+  }
+  .flex-item:nth-child(2) {
+    align-self: flex-end;
+    background: #2e7d4f;
+  }
+&lt;/style&gt;
+&lt;div class="flex-container"&gt;
+  &lt;div class="flex-item"&gt;One&lt;/div&gt;
+  &lt;div class="flex-item"&gt;Two (flex-end)&lt;/div&gt;
+  &lt;div class="flex-item"&gt;Three&lt;/div&gt;
+&lt;/div&gt;
+&lt;p style="font-family:sans-serif;font-size:12px;margin-top:8px"&gt;
+  Try changing justify-content to: flex-start, flex-end, space-between, space-evenly
+&lt;/p&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="css4-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRID -->
+      <div class="lesson-card card-css" id="css-grid">
+        <div class="card-ornament">⊞</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · CSS 5</div>
+        <h2 class="lesson-h2">CSS Grid — The Grand Ballroom Layout</h2>
+        <p class="lesson-intro">"A well-planned ballroom has rows, columns, and every guest knows their place."</p>
+        <div class="lesson-body">
+          <p>CSS Grid is for <strong>two-dimensional layouts</strong> (rows AND columns simultaneously). Use Flexbox for one direction, Grid for full layouts.</p>
+<pre class="code-display"><span class="sel">.grid-container</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="val">1fr 2fr 1fr</span>;    <span class="cm">← 3 columns (fr = fraction unit)</span>
+  <span class="prop">grid-template-columns</span>: <span class="val">repeat(3, 1fr)</span>; <span class="cm">← same: 3 equal columns</span>
+  <span class="prop">grid-template-columns</span>: <span class="val">200px auto 1fr</span>;<span class="cm">← mixed units</span>
+
+  <span class="cm">/* Auto fill as many columns as fit */</span>
+  <span class="prop">grid-template-columns</span>: <span class="val">repeat(auto-fill, minmax(200px, 1fr))</span>;
+
+  <span class="prop">gap</span>: <span class="val">16px</span>;
+}
+
+<span class="sel">.item-spanning</span> {
+  <span class="prop">grid-column</span>: <span class="val">1 / 3</span>;   <span class="cm">← spans from column line 1 to 3 (= 2 columns)</span>
+  <span class="prop">grid-column</span>: <span class="val">span 2</span>;  <span class="cm">← span 2 from current position</span>
+  <span class="prop">grid-column</span>: <span class="val">1 / -1</span>; <span class="cm">← span ALL columns (full width)</span>
+}</pre>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ Grid Playground ✦</span>
+            <button class="run-btn" onclick="runEditor('css5')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="css5-code" spellcheck="false">&lt;style&gt;
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 12px; background: #f8f5ee; }
+  .card { background: #8a3010; color: white; padding: 16px; font-family: sans-serif; text-align: center; }
+  .wide { grid-column: span 2; background: #2e7d4f; }
+  .full { grid-column: 1 / -1; background: #8a6c2a; }
+&lt;/style&gt;
+
+&lt;div class="grid"&gt;
+  &lt;div class="card"&gt;1&lt;/div&gt;
+  &lt;div class="card wide"&gt;Wide (span 2)&lt;/div&gt;
+  &lt;div class="card"&gt;3&lt;/div&gt;
+  &lt;div class="card"&gt;4&lt;/div&gt;
+  &lt;div class="card full"&gt;Full Width (1 / -1)&lt;/div&gt;
+&lt;/div&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="css5-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLORS & TYPOGRAPHY -->
+      <div class="lesson-card card-css" id="css-color">
+        <div class="card-ornament">🎨</div>
+        <div class="lesson-tag tag-beginner">Beginner · CSS 6</div>
+        <h2 class="lesson-h2">Colors &amp; Typography — Dress Your Page in Finery</h2>
+        <p class="lesson-intro">"A splash of colour and a well-chosen font transform the ordinary into the extraordinary."</p>
+        <div class="lesson-body">
+          <h3 class="sub-heading">Color Formats</h3>
+<pre class="code-display"><span class="sel">p</span> {
+  <span class="cm">/* Named colors */</span>
+  <span class="prop">color</span>: <span class="val">tomato</span>;
+  <span class="prop">color</span>: <span class="val">cornflowerblue</span>;
+
+  <span class="cm">/* Hex (#RRGGBB) */</span>
+  <span class="prop">color</span>: <span class="val">#8a6c2a</span>;
+  <span class="prop">color</span>: <span class="val">#fff</span>;            <span class="cm">← shorthand for #ffffff</span>
+
+  <span class="cm">/* RGB / RGBA (a = alpha/transparency 0-1) */</span>
+  <span class="prop">color</span>: <span class="val">rgb(138, 108, 42)</span>;
+  <span class="prop">color</span>: <span class="val">rgba(138, 108, 42, 0.5)</span>;   <span class="cm">← 50% transparent</span>
+
+  <span class="cm">/* HSL (Hue 0-360°, Saturation%, Lightness%) */</span>
+  <span class="prop">color</span>: <span class="val">hsl(40, 54%, 35%)</span>;
+}
+
+<span class="cm">/* Backgrounds */</span>
+<span class="sel">.hero</span> {
+  <span class="prop">background-color</span>: <span class="val">#f8f5ee</span>;
+  <span class="prop">background-image</span>: <span class="val">url("bg.jpg")</span>;
+  <span class="prop">background-size</span>: <span class="val">cover</span>;
+  <span class="prop">background-position</span>: <span class="val">center</span>;
+  <span class="prop">background</span>: <span class="val">linear-gradient(135deg, #1a1208, #8a6c2a)</span>;
+}</pre>
+
+          <h3 class="sub-heading">Typography</h3>
+<pre class="code-display"><span class="sel">body</span> {
+  <span class="prop">font-family</span>: <span class="val">'Georgia', serif</span>;       <span class="cm">← font stack (fallbacks)</span>
+  <span class="prop">font-size</span>: <span class="val">16px</span>;                   <span class="cm">← base size</span>
+  <span class="prop">font-weight</span>: <span class="val">400</span>;                  <span class="cm">← 100–900 or bold/normal</span>
+  <span class="prop">font-style</span>: <span class="val">italic</span>;
+  <span class="prop">line-height</span>: <span class="val">1.6</span>;                  <span class="cm">← 1.5–1.7 ideal for body text</span>
+  <span class="prop">letter-spacing</span>: <span class="val">0.5px</span>;
+  <span class="prop">text-align</span>: <span class="val">center</span>;               <span class="cm">← left | right | center | justify</span>
+  <span class="prop">text-decoration</span>: <span class="val">underline</span>;       <span class="cm">← none | underline | line-through</span>
+  <span class="prop">text-transform</span>: <span class="val">uppercase</span>;       <span class="cm">← uppercase | lowercase | capitalize</span>
+}
+
+<span class="cm">/* Units — rem vs px vs em */</span>
+<span class="cm">px   → fixed pixels (avoid for font-size)</span>
+<span class="cm">rem  → relative to root font-size — BEST for accessibility</span>
+<span class="cm">em   → relative to parent element font-size</span>
+<span class="cm">%    → relative to parent</span>
+<span class="cm">vw/vh→ relative to viewport width/height</span></pre>
+        </div>
+      </div>
+
+      <!-- TRANSITIONS & ANIMATIONS -->
+      <div class="lesson-card card-css" id="css-anim">
+        <div class="card-ornament">✦</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · CSS 7</div>
+        <h2 class="lesson-h2">Transitions &amp; Animations — Motion with Grace</h2>
+        <p class="lesson-intro">"A graceful entrance is never sudden — it unfolds with deliberate elegance."</p>
+        <div class="lesson-body">
+          <h3 class="sub-heading">Transitions — Smooth Changes on Hover/Focus</h3>
+<pre class="code-display"><span class="sel">.button</span> {
+  <span class="prop">background</span>: <span class="val">#8a6c2a</span>;
+  <span class="prop">transition</span>: <span class="val">all 0.3s ease</span>;          <span class="cm">← property  duration  timing-function</span>
+  <span class="prop">transition</span>: <span class="val">background 0.2s ease, transform 0.2s ease</span>;   <span class="cm">← multiple</span>
+}
+<span class="sel">.button:hover</span> {
+  <span class="prop">background</span>: <span class="val">#6a4e18</span>;
+  <span class="prop">transform</span>: <span class="val">translateY(-2px) scale(1.02)</span>;
+}
+
+<span class="cm">/* Timing functions */</span>
+<span class="cm">ease        → slow-fast-slow (default, most natural)</span>
+<span class="cm">linear      → constant speed</span>
+<span class="cm">ease-in     → starts slow, ends fast</span>
+<span class="cm">ease-out    → starts fast, ends slow</span>
+<span class="cm">ease-in-out → slow at both ends</span></pre>
+
+          <h3 class="sub-heading">Keyframe Animations — Full Control</h3>
+<pre class="code-display"><span class="cm">/* Define the animation with @keyframes */</span>
+<span class="kw">@keyframes</span> <span class="fn">float</span> {
+  <span class="val">0%</span>,<span class="val">100%</span> { <span class="prop">transform</span>: <span class="val">translateY(0)</span>; }
+  <span class="val">50%</span>     { <span class="prop">transform</span>: <span class="val">translateY(-12px)</span>; }
+}
+
+<span class="cm">/* Apply it */</span>
+<span class="sel">.floating</span> {
+  <span class="prop">animation</span>: <span class="val">float 3s ease-in-out infinite</span>;
+  <span class="cm">/*         name  dur  timing       iteration */</span>
+}
+
+<span class="cm">/* Useful transform functions */</span>
+<span class="prop">transform</span>: <span class="val">translateX(20px)</span>;    <span class="cm">← move right</span>
+<span class="prop">transform</span>: <span class="val">translateY(-10px)</span>;   <span class="cm">← move up</span>
+<span class="prop">transform</span>: <span class="val">rotate(45deg)</span>;       <span class="cm">← rotate clockwise</span>
+<span class="prop">transform</span>: <span class="val">scale(1.2)</span>;          <span class="cm">← grow 20%</span>
+<span class="prop">transform</span>: <span class="val">skew(10deg)</span>;         <span class="cm">← slant</span></pre>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ Animation Sandbox ✦</span>
+            <button class="run-btn" onclick="runEditor('css7')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="css7-code" spellcheck="false">&lt;style&gt;
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .float-btn {
+    background: #8a3010; color: white;
+    padding: 12px 24px; border: none;
+    border-radius: 4px; font-size: 14px;
+    cursor: pointer; display: inline-block;
+    margin: 20px 10px;
+    animation: float 2s ease-in-out infinite;
+  }
+  .spinner {
+    width: 40px; height: 40px;
+    border: 4px solid #f8f5ee;
+    border-top-color: #8a6c2a;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: inline-block; margin: 20px 10px;
+    vertical-align: middle;
+  }
+  .hover-me {
+    background: #2e7d4f; color: white;
+    padding: 12px 24px; display: inline-block;
+    margin: 20px 10px; font-family: sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .hover-me:hover {
+    transform: scale(1.1) rotate(-2deg);
+    background: #1a5c34;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+&lt;/style&gt;
+
+&lt;div style="text-align:center;padding:16px;background:#f8f5ee"&gt;
+  &lt;div class="float-btn"&gt;Floating ✦&lt;/div&gt;
+  &lt;div class="spinner"&gt;&lt;/div&gt;
+  &lt;div class="hover-me"&gt;Hover Me!&lt;/div&gt;
+&lt;/div&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="css7-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESPONSIVE -->
+      <div class="lesson-card card-css" id="css-responsive">
+        <div class="card-ornament">📱</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · CSS 8</div>
+        <h2 class="lesson-h2">Responsive Design — Fitting Every Screen</h2>
+        <p class="lesson-intro">"A true lady is at ease in every setting — so too should your website be."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">/* Mobile-first: write for mobile, then add rules for larger screens */</span>
+
+<span class="cm">/* Default (mobile) */</span>
+<span class="sel">.container</span> { <span class="prop">padding</span>: <span class="val">16px</span>; }
+<span class="sel">.grid</span>       { <span class="prop">grid-template-columns</span>: <span class="val">1fr</span>; }
+
+<span class="cm">/* Tablet (768px and up) */</span>
+<span class="kw">@media</span> (<span class="prop">min-width</span>: <span class="val">768px</span>) {
+  <span class="sel">.container</span> { <span class="prop">padding</span>: <span class="val">32px</span>; }
+  <span class="sel">.grid</span>       { <span class="prop">grid-template-columns</span>: <span class="val">repeat(2, 1fr)</span>; }
+}
+
+<span class="cm">/* Desktop (1024px and up) */</span>
+<span class="kw">@media</span> (<span class="prop">min-width</span>: <span class="val">1024px</span>) {
+  <span class="sel">.grid</span>       { <span class="prop">grid-template-columns</span>: <span class="val">repeat(3, 1fr)</span>; }
+}
+
+<span class="cm">/* Common breakpoints */</span>
+<span class="cm">480px  → large phones</span>
+<span class="cm">768px  → tablets</span>
+<span class="cm">1024px → laptops</span>
+<span class="cm">1280px → desktops</span>
+
+<span class="cm">/* Other useful media features */</span>
+<span class="kw">@media</span> (<span class="prop">prefers-color-scheme</span>: <span class="val">dark</span>) { ... }     <span class="cm">← dark mode styles</span>
+<span class="kw">@media</span> (<span class="prop">prefers-reduced-motion</span>: <span class="val">reduce</span>) { ... }  <span class="cm">← disable animations</span>
+<span class="kw">@media</span> <span class="val">print</span> { ... }                             <span class="cm">← print-only styles</span></pre>
+          <div class="tip-box">
+            <div class="tip-icon">💡</div>
+            <p>Always include this in your <span class="inline-code">&lt;head&gt;</span>: <span class="inline-code">&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</span> — without it, media queries will not work on mobile devices.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CSS VARIABLES -->
+      <div class="lesson-card card-css" id="css-vars">
+        <div class="card-ornament">var</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · CSS 9</div>
+        <h2 class="lesson-h2">CSS Variables — Your Style Dictionary</h2>
+        <p class="lesson-intro">"A household that knows its own colours never dresses in discord."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">/* Define variables on :root (globally available) */</span>
+<span class="sel">:root</span> {
+  <span class="prop">--primary</span>: <span class="val">#8a6c2a</span>;
+  <span class="prop">--secondary</span>: <span class="val">#2e7d4f</span>;
+  <span class="prop">--font-size-base</span>: <span class="val">16px</span>;
+  <span class="prop">--spacing-md</span>: <span class="val">16px</span>;
+  <span class="prop">--radius</span>: <span class="val">8px</span>;
+}
+
+<span class="cm">/* Use them with var() */</span>
+<span class="sel">.button</span> {
+  <span class="prop">background</span>: <span class="val">var(--primary)</span>;
+  <span class="prop">padding</span>: <span class="val">var(--spacing-md)</span>;
+  <span class="prop">border-radius</span>: <span class="val">var(--radius)</span>;
+}
+
+<span class="cm">/* Override for a section */</span>
+<span class="sel">.dark-section</span> {
+  <span class="prop">--primary</span>: <span class="val">#c4a34e</span>;   <span class="cm">← only affects this element and children</span>
+}
+
+<span class="cm">/* With fallback value */</span>
+<span class="prop">color</span>: <span class="val">var(--missing-var, #333)</span>;   <span class="cm">← uses #333 if --missing-var isn't defined</span></pre>
+        </div>
+      </div>
+
+      <!-- PSEUDO CLASSES -->
+      <div class="lesson-card card-css" id="css-pseudo">
+        <div class="card-ornament">::</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · CSS 10</div>
+        <h2 class="lesson-h2">Pseudo-classes &amp; Pseudo-elements</h2>
+        <p class="lesson-intro">"The art is in the details — what comes before, after, and changes on approach."</p>
+        <div class="lesson-body">
+          <div class="table-scroll"><table class="ref-table">
+            <tr><th>Pseudo-class</th><th>When it triggers</th></tr>
+            <tr><td><code>:hover</code></td><td>Mouse is over the element</td></tr>
+            <tr><td><code>:focus</code></td><td>Element is keyboard-focused or clicked into</td></tr>
+            <tr><td><code>:active</code></td><td>Being clicked right now</td></tr>
+            <tr><td><code>:visited</code></td><td>Link has already been visited</td></tr>
+            <tr><td><code>:first-child</code></td><td>First child of its parent</td></tr>
+            <tr><td><code>:last-child</code></td><td>Last child of its parent</td></tr>
+            <tr><td><code>:nth-child(2n)</code></td><td>Every even child (use odd/even/3n+1)</td></tr>
+            <tr><td><code>:not(.active)</code></td><td>Everything without .active class</td></tr>
+            <tr><td><code>:checked</code></td><td>Checked checkbox or radio button</td></tr>
+            <tr><td><code>:disabled</code></td><td>Disabled form elements</td></tr>
+          </table></div>
+<pre class="code-display"><span class="cm">/* Pseudo-elements — create virtual content */</span>
+<span class="sel">.box::before</span> {       <span class="cm">← inserted BEFORE element's content</span>
+  <span class="prop">content</span>: <span class="val">"✦ "</span>;    <span class="cm">← required! (can be "" for decoration)</span>
+  <span class="prop">color</span>: <span class="val">#8a6c2a</span>;
+}
+<span class="sel">.box::after</span> {        <span class="cm">← inserted AFTER element's content</span>
+  <span class="prop">content</span>: <span class="val">" ✦"</span>;
+}
+
+<span class="sel">p::first-line</span>   { <span class="prop">font-weight</span>: <span class="val">bold</span>; }       <span class="cm">← style just the first line</span>
+<span class="sel">p::first-letter</span> { <span class="prop">font-size</span>: <span class="val">3em</span>; }         <span class="cm">← drop cap effect</span>
+<span class="sel">::selection</span>     { <span class="prop">background</span>: <span class="val">#fdf5e0</span>; }   <span class="cm">← selected text colour</span></pre>
+
+          <div class="quiz-box">
+            <div class="quiz-title">📰 CSS Quiz</div>
+            <div class="quiz-q">Which CSS property makes flex items wrap onto the next line instead of overflowing?</div>
+            <div class="quiz-options" id="q2">
+              <div class="quiz-option" onclick="checkQuiz('q2',this,false)">○ flex-direction: wrap</div>
+              <div class="quiz-option" onclick="checkQuiz('q2',this,true)" data-correct="true">○ flex-wrap: wrap</div>
+              <div class="quiz-option" onclick="checkQuiz('q2',this,false)">○ overflow: wrap</div>
+              <div class="quiz-option" onclick="checkQuiz('q2',this,false)">○ display: flex-wrap</div>
+            </div>
+            <div class="quiz-feedback" id="q2-fb"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CSS LESSON 11: OVERFLOW, SHADOWS, OBJECT-FIT -->
+      <div class="lesson-card card-css" id="css-effects">
+        <div class="card-ornament">✦</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · CSS 11</div>
+        <h2 class="lesson-h2">Overflow, Shadows &amp; Object-fit — Essential Visual Tools</h2>
+        <p class="lesson-intro">"The finest details distinguish the truly polished from the merely presentable."</p>
+        <div class="lesson-body">
+          <h3 class="sub-heading">Overflow — Controlling What Spills Out</h3>
+<pre class="code-display"><span class="sel">.box</span> {
+  <span class="prop">overflow</span>: <span class="val">visible</span>;   <span class="cm">← default — content spills outside the box</span>
+  <span class="prop">overflow</span>: <span class="val">hidden</span>;    <span class="cm">← clips everything outside (also hides scrollbar)</span>
+  <span class="prop">overflow</span>: <span class="val">scroll</span>;    <span class="cm">← always shows scrollbars</span>
+  <span class="prop">overflow</span>: <span class="val">auto</span>;      <span class="cm">← shows scrollbar ONLY when needed ← use this</span>
+  <span class="prop">overflow</span>: <span class="val">clip</span>;      <span class="cm">← like hidden but disables scroll entirely</span>
+
+  <span class="cm">/* Control axes individually */</span>
+  <span class="prop">overflow-x</span>: <span class="val">hidden</span>;  <span class="cm">← horizontal</span>
+  <span class="prop">overflow-y</span>: <span class="val">auto</span>;    <span class="cm">← vertical</span>
+
+  <span class="cm">/* Truncate long text with ellipsis */</span>
+  <span class="prop">white-space</span>: <span class="val">nowrap</span>;
+  <span class="prop">overflow</span>: <span class="val">hidden</span>;
+  <span class="prop">text-overflow</span>: <span class="val">ellipsis</span>;  <span class="cm">← shows "..." when text is cut off</span>
+}</pre>
+
+          <h3 class="sub-heading">Box-shadow &amp; Text-shadow</h3>
+<pre class="code-display"><span class="sel">.card</span> {
+  <span class="cm">/* box-shadow: offset-x  offset-y  blur  spread  color */</span>
+  <span class="prop">box-shadow</span>: <span class="val">2px 4px 8px 0px rgba(0,0,0,0.15)</span>;
+  <span class="prop">box-shadow</span>: <span class="val">0 0 0 3px #8a6c2a</span>;              <span class="cm">← outline glow (spread only)</span>
+  <span class="prop">box-shadow</span>: <span class="val">inset 0 2px 4px rgba(0,0,0,0.2)</span>; <span class="cm">← inner shadow</span>
+
+  <span class="cm">/* Multiple shadows — comma-separated */</span>
+  <span class="prop">box-shadow</span>: <span class="val">0 2px 4px rgba(0,0,0,0.1), 0 8px 24px rgba(0,0,0,0.1)</span>;
+}
+
+<span class="sel">h1</span> {
+  <span class="cm">/* text-shadow: offset-x  offset-y  blur  color */</span>
+  <span class="prop">text-shadow</span>: <span class="val">1px 1px 2px rgba(0,0,0,0.3)</span>;
+  <span class="prop">text-shadow</span>: <span class="val">0 0 10px #c4a34e</span>;  <span class="cm">← glow effect</span>
+}</pre>
+
+          <h3 class="sub-heading">Object-fit — Controlling Image Fitting</h3>
+<pre class="code-display"><span class="sel">img</span> {
+  <span class="prop">width</span>: <span class="val">300px</span>;
+  <span class="prop">height</span>: <span class="val">200px</span>;
+
+  <span class="prop">object-fit</span>: <span class="val">fill</span>;       <span class="cm">← stretches to fill (distorts) — default</span>
+  <span class="prop">object-fit</span>: <span class="val">cover</span>;      <span class="cm">← fills box, crops edges — BEST for thumbnails</span>
+  <span class="prop">object-fit</span>: <span class="val">contain</span>;    <span class="cm">← fits entirely inside, letterboxes</span>
+  <span class="prop">object-fit</span>: <span class="val">none</span>;        <span class="cm">← uses original image size</span>
+
+  <span class="prop">object-position</span>: <span class="val">center top</span>;  <span class="cm">← where to crop (x y)</span>
+  <span class="prop">object-position</span>: <span class="val">20% 80%</span>;
+}</pre>
+        </div>
+      </div>
+
+      <!-- CSS LESSON 12: Z-INDEX & CALC/CLAMP -->
+      <div class="lesson-card card-css" id="css-zindex-calc">
+        <div class="card-ornament">∑</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · CSS 12</div>
+        <h2 class="lesson-h2">Z-index &amp; CSS Functions</h2>
+        <p class="lesson-intro">"Who stands in front, and by precisely how much — questions of great social consequence."</p>
+        <div class="lesson-body">
+          <h3 class="sub-heading">Z-index — Stacking Order</h3>
+          <p><span class="inline-code">z-index</span> controls which elements appear <em>in front of</em> others. It only works on positioned elements (<span class="inline-code">position: relative/absolute/fixed/sticky</span>).</p>
+<pre class="code-display"><span class="sel">.modal-backdrop</span> { <span class="prop">position</span>: <span class="val">fixed</span>; <span class="prop">z-index</span>: <span class="val">100</span>; }
+<span class="sel">.modal</span>          { <span class="prop">position</span>: <span class="val">fixed</span>; <span class="prop">z-index</span>: <span class="val">200</span>; }  <span class="cm">← in front of backdrop</span>
+<span class="sel">.tooltip</span>        { <span class="prop">position</span>: <span class="val">absolute</span>; <span class="prop">z-index</span>: <span class="val">300</span>; }
+
+<span class="cm">/* Common z-index scale */</span>
+<span class="cm">1   → slight elevation (cards, dropdowns)</span>
+<span class="cm">10  → sticky headers</span>
+<span class="cm">100 → modals / overlays</span>
+<span class="cm">999 → tooltips / notifications</span>
+<span class="cm">9999→ loading spinners (always on top)</span>
+
+<span class="cm">/* z-index: -1 → behind the parent */</span>
+<span class="sel">.behind</span> { <span class="prop">position</span>: <span class="val">relative</span>; <span class="prop">z-index</span>: <span class="val">-1</span>; }</pre>
+
+          <h3 class="sub-heading">calc() — Maths in CSS</h3>
+<pre class="code-display"><span class="sel">.sidebar</span> {
+  <span class="prop">width</span>: <span class="val">calc(100% - 260px)</span>;       <span class="cm">← full width minus sidebar</span>
+  <span class="prop">height</span>: <span class="val">calc(100vh - 80px)</span>;      <span class="cm">← full viewport minus nav height</span>
+  <span class="prop">padding</span>: <span class="val">calc(var(--space) * 2)</span>; <span class="cm">← works with CSS variables!</span>
+}
+
+<span class="cm">/* Can mix units: px + %, em + vw, etc. */</span>
+<span class="prop">width</span>: <span class="val">calc(50% - 16px)</span>;
+<span class="prop">font-size</span>: <span class="val">calc(1rem + 0.5vw)</span>;</pre>
+
+          <h3 class="sub-heading">clamp() — Fluid Values (Responsive Without Media Queries!)</h3>
+<pre class="code-display"><span class="cm">/* clamp(minimum, preferred, maximum) */</span>
+<span class="sel">h1</span> {
+  <span class="prop">font-size</span>: <span class="val">clamp(1.5rem, 4vw, 3rem)</span>;
+  <span class="cm">← never smaller than 1.5rem</span>
+  <span class="cm">← scales with viewport width (4vw)</span>
+  <span class="cm">← never larger than 3rem</span>
+}
+
+<span class="sel">.container</span> {
+  <span class="prop">width</span>: <span class="val">clamp(320px, 90%, 1200px)</span>;  <span class="cm">← fluid container, no media query needed</span>
+  <span class="prop">padding</span>: <span class="val">clamp(16px, 5vw, 64px)</span>;  <span class="cm">← fluid spacing</span>
+}
+
+<span class="cm">/* min() and max() — single constraint */</span>
+<span class="prop">width</span>: <span class="val">min(500px, 100%)</span>;   <span class="cm">← whichever is smaller (never overflows on mobile)</span>
+<span class="prop">width</span>: <span class="val">max(300px, 50%)</span>;   <span class="cm">← whichever is larger</span></pre>
+
+          <div class="tip-box">
+            <div class="tip-icon">💡</div>
+            <p><strong>clamp() is modern magic</strong> — use it for fluid typography and containers. It replaces many media queries and makes your design naturally adapt to any screen size.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end CSS panel -->
+
+    <!-- ════════════ JS PANEL ════════════ -->
+    <div class="tab-panel" id="panel-js">
+      <div class="column-header">
+        <div class="col-header-pre">Third Dispatch — The Art of Behaviour</div>
+        <div class="col-header-title">A Complete Account of JavaScript</div>
+      </div>
+
+      <!-- JS VARS -->
+      <div class="lesson-card card-js" id="js-vars">
+        <div class="card-ornament">JS</div>
+        <div class="lesson-tag tag-beginner">Beginner · JS 1</div>
+        <h2 class="lesson-h2">Variables &amp; Data Types — Naming Things</h2>
+        <p class="lesson-intro">"One must know the nature of a thing before one can speak of it intelligently."</p>
+        <div class="lesson-body">
+          <h3 class="sub-heading">Declaring Variables</h3>
+<pre class="code-display"><span class="kw">const</span> name = <span class="str">"Daphne"</span>;       <span class="cm">← NEVER reassigned — prefer this!</span>
+<span class="kw">let</span>   score = <span class="num">100</span>;           <span class="cm">← CAN be reassigned</span>
+<span class="kw">var</span>   old = <span class="str">"avoid"</span>;         <span class="cm">← old way, has quirks — avoid it</span>
+
+<span class="cm">// Rule: use const by default, let only when you need to change it</span>
+name = <span class="str">"Penelope"</span>;           <span class="cm">← ❌ Error! const cannot be reassigned</span>
+score = <span class="num">200</span>;                  <span class="cm">← ✅ let can change</span></pre>
+
+          <h3 class="sub-heading">Data Types</h3>
+          <div class="table-scroll"><table class="ref-table">
+            <tr><th>Type</th><th>Example</th><th>Notes</th></tr>
+            <tr><td><code>String</code></td><td><code>"Hello"</code> or <code>'Hi'</code> or <code>`Hi`</code></td><td>Text — backticks allow template literals</td></tr>
+            <tr><td><code>Number</code></td><td><code>42</code>, <code>3.14</code>, <code>-7</code></td><td>Both integers and decimals</td></tr>
+            <tr><td><code>Boolean</code></td><td><code>true</code>, <code>false</code></td><td>Only two possible values</td></tr>
+            <tr><td><code>null</code></td><td><code>null</code></td><td>Intentionally empty / absent</td></tr>
+            <tr><td><code>undefined</code></td><td><code>undefined</code></td><td>Variable declared but not yet assigned</td></tr>
+            <tr><td><code>Array</code></td><td><code>[1, 2, 3]</code></td><td>Ordered list of values</td></tr>
+            <tr><td><code>Object</code></td><td><code>{ name: "Daphne" }</code></td><td>Key-value pairs</td></tr>
+          </table></div>
+<pre class="code-display"><span class="cm">// Check the type of a value:</span>
+<span class="kw">typeof</span> <span class="str">"hello"</span>    <span class="cm">→ "string"</span>
+<span class="kw">typeof</span> <span class="num">42</span>         <span class="cm">→ "number"</span>
+<span class="kw">typeof</span> <span class="kw">true</span>       <span class="cm">→ "boolean"</span>
+<span class="kw">typeof</span> []         <span class="cm">→ "object"   (arrays are objects — famous JS quirk)</span>
+<span class="kw">typeof</span> <span class="kw">null</span>       <span class="cm">→ "object"   (another famous JS quirk 😅)</span>
+
+<span class="cm">// Template literals (backticks) — embed variables inside strings</span>
+<span class="kw">const</span> msg = <span class="str">`Hello, ${name}! Score: ${score}`</span>;
+<span class="cm">// → "Hello, Daphne! Score: 200"</span>
+
+<span class="cm">// Type conversion</span>
+<span class="fn">Number</span>(<span class="str">"42"</span>)       <span class="cm">→ 42</span>
+<span class="fn">String</span>(<span class="num">42</span>)         <span class="cm">→ "42"</span>
+<span class="fn">Boolean</span>(<span class="num">0</span>)        <span class="cm">→ false  (0, "", null, undefined, NaN are falsy)</span>
+<span class="fn">Boolean</span>(<span class="str">"hi"</span>)    <span class="cm">→ true   (everything else is truthy)</span></pre>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ Variables Playground ✦</span>
+            <button class="run-btn" onclick="runEditor('js1')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="js1-code" spellcheck="false">&lt;script&gt;
+  const name = "Daphne";
+  let season = 1;
+  const isElegant = true;
+
+  const message = `Hello, ${name}! You are in Season ${season}.`;
+  document.write("&lt;p style='font-family:sans-serif'&gt;" + message + "&lt;/p&gt;");
+
+  season = 2;
+  document.write("&lt;p style='font-family:sans-serif'&gt;Now in Season: " + season + "&lt;/p&gt;");
+
+  document.write("&lt;p style='font-family:sans-serif'&gt;Type of name: " + typeof name + "&lt;/p&gt;");
+  document.write("&lt;p style='font-family:sans-serif'&gt;isElegant: " + isElegant + "&lt;/p&gt;");
+&lt;/script&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="js1-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPERATORS -->
+      <div class="lesson-card card-js" id="js-operators">
+        <div class="card-ornament">±</div>
+        <div class="lesson-tag tag-beginner">Beginner · JS 2</div>
+        <h2 class="lesson-h2">Operators — The Language of Calculation</h2>
+        <p class="lesson-intro">"Numbers speak when words fail."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">// Arithmetic</span>
+<span class="num">10</span> + <span class="num">5</span>   <span class="cm">→ 15</span>      <span class="num">10</span> - <span class="num">5</span>  <span class="cm">→ 5</span>
+<span class="num">10</span> * <span class="num">5</span>   <span class="cm">→ 50</span>      <span class="num">10</span> / <span class="num">5</span>  <span class="cm">→ 2</span>
+<span class="num">10</span> % <span class="num">3</span>   <span class="cm">→ 1       (modulo = remainder)</span>
+<span class="num">2</span> ** <span class="num">3</span>   <span class="cm">→ 8       (exponent: 2 to the power of 3)</span>
+
+<span class="cm">// Assignment shortcuts</span>
+<span class="kw">let</span> x = <span class="num">10</span>;
+x += <span class="num">5</span>;   <span class="cm">→ x is now 15  (same as x = x + 5)</span>
+x -= <span class="num">3</span>;   <span class="cm">→ x is now 12</span>
+x *= <span class="num">2</span>;   <span class="cm">→ x is now 24</span>
+x++;      <span class="cm">→ increment by 1</span>
+x--;      <span class="cm">→ decrement by 1</span>
+
+<span class="cm">// Comparison (always returns boolean true/false)</span>
+<span class="num">5</span> === <span class="str">"5"</span>  <span class="cm">→ false (strict equality — checks type too — USE THIS ✅)</span>
+<span class="num">5</span> ==  <span class="str">"5"</span>  <span class="cm">→ true  (loose equality — converts types — AVOID ❌)</span>
+<span class="num">5</span> !== <span class="num">3</span>   <span class="cm">→ true  (not equal)</span>
+<span class="num">5</span> >  <span class="num">3</span>    <span class="cm">→ true</span>      <span class="num">5</span> >= <span class="num">5</span>  <span class="cm">→ true</span>
+
+<span class="cm">// Logical operators</span>
+<span class="kw">true</span> && <span class="kw">false</span>   <span class="cm">→ false  (AND: both must be true)</span>
+<span class="kw">true</span> || <span class="kw">false</span>   <span class="cm">→ true   (OR: at least one must be true)</span>
+!<span class="kw">true</span>           <span class="cm">→ false  (NOT: flips the value)</span>
+
+<span class="cm">// Nullish coalescing — use right side if left is null/undefined</span>
+<span class="kw">const</span> name = <span class="kw">null</span> ?? <span class="str">"Guest"</span>;  <span class="cm">→ "Guest"</span>
+
+<span class="cm">// Optional chaining — safely navigate nested properties</span>
+<span class="kw">const</span> city = user?.address?.city;  <span class="cm">→ undefined (no crash) if user is null</span></pre>
+        </div>
+      </div>
+
+      <!-- CONDITIONS -->
+      <div class="lesson-card card-js" id="js-conditions">
+        <div class="card-ornament">?</div>
+        <div class="lesson-tag tag-beginner">Beginner · JS 3</div>
+        <h2 class="lesson-h2">Conditionals — Making Decisions</h2>
+        <p class="lesson-intro">"Every debutante must assess the situation before acting. So too must your code."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">// if / else if / else</span>
+<span class="kw">const</span> score = <span class="num">85</span>;
+
+<span class="kw">if</span> (score >= <span class="num">90</span>) {
+  <span class="fn">console</span>.log(<span class="str">"Outstanding!"</span>);
+} <span class="kw">else if</span> (score >= <span class="num">75</span>) {
+  <span class="fn">console</span>.log(<span class="str">"Excellent!"</span>);    <span class="cm">← this runs (85 >= 75 is true)</span>
+} <span class="kw">else if</span> (score >= <span class="num">60</span>) {
+  <span class="fn">console</span>.log(<span class="str">"Acceptable."</span>);
+} <span class="kw">else</span> {
+  <span class="fn">console</span>.log(<span class="str">"More practice needed."</span>);
+}
+
+<span class="cm">// Ternary operator — shorthand for simple if/else</span>
+<span class="cm">// condition ? value-if-true : value-if-false</span>
+<span class="kw">const</span> label = score >= <span class="num">75</span> ? <span class="str">"Pass ✅"</span> : <span class="str">"Fail ❌"</span>;
+
+<span class="cm">// Switch — for many specific values</span>
+<span class="kw">const</span> day = <span class="str">"Monday"</span>;
+<span class="kw">switch</span> (day) {
+  <span class="kw">case</span> <span class="str">"Monday"</span>:
+    <span class="fn">console</span>.log(<span class="str">"Start of the week!"</span>);
+    <span class="kw">break</span>;                        <span class="cm">← MUST break or it falls through!</span>
+  <span class="kw">case</span> <span class="str">"Friday"</span>:
+    <span class="fn">console</span>.log(<span class="str">"Almost weekend!"</span>);
+    <span class="kw">break</span>;
+  <span class="kw">default</span>:
+    <span class="fn">console</span>.log(<span class="str">"Just another day."</span>);
+}</pre>
+          <div class="tip-box">
+            <div class="tip-icon">💡</div>
+            <p>Always use <strong>===</strong> (triple equals) for comparison, never == (double). Triple equals checks both value <em>and</em> type, avoiding subtle bugs like <span class="inline-code">0 == false</span> being <code>true</code>.</p>
+          </div>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ Make Decisions ✦</span>
+            <button class="run-btn" onclick="runEditor('js3')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="js3-code" spellcheck="false">&lt;script&gt;
+  const hour = new Date().getHours();
+  let greeting;
+
+  if (hour &lt; 12) {
+    greeting = "Good morning ☀️";
+  } else if (hour &lt; 18) {
+    greeting = "Good afternoon 📰";
+  } else {
+    greeting = "Good evening 🌙";
+  }
+
+  document.write("&lt;h2 style='font-family:sans-serif'&gt;" + greeting + "&lt;/h2&gt;");
+
+  const age = 20;
+  const status = age &gt;= 18
+    ? "You may attend the ball! 💃"
+    : "Too young for the ball.";
+  document.write("&lt;p style='font-family:sans-serif'&gt;" + status + "&lt;/p&gt;");
+&lt;/script&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="js3-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOOPS -->
+      <div class="lesson-card card-js" id="js-loops">
+        <div class="card-ornament">↺</div>
+        <div class="lesson-tag tag-beginner">Beginner · JS 4</div>
+        <h2 class="lesson-h2">Loops — Repeating with Purpose</h2>
+        <p class="lesson-intro">"Patience and repetition are the foundation of all mastery."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">// for loop — best when you know how many times</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < <span class="num">5</span>; i++) {
+  <span class="fn">console</span>.log(i);   <span class="cm">→ 0, 1, 2, 3, 4</span>
+}
+
+<span class="cm">// while loop — repeat while condition is true</span>
+<span class="kw">let</span> count = <span class="num">0</span>;
+<span class="kw">while</span> (count < <span class="num">3</span>) {
+  <span class="fn">console</span>.log(<span class="str">"Count: "</span> + count);
+  count++;    <span class="cm">← always increment! Forgetting causes an infinite loop</span>
+}
+
+<span class="cm">// for...of — iterate over array items (cleanest for arrays)</span>
+<span class="kw">const</span> flowers = [<span class="str">"Rose"</span>, <span class="str">"Violet"</span>, <span class="str">"Lily"</span>];
+<span class="kw">for</span> (<span class="kw">const</span> flower <span class="kw">of</span> flowers) {
+  <span class="fn">console</span>.log(flower);   <span class="cm">→ Rose, Violet, Lily</span>
+}
+
+<span class="cm">// for...in — iterate over object keys</span>
+<span class="kw">const</span> person = { name: <span class="str">"Daphne"</span>, age: <span class="num">21</span> };
+<span class="kw">for</span> (<span class="kw">const</span> key <span class="kw">in</span> person) {
+  <span class="fn">console</span>.log(key + <span class="str">": "</span> + person[key]);  <span class="cm">→ name: Daphne, age: 21</span>
+}
+
+<span class="cm">// break and continue</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < <span class="num">10</span>; i++) {
+  <span class="kw">if</span> (i === <span class="num">3</span>) <span class="kw">continue</span>;  <span class="cm">← skip 3, carry on</span>
+  <span class="kw">if</span> (i === <span class="num">7</span>) <span class="kw">break</span>;     <span class="cm">← stop the loop entirely</span>
+  <span class="fn">console</span>.log(i);          <span class="cm">→ 0, 1, 2, 4, 5, 6</span>
+}</pre>
+        </div>
+      </div>
+
+      <!-- FUNCTIONS -->
+      <div class="lesson-card card-js" id="js-functions">
+        <div class="card-ornament">ƒ</div>
+        <div class="lesson-tag tag-beginner">Beginner · JS 5</div>
+        <h2 class="lesson-h2">Functions — Reusable Instructions</h2>
+        <p class="lesson-intro">"A properly instructed maid performs the same task flawlessly, every time."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">// Function Declaration (hoisted — can call before it's defined)</span>
+<span class="kw">function</span> <span class="fn">greet</span>(name) {
+  <span class="kw">return</span> <span class="str">`Hello, ${name}!`</span>;
+}
+<span class="fn">greet</span>(<span class="str">"Daphne"</span>);   <span class="cm">→ "Hello, Daphne!"</span>
+
+<span class="cm">// Function Expression</span>
+<span class="kw">const</span> <span class="fn">add</span> = <span class="kw">function</span>(a, b) {
+  <span class="kw">return</span> a + b;
+};
+
+<span class="cm">// Arrow Function (ES6) — most concise</span>
+<span class="kw">const</span> <span class="fn">multiply</span> = (a, b) => a * b;     <span class="cm">← no braces = implicit return</span>
+<span class="kw">const</span> <span class="fn">square</span>   = x => x * x;          <span class="cm">← single param = no parens needed</span>
+<span class="kw">const</span> <span class="fn">hello</span>    = () => <span class="str">"Hello!"</span>;      <span class="cm">← no params = empty parens ()</span>
+
+<span class="cm">// Default parameters</span>
+<span class="kw">function</span> <span class="fn">welcome</span>(name = <span class="str">"Guest"</span>) {
+  <span class="kw">return</span> <span class="str">`Welcome, ${name}!`</span>;
+}
+<span class="fn">welcome</span>();          <span class="cm">→ "Welcome, Guest!"</span>
+<span class="fn">welcome</span>(<span class="str">"Simon"</span>);   <span class="cm">→ "Welcome, Simon!"</span>
+
+<span class="cm">// Rest parameters — collect remaining arguments into an array</span>
+<span class="kw">function</span> <span class="fn">sum</span>(...numbers) {
+  <span class="kw">return</span> numbers.<span class="fn">reduce</span>((total, n) => total + n, <span class="num">0</span>);
+}
+<span class="fn">sum</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>);   <span class="cm">→ 10</span></pre>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ Functions Playground ✦</span>
+            <button class="run-btn" onclick="runEditor('js5')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="js5-code" spellcheck="false">&lt;script&gt;
+  const getRank = (score) => {
+    if (score &gt;= 90) return "Diamond 💎";
+    if (score &gt;= 70) return "Gold ✨";
+    if (score &gt;= 50) return "Silver 📜";
+    return "Debutante 🌷";
+  };
+
+  function introduce(name = "A Mystery Guest", score = 75) {
+    const rank = getRank(score);
+    return `${name} has achieved ${rank} status!`;
+  }
+
+  const s = "font-family:sans-serif;margin:6px 0";
+  document.write(`&lt;p style="${s}"&gt;` + introduce("Lady Daphne", 95) + `&lt;/p&gt;`);
+  document.write(`&lt;p style="${s}"&gt;` + introduce("Lord Anthony", 65) + `&lt;/p&gt;`);
+  document.write(`&lt;p style="${s}"&gt;` + introduce() + `&lt;/p&gt;`);
+&lt;/script&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="js5-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARRAYS -->
+      <div class="lesson-card card-js" id="js-arrays">
+        <div class="card-ornament">[ ]</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · JS 6</div>
+        <h2 class="lesson-h2">Arrays &amp; Methods — Collections of Brilliance</h2>
+        <p class="lesson-intro">"A well-curated guest list makes for the finest of balls."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="kw">const</span> guests = [<span class="str">"Daphne"</span>, <span class="str">"Anthony"</span>, <span class="str">"Penelope"</span>, <span class="str">"Eloise"</span>];
+
+<span class="cm">// Accessing items (0-indexed!)</span>
+guests[<span class="num">0</span>]              <span class="cm">→ "Daphne"</span>
+guests.at(-<span class="num">1</span>)          <span class="cm">→ "Eloise"  (last item, new way)</span>
+
+<span class="cm">// Mutating methods (change the original array)</span>
+guests.<span class="fn">push</span>(<span class="str">"Benedict"</span>);   <span class="cm">← add to end</span>
+guests.<span class="fn">pop</span>();               <span class="cm">← remove from end</span>
+guests.<span class="fn">unshift</span>(<span class="str">"Queen"</span>);  <span class="cm">← add to start</span>
+guests.<span class="fn">shift</span>();             <span class="cm">← remove from start</span>
+guests.<span class="fn">splice</span>(<span class="num">1</span>, <span class="num">1</span>);      <span class="cm">← remove 1 item at index 1</span>
+
+<span class="cm">// Non-mutating methods (return a new array/value)</span>
+guests.<span class="fn">map</span>(g => g.<span class="fn">toUpperCase</span>())     <span class="cm">← transform each item → new array</span>
+guests.<span class="fn">filter</span>(g => g.length > <span class="num">5</span>)    <span class="cm">← keep items that pass test → new array</span>
+guests.<span class="fn">find</span>(g => g === <span class="str">"Anthony"</span>)  <span class="cm">← first item that matches → single value</span>
+guests.<span class="fn">includes</span>(<span class="str">"Daphne"</span>)           <span class="cm">→ true/false</span>
+guests.<span class="fn">some</span>(g => g.startsWith(<span class="str">"A"</span>)) <span class="cm">→ true if at least one matches</span>
+guests.<span class="fn">every</span>(g => g.length > <span class="num">3</span>)     <span class="cm">→ true if ALL match</span>
+guests.<span class="fn">reduce</span>((acc, g) => acc + <span class="str">","</span> + g) <span class="cm">← accumulate to single value</span>
+guests.<span class="fn">join</span>(<span class="str">", "</span>)                    <span class="cm">← array to string</span>
+guests.<span class="fn">slice</span>(<span class="num">0</span>, <span class="num">2</span>)                  <span class="cm">← copy part of array</span>
+[...guests, <span class="str">"New"</span>]                  <span class="cm">← spread: copy and add items</span>
+
+<span class="cm">// Sort</span>
+guests.<span class="fn">sort</span>()                        <span class="cm">← alphabetically (mutates!)</span>
+[<span class="num">3</span>,<span class="num">1</span>,<span class="num">2</span>].<span class="fn">sort</span>((a, b) => a - b)       <span class="cm">← sort numbers ascending</span></pre>
+        </div>
+      </div>
+
+      <!-- OBJECTS -->
+      <div class="lesson-card card-js" id="js-objects">
+        <div class="card-ornament">{ }</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · JS 7</div>
+        <h2 class="lesson-h2">Objects — Modelling the World</h2>
+        <p class="lesson-intro">"Every person of consequence has many facets — best described together as one."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="kw">const</span> lady = {
+  name: <span class="str">"Daphne Bridgerton"</span>,
+  age: <span class="num">21</span>,
+  isDebuting: <span class="kw">true</span>,
+  <span class="fn">greet</span>() {                    <span class="cm">← method (function inside an object)</span>
+    <span class="kw">return</span> <span class="str">`I am ${this.name}.`</span>;  <span class="cm">← 'this' refers to the object itself</span>
+  }
+};
+
+<span class="cm">// Access properties</span>
+lady.name             <span class="cm">→ "Daphne Bridgerton"  (dot notation)</span>
+lady[<span class="str">"age"</span>]           <span class="cm">→ 21   (bracket notation — use for dynamic keys)</span>
+
+<span class="cm">// Add / update / delete</span>
+lady.title = <span class="str">"Duchess"</span>;       <span class="cm">← add new property</span>
+lady.age = <span class="num">22</span>;                <span class="cm">← update existing</span>
+<span class="kw">delete</span> lady.isDebuting;       <span class="cm">← remove property</span>
+
+<span class="cm">// Destructuring — extract into named variables</span>
+<span class="kw">const</span> { name, age } = lady;           <span class="cm">← name = "Daphne...", age = 22</span>
+<span class="kw">const</span> { name: firstName } = lady;     <span class="cm">← rename while destructuring</span>
+<span class="kw">const</span> { age = <span class="num">18</span> } = {};             <span class="cm">← default if undefined</span>
+
+<span class="cm">// Spread — copy or merge</span>
+<span class="kw">const</span> updated = { ...lady, age: <span class="num">23</span> };  <span class="cm">← copies lady, overrides age</span>
+
+<span class="cm">// Handy Object methods</span>
+<span class="fn">Object</span>.keys(lady)     <span class="cm">→ ["name", "age", "title"]</span>
+<span class="fn">Object</span>.values(lady)   <span class="cm">→ ["Daphne Bridgerton", 22, "Duchess"]</span>
+<span class="fn">Object</span>.entries(lady)  <span class="cm">→ [["name","Daphne..."], ["age",22], ...]</span></pre>
+        </div>
+      </div>
+
+      <!-- DOM -->
+      <div class="lesson-card card-js" id="js-dom">
+        <div class="card-ornament">DOM</div>
+        <div class="lesson-tag tag-beginner">Beginner · JS 8</div>
+        <h2 class="lesson-h2">DOM Manipulation — Bringing Pages to Life</h2>
+        <p class="lesson-intro">"The most skilled hostess shapes every room to her will — so too can you shape the page."</p>
+        <div class="lesson-body">
+          <p>The <strong>DOM</strong> (Document Object Model) is the browser's live representation of the HTML as a tree. JavaScript can read and change it at any time.</p>
+<pre class="code-display"><span class="cm">// Selecting elements</span>
+<span class="kw">const</span> el  = document.<span class="fn">getElementById</span>(<span class="str">"hero"</span>);         <span class="cm">← by id</span>
+<span class="kw">const</span> el  = document.<span class="fn">querySelector</span>(<span class="str">".card"</span>);         <span class="cm">← first CSS match</span>
+<span class="kw">const</span> els = document.<span class="fn">querySelectorAll</span>(<span class="str">"p"</span>);           <span class="cm">← all matches (NodeList)</span>
+
+<span class="cm">// Reading &amp; changing content</span>
+el.textContent = <span class="str">"New text"</span>;       <span class="cm">← safe: plain text only</span>
+el.innerHTML   = <span class="str">"&lt;b&gt;Bold!&lt;/b&gt;"</span>;   <span class="cm">← renders HTML (careful!)</span>
+
+<span class="cm">// Attributes</span>
+el.<span class="fn">getAttribute</span>(<span class="str">"href"</span>);
+el.<span class="fn">setAttribute</span>(<span class="str">"src"</span>, <span class="str">"new.jpg"</span>);
+el.<span class="fn">removeAttribute</span>(<span class="str">"disabled"</span>);
+
+<span class="cm">// CSS styles (camelCase in JS!)</span>
+el.style.color = <span class="str">"red"</span>;
+el.style.backgroundColor = <span class="str">"#f8f5ee"</span>;
+
+<span class="cm">// Classes</span>
+el.classList.<span class="fn">add</span>(<span class="str">"active"</span>);
+el.classList.<span class="fn">remove</span>(<span class="str">"hidden"</span>);
+el.classList.<span class="fn">toggle</span>(<span class="str">"open"</span>);        <span class="cm">← adds if absent, removes if present</span>
+el.classList.<span class="fn">contains</span>(<span class="str">"active"</span>);   <span class="cm">→ true/false</span>
+
+<span class="cm">// Creating &amp; adding new elements</span>
+<span class="kw">const</span> div = document.<span class="fn">createElement</span>(<span class="str">"div"</span>);
+div.textContent = <span class="str">"I'm new!"</span>;
+div.classList.<span class="fn">add</span>(<span class="str">"card"</span>);
+document.body.<span class="fn">appendChild</span>(div);    <span class="cm">← add at end of body</span>
+
+<span class="cm">// Removing elements</span>
+el.<span class="fn">remove</span>();</pre>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ DOM Manipulation ✦</span>
+            <button class="run-btn" onclick="runEditor('js8')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="js8-code" spellcheck="false">&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;body style="font-family:sans-serif;padding:16px"&gt;
+  &lt;h2 id="title"&gt;Ball Guest List 📜&lt;/h2&gt;
+  &lt;ul id="guests"&gt;&lt;/ul&gt;
+  &lt;button onclick="addGuest()" style="margin-top:10px;padding:8px 18px;background:#8a3010;color:white;border:none;cursor:pointer"&gt;
+    Add Guest
+  &lt;/button&gt;
+
+  &lt;script&gt;
+    const names = ["Daphne","Anthony","Penelope","Eloise","Benedict"];
+    const list = document.getElementById("guests");
+    let index = 0;
+
+    names.slice(0,2).forEach(name =&gt; {
+      const li = document.createElement("li");
+      li.textContent = name;
+      list.appendChild(li);
+      index++;
+    });
+
+    function addGuest() {
+      if (index &gt;= names.length) {
+        document.getElementById("title").textContent = "The ball is full! ✦";
+        document.getElementById("title").style.color = "#8a3010";
+        return;
+      }
+      const li = document.createElement("li");
+      li.textContent = names[index++];
+      list.appendChild(li);
+    }
+  &lt;/script&gt;
+&lt;/body&gt;&lt;/html&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="js8-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EVENTS -->
+      <div class="lesson-card card-js" id="js-events">
+        <div class="card-ornament">⚡</div>
+        <div class="lesson-tag tag-beginner">Beginner · JS 9</div>
+        <h2 class="lesson-h2">Events — Responding to the Audience</h2>
+        <p class="lesson-intro">"The finest performers always respond to their audience."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">// Add an event listener (the preferred way)</span>
+<span class="kw">const</span> btn = document.<span class="fn">querySelector</span>(<span class="str">"#myButton"</span>);
+btn.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, (event) => {
+  <span class="fn">console</span>.log(<span class="str">"Clicked!"</span>);
+  event.target         <span class="cm">← the element that was clicked</span>
+  event.<span class="fn">preventDefault</span>();   <span class="cm">← stop default action (form submit, link)</span>
+  event.<span class="fn">stopPropagation</span>();  <span class="cm">← stop bubbling to parent elements</span>
+});
+
+<span class="cm">// Common events</span>
+<span class="str">"click"</span>             <span class="cm">← mouse click</span>
+<span class="str">"dblclick"</span>          <span class="cm">← double click</span>
+<span class="str">"mouseover"</span>         <span class="cm">← mouse enters element</span>
+<span class="str">"mouseout"</span>          <span class="cm">← mouse leaves element</span>
+<span class="str">"keydown"</span>           <span class="cm">← a key is pressed</span>
+<span class="str">"keyup"</span>             <span class="cm">← a key is released</span>
+<span class="str">"input"</span>             <span class="cm">← input value changes (every keystroke)</span>
+<span class="str">"change"</span>            <span class="cm">← input committed (on blur or select change)</span>
+<span class="str">"submit"</span>            <span class="cm">← form submitted</span>
+<span class="str">"focus"</span>             <span class="cm">← element focused</span>
+<span class="str">"blur"</span>              <span class="cm">← element loses focus</span>
+<span class="str">"scroll"</span>            <span class="cm">← page scrolled</span>
+<span class="str">"DOMContentLoaded"</span>  <span class="cm">← HTML fully parsed (before images load)</span>
+<span class="str">"load"</span>              <span class="cm">← entire page loaded (images too)</span>
+
+<span class="cm">// Event delegation — listen on parent, handle child events</span>
+document.<span class="fn">querySelector</span>(<span class="str">"ul"</span>).<span class="fn">addEventListener</span>(<span class="str">"click"</span>, (e) => {
+  <span class="kw">if</span> (e.target.tagName === <span class="str">"LI"</span>) {
+    e.target.classList.<span class="fn">toggle</span>(<span class="str">"selected"</span>);
+  }
+});</pre>
+        </div>
+      </div>
+
+      <!-- ES6+ -->
+      <div class="lesson-card card-js" id="js-es6">
+        <div class="card-ornament">ES6</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · JS 10</div>
+        <h2 class="lesson-h2">ES6+ Modern JavaScript — The New Season</h2>
+        <p class="lesson-intro">"With each new season comes refinement and more convenient ways of doing things."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">// Array destructuring</span>
+<span class="kw">const</span> [first, second, ...rest] = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>];
+<span class="cm">// first=1, second=2, rest=[3,4,5]</span>
+
+<span class="cm">// Object destructuring</span>
+<span class="kw">const</span> { name, age = <span class="num">18</span> } = person;   <span class="cm">← default value if property is undefined</span>
+
+<span class="cm">// Spread operator</span>
+<span class="kw">const</span> arr2 = [...arr1, <span class="num">4</span>, <span class="num">5</span>];                  <span class="cm">← copy + add items</span>
+<span class="kw">const</span> obj2 = { ...obj1, newProp: <span class="str">"value"</span> };    <span class="cm">← merge objects</span>
+<span class="fn">myFunc</span>(...args);                                 <span class="cm">← spread array as arguments</span>
+
+<span class="cm">// Short-circuit evaluation</span>
+<span class="kw">const</span> name = user && user.name;       <span class="cm">← only access .name if user is truthy</span>
+<span class="kw">const</span> label = title || <span class="str">"Untitled"</span>;   <span class="cm">← fallback if title is falsy</span>
+<span class="kw">const</span> val = data ?? <span class="str">"default"</span>;      <span class="cm">← fallback only if null or undefined</span>
+
+<span class="cm">// Optional chaining — safely navigate deeply nested objects</span>
+<span class="kw">const</span> city = user?.profile?.address?.city;  <span class="cm">→ undefined instead of crashing</span>
+
+<span class="cm">// Object shorthand (when variable name = property name)</span>
+<span class="kw">const</span> x = <span class="num">1</span>, y = <span class="num">2</span>;
+<span class="kw">const</span> point = { x, y };   <span class="cm">← same as { x: x, y: y }</span>
+
+<span class="cm">// Modules (used in real-world projects)</span>
+<span class="kw">export default function</span> <span class="fn">greet</span>() { ... }    <span class="cm">← export from a file</span>
+<span class="kw">export const</span> PI = <span class="num">3.14</span>;
+<span class="kw">import</span> greet <span class="kw">from</span> <span class="str">"./greet.js"</span>;            <span class="cm">← import in another file</span>
+<span class="kw">import</span> { PI } <span class="kw">from</span> <span class="str">"./constants.js"</span>;</pre>
+        </div>
+      </div>
+
+      <!-- ASYNC -->
+      <div class="lesson-card card-js" id="js-async">
+        <div class="card-ornament">⏳</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · JS 11</div>
+        <h2 class="lesson-h2">Async &amp; Fetch — Waiting Gracefully</h2>
+        <p class="lesson-intro">"Patience is a virtue — and so is fetching data without freezing the entire ball."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">// async/await — the clean way to handle asynchronous code</span>
+<span class="kw">async function</span> <span class="fn">fetchUser</span>(id) {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`https://api.example.com/users/${id}`</span>);
+
+    <span class="kw">if</span> (!response.ok) <span class="kw">throw new</span> <span class="fn">Error</span>(<span class="str">"Network error!"</span>);
+
+    <span class="kw">const</span> data = <span class="kw">await</span> response.<span class="fn">json</span>();   <span class="cm">← parse the JSON response body</span>
+    <span class="fn">console</span>.log(data);
+    <span class="kw">return</span> data;
+  } <span class="kw">catch</span> (error) {
+    <span class="fn">console</span>.error(<span class="str">"Error:"</span>, error);
+  }
+}
+
+<span class="cm">// Fetch API — GET request (default)</span>
+<span class="kw">const</span> res  = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"https://api.example.com/data"</span>);
+<span class="kw">const</span> json = <span class="kw">await</span> res.<span class="fn">json</span>();
+
+<span class="cm">// Fetch API — POST request (sending data)</span>
+<span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"https://api.example.com/users"</span>, {
+  method: <span class="str">"POST"</span>,
+  headers: { <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span> },
+  body: <span class="fn">JSON.stringify</span>({ name: <span class="str">"Daphne"</span>, age: <span class="num">21</span> })
+});
+
+<span class="cm">// Run multiple requests in parallel</span>
+<span class="kw">const</span> [users, posts] = <span class="kw">await</span> Promise.<span class="fn">all</span>([
+  <span class="fn">fetch</span>(<span class="str">"/api/users"</span>).<span class="fn">then</span>(r => r.<span class="fn">json</span>()),
+  <span class="fn">fetch</span>(<span class="str">"/api/posts"</span>).<span class="fn">then</span>(r => r.<span class="fn">json</span>())
+]);</pre>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ Fetch a Real API ✦</span>
+            <button class="run-btn" onclick="runEditor('js11')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="js11-code" spellcheck="false">&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;body style="font-family:sans-serif;padding:20px;background:#f8f5ee"&gt;
+  &lt;h2&gt;📜 Random Quote&lt;/h2&gt;
+  &lt;p id="quote" style="font-style:italic;color:#3a3020"&gt;Press the button...&lt;/p&gt;
+  &lt;p id="author" style="color:#8a6c2a"&gt;&lt;/p&gt;
+  &lt;button onclick="getQuote()"
+    style="padding:10px 20px;background:#8a3010;color:white;border:none;cursor:pointer;margin-top:8px"&gt;
+    Get Quote ✦
+  &lt;/button&gt;
+
+  &lt;script&gt;
+    async function getQuote() {
+      const q = document.getElementById("quote");
+      const a = document.getElementById("author");
+      q.textContent = "Fetching...";
+      a.textContent = "";
+      try {
+        const res = await fetch("https://dummyjson.com/quotes/random");
+        const data = await res.json();
+        q.textContent = `"${data.quote}"`;
+        a.textContent = `— ${data.author}`;
+      } catch(e) {
+        q.textContent = "Could not fetch. Check your connection!";
+      }
+    }
+  &lt;/script&gt;
+&lt;/body&gt;&lt;/html&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="js11-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOCALSTORAGE -->
+      <div class="lesson-card card-js" id="js-storage">
+        <div class="card-ornament">💾</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · JS 12</div>
+        <h2 class="lesson-h2">LocalStorage — Remembering Between Visits</h2>
+        <p class="lesson-intro">"A good memory is the mark of an excellent host."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">// localStorage persists between browser sessions (until cleared)</span>
+<span class="cm">// sessionStorage only lasts for the current browser tab</span>
+
+<span class="cm">// Store data (only strings!)</span>
+localStorage.<span class="fn">setItem</span>(<span class="str">"username"</span>, <span class="str">"Daphne"</span>);
+
+<span class="cm">// Retrieve data</span>
+<span class="kw">const</span> user = localStorage.<span class="fn">getItem</span>(<span class="str">"username"</span>);  <span class="cm">→ "Daphne"</span>
+<span class="cm">// Returns null if key doesn't exist</span>
+
+<span class="cm">// Remove data</span>
+localStorage.<span class="fn">removeItem</span>(<span class="str">"username"</span>);
+localStorage.<span class="fn">clear</span>();         <span class="cm">← removes ALL local storage for this site</span>
+
+<span class="cm">// Storing objects — must JSON encode/decode</span>
+<span class="kw">const</span> settings = { theme: <span class="str">"light"</span>, language: <span class="str">"en"</span> };
+localStorage.<span class="fn">setItem</span>(<span class="str">"settings"</span>, JSON.<span class="fn">stringify</span>(settings));
+
+<span class="kw">const</span> loaded = JSON.<span class="fn">parse</span>(localStorage.<span class="fn">getItem</span>(<span class="str">"settings"</span>));
+<span class="cm">// → { theme: "light", language: "en" }</span>
+
+<span class="cm">// Safe pattern with nullish coalescing</span>
+<span class="kw">const</span> data = JSON.<span class="fn">parse</span>(localStorage.<span class="fn">getItem</span>(<span class="str">"key"</span>)) ?? <span class="str">"default"</span>;</pre>
+        </div>
+      </div>
+
+      <!-- ERROR HANDLING -->
+      <div class="lesson-card card-js" id="js-errors">
+        <div class="card-ornament">!</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · JS 13</div>
+        <h2 class="lesson-h2">Error Handling — Composure Under Pressure</h2>
+        <p class="lesson-intro">"The truly composed lady handles every mishap with grace and a ready solution."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">// try / catch / finally</span>
+<span class="kw">try</span> {
+  <span class="cm">// code that might fail</span>
+  <span class="kw">const</span> data = JSON.<span class="fn">parse</span>(badJson);    <span class="cm">← might throw SyntaxError</span>
+  risky.<span class="fn">doSomething</span>();                  <span class="cm">← might throw TypeError</span>
+} <span class="kw">catch</span> (error) {
+  <span class="fn">console</span>.error(error.message);     <span class="cm">← the error message</span>
+  <span class="fn">console</span>.error(error.name);        <span class="cm">← "SyntaxError", "TypeError", etc.</span>
+} <span class="kw">finally</span> {
+  <span class="cm">// ALWAYS runs — perfect for cleanup</span>
+  <span class="fn">hideLoadingSpinner</span>();
+}
+
+<span class="cm">// Throwing custom errors</span>
+<span class="kw">function</span> <span class="fn">divide</span>(a, b) {
+  <span class="kw">if</span> (b === <span class="num">0</span>) <span class="kw">throw new</span> <span class="fn">Error</span>(<span class="str">"Cannot divide by zero!"</span>);
+  <span class="kw">return</span> a / b;
+}
+
+<span class="cm">// Common error types</span>
+<span class="kw">new</span> <span class="fn">Error</span>(<span class="str">"message"</span>)         <span class="cm">← generic error</span>
+<span class="kw">new</span> <span class="fn">TypeError</span>(<span class="str">"message"</span>)     <span class="cm">← wrong data type used</span>
+<span class="kw">new</span> <span class="fn">RangeError</span>(<span class="str">"message"</span>)    <span class="cm">← value out of allowed range</span>
+<span class="kw">new</span> <span class="fn">SyntaxError</span>(<span class="str">"message"</span>)   <span class="cm">← invalid syntax</span>
+<span class="kw">new</span> <span class="fn">ReferenceError</span>(<span class="str">"msg"</span>)    <span class="cm">← variable doesn't exist</span></pre>
+
+          <div class="quiz-box">
+            <div class="quiz-title">📰 JavaScript Quiz</div>
+            <div class="quiz-q">What does <code>const items = [...arr1, ...arr2]</code> do?</div>
+            <div class="quiz-options" id="q3">
+              <div class="quiz-option" onclick="checkQuiz('q3',this,false)">○ Adds arr2 as a nested array inside arr1</div>
+              <div class="quiz-option" onclick="checkQuiz('q3',this,true)" data-correct="true">○ Creates a new array combining all items from both arrays</div>
+              <div class="quiz-option" onclick="checkQuiz('q3',this,false)">○ Throws an error — arrays cannot use spread</div>
+              <div class="quiz-option" onclick="checkQuiz('q3',this,false)">○ Copies only arr1 and ignores arr2</div>
+            </div>
+            <div class="quiz-feedback" id="q3-fb"></div>
+          </div>
+
+          <div class="section-divider"><span>✦ You have completed the essentials ✦</span></div>
+
+        </div><!-- closes lesson-body of js-errors -->
+      </div><!-- closes lesson-card of js-errors -->
+
+      <!-- JS LESSON 14: STRING METHODS -->
+      <div class="lesson-card card-js" id="js-strings">
+        <div class="card-ornament">Aa</div>
+        <div class="lesson-tag tag-beginner">Beginner · JS 14</div>
+        <h2 class="lesson-h2">String Methods — Working with Text</h2>
+        <p class="lesson-intro">"Words are the currency of society — one must know how to manipulate them with dexterity."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="kw">const</span> str = <span class="str">"  Hello, Lady Whistledown!  "</span>;
+
+<span class="cm">// Length</span>
+str.length              <span class="cm">→ 29   (counts every character incl. spaces)</span>
+
+<span class="cm">// Case</span>
+str.<span class="fn">toUpperCase</span>()       <span class="cm">→ "  HELLO, LADY WHISTLEDOWN!  "</span>
+str.<span class="fn">toLowerCase</span>()       <span class="cm">→ "  hello, lady whistledown!  "</span>
+
+<span class="cm">// Trim whitespace</span>
+str.<span class="fn">trim</span>()              <span class="cm">→ "Hello, Lady Whistledown!"   (removes both ends)</span>
+str.<span class="fn">trimStart</span>()         <span class="cm">→ "Hello, Lady Whistledown!  " (left only)</span>
+str.<span class="fn">trimEnd</span>()           <span class="cm">→ "  Hello, Lady Whistledown!" (right only)</span>
+
+<span class="cm">// Searching</span>
+str.<span class="fn">includes</span>(<span class="str">"Lady"</span>)    <span class="cm">→ true</span>
+str.<span class="fn">startsWith</span>(<span class="str">"  H"</span>)  <span class="cm">→ true</span>
+str.<span class="fn">endsWith</span>(<span class="str">"!  "</span>)   <span class="cm">→ true</span>
+str.<span class="fn">indexOf</span>(<span class="str">"Lady"</span>)    <span class="cm">→ 8    (-1 if not found)</span>
+
+<span class="cm">// Extracting</span>
+str.<span class="fn">slice</span>(<span class="num">8</span>, <span class="num">12</span>)        <span class="cm">→ "Lady"  (start, end — end not included)</span>
+str.<span class="fn">slice</span>(-<span class="num">13</span>)          <span class="cm">→ "Whistledown!  " (negative = from end)</span>
+str.<span class="fn">substring</span>(<span class="num">8</span>, <span class="num">12</span>)   <span class="cm">→ "Lady"  (similar to slice, no negatives)</span>
+str[<span class="num">8</span>]                  <span class="cm">→ "L"    (character at index)</span>
+str.<span class="fn">at</span>(-<span class="num">3</span>)              <span class="cm">→ "!"   (modern way, supports negatives)</span>
+
+<span class="cm">// Replacing</span>
+str.<span class="fn">replace</span>(<span class="str">"Lady"</span>, <span class="str">"Dear"</span>)          <span class="cm">→ replaces FIRST match only</span>
+str.<span class="fn">replaceAll</span>(<span class="str">"l"</span>, <span class="str">"L"</span>)            <span class="cm">→ replaces ALL matches</span>
+str.<span class="fn">replace</span>(/hello/i, <span class="str">"Greetings"</span>)   <span class="cm">→ case-insensitive regex replace</span>
+
+<span class="cm">// Splitting (String → Array)</span>
+<span class="str">"a,b,c"</span>.<span class="fn">split</span>(<span class="str">","</span>)              <span class="cm">→ ["a", "b", "c"]</span>
+<span class="str">"Hello"</span>.<span class="fn">split</span>(<span class="str">""</span>)               <span class="cm">→ ["H","e","l","l","o"]</span>
+<span class="str">"one two three"</span>.<span class="fn">split</span>(<span class="str">" "</span>)      <span class="cm">→ ["one","two","three"]</span>
+
+<span class="cm">// Padding &amp; Repeating</span>
+<span class="str">"5"</span>.<span class="fn">padStart</span>(<span class="num">3</span>, <span class="str">"0"</span>)             <span class="cm">→ "005"  (great for formatting numbers)</span>
+<span class="str">"Ha"</span>.<span class="fn">repeat</span>(<span class="num">3</span>)                  <span class="cm">→ "HaHaHa"</span>
+
+<span class="cm">// Joining (Array → String)</span>
+[<span class="str">"a"</span>, <span class="str">"b"</span>, <span class="str">"c"</span>].<span class="fn">join</span>(<span class="str">" - "</span>)     <span class="cm">→ "a - b - c"</span></pre>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ String Methods Playground ✦</span>
+            <button class="run-btn" onclick="runEditor('js14')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="js14-code" spellcheck="false">&lt;script&gt;
+  const name = "  Lady Whistledown  ";
+  const st = "font-family:sans-serif;margin:4px 0;font-size:14px";
+
+  document.write(`&lt;p style="${st}"&gt;Original: "${name}"&lt;/p&gt;`);
+  document.write(`&lt;p style="${st}"&gt;Trimmed: "${name.trim()}"&lt;/p&gt;`);
+  document.write(`&lt;p style="${st}"&gt;Uppercase: "${name.trim().toUpperCase()}"&lt;/p&gt;`);
+  document.write(`&lt;p style="${st}"&gt;Length: ${name.length}&lt;/p&gt;`);
+  document.write(`&lt;p style="${st}"&gt;Includes "Lady": ${name.includes("Lady")}&lt;/p&gt;`);
+  document.write(`&lt;p style="${st}"&gt;Replace: "${name.trim().replace("Lady","Dear")}"&lt;/p&gt;`);
+
+  // Split and rejoin
+  const sentence = "HTML CSS JavaScript";
+  const words = sentence.split(" ");
+  document.write(`&lt;p style="${st}"&gt;Split: ${JSON.stringify(words)}&lt;/p&gt;`);
+  document.write(`&lt;p style="${st}"&gt;Join with dash: "${words.join(" - ")}"&lt;/p&gt;`);
+&lt;/script&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="js14-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JS LESSON 15: NUMBER METHODS + MATH + CONSOLE -->
+      <div class="lesson-card card-js" id="js-numbers-math">
+        <div class="card-ornament">π</div>
+        <div class="lesson-tag tag-beginner">Beginner · JS 15</div>
+        <h2 class="lesson-h2">Numbers, Math &amp; the Console</h2>
+        <p class="lesson-intro">"One must master arithmetic before ascending to higher affairs."</p>
+        <div class="lesson-body">
+          <h3 class="sub-heading">Number Methods</h3>
+<pre class="code-display"><span class="cm">// Converting strings to numbers</span>
+<span class="fn">parseInt</span>(<span class="str">"42px"</span>)          <span class="cm">→ 42    (reads integer, stops at non-digit)</span>
+<span class="fn">parseInt</span>(<span class="str">"3.9"</span>)           <span class="cm">→ 3     (truncates decimal)</span>
+<span class="fn">parseFloat</span>(<span class="str">"3.14abc"</span>)    <span class="cm">→ 3.14</span>
+<span class="fn">Number</span>(<span class="str">"42"</span>)             <span class="cm">→ 42    (strict: full string must be a number)</span>
+<span class="fn">Number</span>(<span class="str">"42px"</span>)           <span class="cm">→ NaN   (fails on any non-numeric characters)</span>
+
+<span class="cm">// Checking</span>
+<span class="fn">isNaN</span>(<span class="str">"hello"</span>)           <span class="cm">→ true  (is Not a Number)</span>
+<span class="fn">isNaN</span>(<span class="num">42</span>)               <span class="cm">→ false</span>
+Number.<span class="fn">isInteger</span>(<span class="num">3.5</span>)  <span class="cm">→ false</span>
+Number.<span class="fn">isFinite</span>(<span class="kw">Infinity</span>) <span class="cm">→ false</span>
+
+<span class="cm">// Formatting</span>
+(<span class="num">3.14159</span>).<span class="fn">toFixed</span>(<span class="num">2</span>)    <span class="cm">→ "3.14"  (returns a STRING, 2 decimal places)</span>
+(<span class="num">1234567</span>).<span class="fn">toLocaleString</span>() <span class="cm">→ "1,234,567" (locale-formatted)</span></pre>
+
+          <h3 class="sub-heading">Math Object</h3>
+<pre class="code-display">Math.<span class="fn">round</span>(<span class="num">4.6</span>)          <span class="cm">→ 5      (rounds to nearest integer)</span>
+Math.<span class="fn">floor</span>(<span class="num">4.9</span>)          <span class="cm">→ 4      (always rounds DOWN)</span>
+Math.<span class="fn">ceil</span>(<span class="num">4.1</span>)           <span class="cm">→ 5      (always rounds UP)</span>
+Math.<span class="fn">abs</span>(-<span class="num">7</span>)             <span class="cm">→ 7      (absolute value)</span>
+Math.<span class="fn">max</span>(<span class="num">1</span>, <span class="num">5</span>, <span class="num">3</span>)        <span class="cm">→ 5</span>
+Math.<span class="fn">min</span>(<span class="num">1</span>, <span class="num">5</span>, <span class="num">3</span>)        <span class="cm">→ 1</span>
+Math.<span class="fn">pow</span>(<span class="num">2</span>, <span class="num">10</span>)          <span class="cm">→ 1024   (2 to the power of 10)</span>
+Math.<span class="fn">sqrt</span>(<span class="num">16</span>)            <span class="cm">→ 4      (square root)</span>
+Math.PI                  <span class="cm">→ 3.14159...  (the constant π)</span>
+
+<span class="cm">// Random numbers — the most commonly used Math method</span>
+Math.<span class="fn">random</span>()            <span class="cm">→ 0.0 to 0.999... (never exactly 1)</span>
+
+<span class="cm">// Random integer between min and max (inclusive)</span>
+<span class="kw">function</span> <span class="fn">randomInt</span>(min, max) {
+  <span class="kw">return</span> Math.<span class="fn">floor</span>(Math.<span class="fn">random</span>() * (max - min + <span class="num">1</span>)) + min;
+}
+<span class="fn">randomInt</span>(<span class="num">1</span>, <span class="num">6</span>);          <span class="cm">→ a random dice roll: 1, 2, 3, 4, 5, or 6</span></pre>
+
+          <h3 class="sub-heading">Console Methods — Your Debugging Best Friend</h3>
+<pre class="code-display"><span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hello"</span>, user, <span class="num">42</span>);   <span class="cm">← prints anything (multiple args OK)</span>
+<span class="fn">console</span>.<span class="fn">warn</span>(<span class="str">"Watch out!"</span>);        <span class="cm">← yellow warning in devtools</span>
+<span class="fn">console</span>.<span class="fn">error</span>(<span class="str">"Something broke!"</span>); <span class="cm">← red error in devtools</span>
+<span class="fn">console</span>.<span class="fn">table</span>(users);               <span class="cm">← displays array/object as a table ← so useful!</span>
+<span class="fn">console</span>.<span class="fn">dir</span>(element);              <span class="cm">← shows all properties of a DOM element</span>
+<span class="fn">console</span>.<span class="fn">group</span>(<span class="str">"Label"</span>);            <span class="cm">← collapsible group (end with console.groupEnd())</span>
+<span class="fn">console</span>.<span class="fn">time</span>(<span class="str">"loop"</span>);              <span class="cm">← start timer</span>
+<span class="fn">console</span>.<span class="fn">timeEnd</span>(<span class="str">"loop"</span>);           <span class="cm">← stop timer, prints elapsed ms</span>
+<span class="fn">console</span>.<span class="fn">clear</span>();                   <span class="cm">← clears the console</span>
+
+<span class="cm">// Open DevTools: F12 or Ctrl+Shift+I (Cmd+Option+I on Mac)</span>
+<span class="cm">// Console tab is your live playground for JavaScript!</span></pre>
+        </div>
+      </div>
+
+      <!-- JS LESSON 16: SCOPE & HOISTING -->
+      <div class="lesson-card card-js" id="js-scope">
+        <div class="card-ornament">{ }</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · JS 16</div>
+        <h2 class="lesson-h2">Scope &amp; Hoisting — Where Variables Live</h2>
+        <p class="lesson-intro">"Not every secret is known to all of society — some belong only to certain circles."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">// SCOPE — where a variable can be accessed from</span>
+
+<span class="cm">// 1. Global scope — accessible everywhere</span>
+<span class="kw">const</span> globalName = <span class="str">"Whistledown"</span>;
+
+<span class="kw">function</span> <span class="fn">greet</span>() {
+  <span class="cm">// 2. Function scope — only inside this function</span>
+  <span class="kw">const</span> secret = <span class="str">"I am Penelope"</span>;
+  <span class="fn">console</span>.log(globalName);  <span class="cm">← ✅ can access global</span>
+  <span class="fn">console</span>.log(secret);      <span class="cm">← ✅ can access own scope</span>
+}
+
+<span class="fn">console</span>.log(secret);        <span class="cm">← ❌ ReferenceError! secret is not defined here</span>
+
+<span class="cm">// 3. Block scope — let/const only accessible inside { }</span>
+<span class="kw">if</span> (<span class="kw">true</span>) {
+  <span class="kw">let</span>   blockLet = <span class="str">"block"</span>;   <span class="cm">← scoped to this { } block</span>
+  <span class="kw">const</span> blockConst = <span class="str">"block"</span>; <span class="cm">← scoped to this { } block</span>
+  <span class="kw">var</span>   varLeak = <span class="str">"leaks!"</span>;   <span class="cm">← var IGNORES block scope — leaks out!</span>
+}
+<span class="fn">console</span>.log(varLeak);        <span class="cm">← ✅ var leaks out (this is why we avoid var)</span>
+<span class="fn">console</span>.log(blockLet);       <span class="cm">← ❌ ReferenceError! let is block-scoped</span>
+
+<span class="cm">// HOISTING — declarations are moved to top before code runs</span>
+
+<span class="cm">// Function declarations are fully hoisted:</span>
+<span class="fn">greet</span>();                  <span class="cm">← ✅ works! called before it's defined</span>
+<span class="kw">function</span> <span class="fn">greet</span>() { <span class="fn">console</span>.log(<span class="str">"Hello"</span>); }
+
+<span class="cm">// const and let are hoisted but NOT initialised (Temporal Dead Zone):</span>
+<span class="fn">console</span>.log(name);       <span class="cm">← ❌ ReferenceError (TDZ)</span>
+<span class="kw">const</span> name = <span class="str">"Daphne"</span>;
+
+<span class="cm">// var is hoisted AND initialised to undefined:</span>
+<span class="fn">console</span>.log(x);          <span class="cm">← undefined (not an error, but surprising!)</span>
+<span class="kw">var</span> x = <span class="num">5</span>;
+
+<span class="cm">// CLOSURES — inner function remembers outer function's variables</span>
+<span class="kw">function</span> <span class="fn">makeCounter</span>() {
+  <span class="kw">let</span> count = <span class="num">0</span>;                        <span class="cm">← this variable is "closed over"</span>
+  <span class="kw">return function</span>() { <span class="kw">return</span> ++count; }; <span class="cm">← inner fn remembers count</span>
+}
+<span class="kw">const</span> counter = <span class="fn">makeCounter</span>();
+counter();  <span class="cm">→ 1</span>
+counter();  <span class="cm">→ 2</span>
+counter();  <span class="cm">→ 3   (count persists between calls!)</span></pre>
+        </div>
+      </div>
+
+      <!-- JS LESSON 17: CLASSES & OOP -->
+      <div class="lesson-card card-js" id="js-classes">
+        <div class="card-ornament">C</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · JS 17</div>
+        <h2 class="lesson-h2">Classes &amp; OOP — Blueprints for Objects</h2>
+        <p class="lesson-intro">"Every noble family follows a pattern — a class defines the nature of all who bear that name."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">// A class is a blueprint for creating objects</span>
+<span class="kw">class</span> <span class="fn">Person</span> {
+  <span class="cm">// constructor runs when you do: new Person(...)</span>
+  <span class="fn">constructor</span>(name, age) {
+    <span class="kw">this</span>.name = name;   <span class="cm">← 'this' = the new object being created</span>
+    <span class="kw">this</span>.age = age;
+  }
+
+  <span class="cm">// Methods (functions on the class)</span>
+  <span class="fn">greet</span>() {
+    <span class="kw">return</span> <span class="str">`I am ${this.name}, age ${this.age}.`</span>;
+  }
+
+  <span class="cm">// Getters — access like a property, runs a function</span>
+  <span class="kw">get</span> <span class="fn">isAdult</span>() {
+    <span class="kw">return</span> <span class="kw">this</span>.age >= <span class="num">18</span>;
+  }
+
+  <span class="cm">// Static method — called on the CLASS, not an instance</span>
+  <span class="kw">static</span> <span class="fn">species</span>() {
+    <span class="kw">return</span> <span class="str">"Human"</span>;
+  }
+}
+
+<span class="cm">// Creating instances</span>
+<span class="kw">const</span> daphne = <span class="kw">new</span> <span class="fn">Person</span>(<span class="str">"Daphne"</span>, <span class="num">21</span>);
+daphne.<span class="fn">greet</span>();            <span class="cm">→ "I am Daphne, age 21."</span>
+daphne.isAdult;             <span class="cm">→ true  (getter, no parentheses)</span>
+Person.<span class="fn">species</span>();          <span class="cm">→ "Human"  (static: called on class not instance)</span>
+
+<span class="cm">// Inheritance — extends another class</span>
+<span class="kw">class</span> <span class="fn">Aristocrat</span> <span class="kw">extends</span> <span class="fn">Person</span> {
+  <span class="fn">constructor</span>(name, age, title) {
+    <span class="kw">super</span>(name, age);        <span class="cm">← MUST call super() first to set up parent</span>
+    <span class="kw">this</span>.title = title;
+  }
+
+  <span class="fn">greet</span>() {                  <span class="cm">← overrides parent's greet()</span>
+    <span class="kw">return</span> <span class="str">`${this.title} ${this.name} of House Bridgerton.`</span>;
+  }
+}
+
+<span class="kw">const</span> anthony = <span class="kw">new</span> <span class="fn">Aristocrat</span>(<span class="str">"Anthony"</span>, <span class="num">28</span>, <span class="str">"Viscount"</span>);
+anthony.<span class="fn">greet</span>();           <span class="cm">→ "Viscount Anthony of House Bridgerton."</span>
+anthony.isAdult;            <span class="cm">→ true  (inherited from Person)</span>
+anthony <span class="kw">instanceof</span> Person  <span class="cm">→ true  (Aristocrat IS a Person)</span></pre>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ Classes Playground ✦</span>
+            <button class="run-btn" onclick="runEditor('js17')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="js17-code" spellcheck="false">&lt;script&gt;
+  class Animal {
+    constructor(name, sound) {
+      this.name = name;
+      this.sound = sound;
+    }
+    speak() {
+      return `${this.name} says ${this.sound}!`;
+    }
+    get label() {
+      return `[Animal: ${this.name}]`;
+    }
+  }
+
+  class Dog extends Animal {
+    constructor(name) {
+      super(name, "Woof");
+      this.tricks = [];
+    }
+    learn(trick) {
+      this.tricks.push(trick);
+    }
+    showTricks() {
+      return `${this.name} knows: ${this.tricks.join(", ")}`;
+    }
+  }
+
+  const dog = new Dog("Buddy");
+  dog.learn("sit");
+  dog.learn("shake");
+
+  const st = "font-family:sans-serif;margin:4px 0";
+  document.write(`&lt;p style="${st}"&gt;${dog.speak()}&lt;/p&gt;`);
+  document.write(`&lt;p style="${st}"&gt;${dog.label}&lt;/p&gt;`);
+  document.write(`&lt;p style="${st}"&gt;${dog.showTricks()}&lt;/p&gt;`);
+  document.write(`&lt;p style="${st}"&gt;Is Animal: ${dog instanceof Animal}&lt;/p&gt;`);
+&lt;/script&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="js17-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JS LESSON 18: SETTIMEOUT / SETINTERVAL -->
+      <div class="lesson-card card-js" id="js-timers">
+        <div class="card-ornament">⏱</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · JS 18</div>
+        <h2 class="lesson-h2">Timers — setTimeout &amp; setInterval</h2>
+        <p class="lesson-intro">"Punctuality is the soul of polite society — and of every interactive webpage."</p>
+        <div class="lesson-body">
+<pre class="code-display"><span class="cm">// setTimeout — run code ONCE after a delay (in milliseconds)</span>
+<span class="kw">const</span> timerId = <span class="fn">setTimeout</span>(<span class="kw">function</span>() {
+  <span class="fn">console</span>.log(<span class="str">"2 seconds have passed!"</span>);
+}, <span class="num">2000</span>);                <span class="cm">← 2000ms = 2 seconds</span>
+
+<span class="cm">// Arrow function shorthand</span>
+<span class="fn">setTimeout</span>(() => <span class="fn">console</span>.log(<span class="str">"Hello!"</span>), <span class="num">1000</span>);
+
+<span class="cm">// Cancel before it fires</span>
+<span class="fn">clearTimeout</span>(timerId);
+
+<span class="cm">// setInterval — run code REPEATEDLY at set intervals</span>
+<span class="kw">let</span> count = <span class="num">0</span>;
+<span class="kw">const</span> intervalId = <span class="fn">setInterval</span>(() => {
+  count++;
+  <span class="fn">console</span>.log(<span class="str">"Tick:"</span>, count);
+  <span class="kw">if</span> (count >= <span class="num">5</span>) <span class="fn">clearInterval</span>(intervalId);  <span class="cm">← stop after 5 ticks</span>
+}, <span class="num">1000</span>);                <span class="cm">← runs every 1 second</span>
+
+<span class="cm">// Stop an interval</span>
+<span class="fn">clearInterval</span>(intervalId);
+
+<span class="cm">// Common uses</span>
+<span class="cm">setTimeout(hideAlert, 3000);         ← auto-dismiss a notification</span>
+<span class="cm">setInterval(updateClock, 1000);      ← live clock</span>
+<span class="cm">setInterval(fetchNewPosts, 30000);   ← poll for new data every 30s</span>
+
+<span class="cm">// setTimeout with 0ms — defers to after current code finishes</span>
+<span class="fn">setTimeout</span>(() => <span class="fn">console</span>.log(<span class="str">"runs last"</span>), <span class="num">0</span>);
+<span class="fn">console</span>.log(<span class="str">"runs first"</span>);  <span class="cm">← this prints before the setTimeout callback</span></pre>
+        </div>
+        <div class="editor-wrap">
+          <div class="editor-header">
+            <div class="editor-dots"><div class="editor-dot" style="background:#e05a4e"></div><div class="editor-dot" style="background:#e0b84e"></div><div class="editor-dot" style="background:#4eae6a"></div></div>
+            <span class="editor-title">✦ Timer Playground ✦</span>
+            <button class="run-btn" onclick="runEditor('js18')">Run ▶</button>
+          </div>
+          <div class="editor-body">
+            <div class="editor-pane">
+              <div class="editor-pane-label">YOUR CODE</div>
+              <textarea id="js18-code" spellcheck="false">&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;body style="font-family:sans-serif;padding:20px;background:#f8f5ee"&gt;
+  &lt;h3&gt;Live Clock ✦&lt;/h3&gt;
+  &lt;div id="clock" style="font-size:2rem;letter-spacing:2px;color:#3a3020"&gt;&lt;/div&gt;
+
+  &lt;hr style="margin:16px 0"&gt;
+
+  &lt;button onclick="startCountdown()" style="padding:8px 18px;background:#8a3010;color:white;border:none;cursor:pointer"&gt;Start 5s Countdown&lt;/button&gt;
+  &lt;div id="countdown" style="font-size:1.4rem;margin-top:10px;color:#8a6c2a"&gt;&lt;/div&gt;
+
+  &lt;script&gt;
+    // Live clock with setInterval
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // Countdown with setTimeout chain
+    function startCountdown() {
+      const el = document.getElementById('countdown');
+      let n = 5;
+      el.textContent = n;
+      const id = setInterval(() => {
+        n--;
+        if (n &lt;= 0) {
+          clearInterval(id);
+          el.textContent = "🎉 Time's up!";
+        } else {
+          el.textContent = n;
+        }
+      }, 1000);
+    }
+  &lt;/script&gt;
+&lt;/body&gt;&lt;/html&gt;</textarea>
+            </div>
+            <div class="editor-pane">
+              <div class="editor-preview-label">LIVE PREVIEW</div>
+              <iframe id="js18-preview" class="editor-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JS LESSON 19: JSON -->
+      <div class="lesson-card card-js" id="js-json">
+        <div class="card-ornament">{ }</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · JS 19</div>
+        <h2 class="lesson-h2">JSON — The Language of Data Exchange</h2>
+        <p class="lesson-intro">"Every letter between correspondents must follow a standard format to be properly understood."</p>
+        <div class="lesson-body">
+          <p><strong>JSON</strong> (JavaScript Object Notation) is the universal format for sending and receiving data between a browser and a server. Every API uses it.</p>
+<pre class="code-display"><span class="cm">// JSON looks like a JS object but with some strict rules:</span>
+<span class="cm">// - Keys MUST be double-quoted strings</span>
+<span class="cm">// - Values can be: string, number, boolean, null, array, object</span>
+<span class="cm">// - No functions, no undefined, no comments allowed</span>
+
+<span class="cm">// Valid JSON:</span>
+{
+  <span class="str">"name"</span>: <span class="str">"Daphne"</span>,
+  <span class="str">"age"</span>: <span class="num">21</span>,
+  <span class="str">"isDebuting"</span>: <span class="kw">true</span>,
+  <span class="str">"season"</span>: <span class="kw">null</span>,
+  <span class="str">"hobbies"</span>: [<span class="str">"piano"</span>, <span class="str">"reading"</span>],
+  <span class="str">"address"</span>: { <span class="str">"city"</span>: <span class="str">"London"</span> }
+}
+
+<span class="cm">// JS Object → JSON string (for sending to a server)</span>
+<span class="kw">const</span> obj = { name: <span class="str">"Daphne"</span>, age: <span class="num">21</span> };
+<span class="kw">const</span> jsonString = JSON.<span class="fn">stringify</span>(obj);
+<span class="cm">// → '{"name":"Daphne","age":21}'  (a string, not an object)</span>
+
+<span class="cm">// Pretty-print with indentation (great for logging/debugging)</span>
+JSON.<span class="fn">stringify</span>(obj, <span class="kw">null</span>, <span class="num">2</span>);
+<span class="cm">// → {</span>
+<span class="cm">//     "name": "Daphne",</span>
+<span class="cm">//     "age": 21</span>
+<span class="cm">//   }</span>
+
+<span class="cm">// JSON string → JS Object (parsing data received from server)</span>
+<span class="kw">const</span> received = <span class="str">'{"name":"Daphne","age":21}'</span>;
+<span class="kw">const</span> parsed = JSON.<span class="fn">parse</span>(received);
+parsed.name;    <span class="cm">→ "Daphne"  (now a real JS object)</span>
+
+<span class="cm">// Always wrap JSON.parse in try/catch — it throws if JSON is invalid!</span>
+<span class="kw">try</span> {
+  <span class="kw">const</span> data = JSON.<span class="fn">parse</span>(maybeInvalidJson);
+} <span class="kw">catch</span> (e) {
+  <span class="fn">console</span>.error(<span class="str">"Bad JSON!"</span>, e);
+}
+
+<span class="cm">// Deep clone an object (simple trick using JSON)</span>
+<span class="kw">const</span> clone = JSON.<span class="fn">parse</span>(JSON.<span class="fn">stringify</span>(original));
+<span class="cm">// Warning: loses functions, undefined, Date objects</span></pre>
+        </div>
+      </div>
+
+      <!-- JS LESSON 20: MAP & SET -->
+      <div class="lesson-card card-js" id="js-map-set">
+        <div class="card-ornament">♦</div>
+        <div class="lesson-tag tag-intermediate">Intermediate · JS 20</div>
+        <h2 class="lesson-h2">Map &amp; Set — Smarter Collections</h2>
+        <p class="lesson-intro">"A properly curated collection admits no duplicates and knows exactly where everything belongs."</p>
+        <div class="lesson-body">
+          <h3 class="sub-heading">Set — A Collection of Unique Values</h3>
+<pre class="code-display"><span class="cm">// Set automatically removes duplicates</span>
+<span class="kw">const</span> set = <span class="kw">new</span> <span class="fn">Set</span>([<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">3</span>, <span class="num">3</span>]);
+set;          <span class="cm">→ Set {1, 2, 3}   (duplicates removed!)</span>
+set.size;     <span class="cm">→ 3</span>
+
+set.<span class="fn">add</span>(<span class="num">4</span>);    <span class="cm">← add a value</span>
+set.<span class="fn">has</span>(<span class="num">2</span>);    <span class="cm">→ true    (check existence — FAST)</span>
+set.<span class="fn">delete</span>(<span class="num">1</span>); <span class="cm">← remove a value</span>
+set.<span class="fn">clear</span>();   <span class="cm">← remove everything</span>
+
+<span class="cm">// Iterate a Set</span>
+<span class="kw">for</span> (<span class="kw">const</span> val <span class="kw">of</span> set) { <span class="fn">console</span>.log(val); }
+
+<span class="cm">// Most common use: remove duplicates from an array</span>
+<span class="kw">const</span> arr = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">1</span>];
+<span class="kw">const</span> unique = [...<span class="kw">new</span> <span class="fn">Set</span>(arr)];  <span class="cm">→ [1, 2, 3]</span></pre>
+
+          <h3 class="sub-heading">Map — A Key-Value Store with Any Key Type</h3>
+<pre class="code-display"><span class="cm">// Like an object, but keys can be ANYTHING (objects, functions, etc.)</span>
+<span class="kw">const</span> map = <span class="kw">new</span> <span class="fn">Map</span>();
+
+map.<span class="fn">set</span>(<span class="str">"name"</span>, <span class="str">"Daphne"</span>);    <span class="cm">← string key</span>
+map.<span class="fn">set</span>(<span class="num">42</span>, <span class="str">"the answer"</span>);     <span class="cm">← number key</span>
+map.<span class="fn">set</span>(userObject, <span class="str">"data"</span>);   <span class="cm">← object as key!</span>
+
+map.<span class="fn">get</span>(<span class="str">"name"</span>);               <span class="cm">→ "Daphne"</span>
+map.<span class="fn">has</span>(<span class="num">42</span>);                   <span class="cm">→ true</span>
+map.size;                       <span class="cm">→ 3</span>
+map.<span class="fn">delete</span>(<span class="str">"name"</span>);
+
+<span class="cm">// Iterating a Map</span>
+<span class="kw">for</span> (<span class="kw">const</span> [key, value] <span class="kw">of</span> map) {
+  <span class="fn">console</span>.log(key, <span class="str">"→"</span>, value);
+}
+
+<span class="cm">// Map vs Object — when to use which</span>
+<span class="cm">Object → simple key-value, string keys, JSON-serialisable</span>
+<span class="cm">Map    → frequent add/remove, any key type, need insertion order</span></pre>
+        </div>
+      </div>
+
+          <div style="background:var(--ink);padding:28px 32px;border-left:4px solid var(--sepia-light);">
+            <h2 class="lesson-h2" style="color:#f8f5ee;margin-bottom:8px;">What to Learn Next, Dear Reader</h2>
+            <p style="color:rgba(255,255,255,0.7);font-family:'Lora',serif;font-style:italic;margin-bottom:18px;font-size:14px;">"Every Season brings new opportunities for growth and refinement."</p>
+            <ul style="color:rgba(255,255,255,0.75);font-family:'Lora',serif;font-size:14px;line-height:2;padding-left:20px;">
+              <li><strong style="color:#c4a34e">Git &amp; GitHub</strong> — Version control to save your code history</li>
+              <li><strong style="color:#c4a34e">CSS Frameworks</strong> — Tailwind CSS or Bootstrap for faster styling</li>
+              <li><strong style="color:#c4a34e">React.js</strong> — The most popular JavaScript framework for building UIs</li>
+              <li><strong style="color:#c4a34e">Node.js</strong> — JavaScript on the server side</li>
+              <li><strong style="color:#c4a34e">APIs &amp; REST</strong> — Build and consume web APIs</li>
+              <li><strong style="color:#c4a34e">Databases</strong> — PostgreSQL, MongoDB, or Firebase</li>
+              <li><strong style="color:#c4a34e">Deployment</strong> — Vercel or Netlify (free hosting for your projects!)</li>
+              <li><strong style="color:#c4a34e">TypeScript</strong> — JavaScript with type safety</li>
+            </ul>
+          </div>
+
+    </div><!-- end JS panel -->
+
+  </main>
+</div><!-- end app-layout -->
+
+<footer class="site-footer">
+  <p>Published by <span>The Whistledown Web Gazette</span> · Printed for the Edification of Society · "Dear Gentle Reader, you are already extraordinary."</p>
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+//  EDITOR
+//  Uses iframe.srcdoc — immune to live-server
+//  WebSocket injection and CSP issues.
+// ══════════════════════════════════════════
+
+// Convert HTML entities back to real characters before injecting into srcdoc
+function decodeEntities(str) {
+  return str
+    .replace(/&lt;/g,   '<')
+    .replace(/&gt;/g,   '>')
+    .replace(/&amp;/g,  '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g,  "'");
+}
+
+function runEditor(id) {
+  const ta     = document.getElementById(id + '-code');
+  const iframe = document.getElementById(id + '-preview');
+  if (!ta || !iframe) return;
+  iframe.srcdoc = decodeEntities(ta.value);
+}
+
+// Auto-run every editor once the page has fully loaded
+window.addEventListener('load', function () {
+  var editorIds = ['ed1','ed2','ed3','ed5','ed12','css1','css4','css5','css7','js1','js3','js5','js8','js11','js14','js17','js18'];
+  editorIds.forEach(function(id) { runEditor(id); });
+});
+
+// Live-update on typing — each textarea gets its OWN debounce timer
+document.querySelectorAll('.editor-pane textarea').forEach(function(ta) {
+  var timer = null;
+  ta.addEventListener('input', function() {
+    clearTimeout(timer);
+    timer = setTimeout(function() {
+      var id = ta.id.replace('-code', '');
+      runEditor(id);
+    }, 400);
+  });
+});
+
+// ══════════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════════
+function switchTab(tab) {
+  // Hide all panels, deactivate all buttons
+  document.querySelectorAll('.tab-panel').forEach(function(p) {
+    p.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(b) {
+    b.classList.remove('active');
+  });
+
+  // Show the chosen panel
+  var panel = document.getElementById('panel-' + tab);
+  if (panel) panel.classList.add('active');
+
+  // Activate the matching tab button
+  document.querySelectorAll('.tab-btn').forEach(function(b) {
+    if (b.textContent.toLowerCase().indexOf(tab) !== -1) {
+      b.classList.add('active');
+    }
+  });
+
+  // Scroll back to top of page — safe for all browsers including Safari
+  try {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch(e) {
+    window.scrollTo(0, 0);
+  }
+}
+
+// ══════════════════════════════════════════
+//  SCROLL TO SECTION
+//  Renamed jumpTo() to avoid shadowing the
+//  native window.scrollTo()
+// ══════════════════════════════════════════
+function jumpTo(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  try {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch(e) {
+    el.scrollIntoView(true);
+  }
+}
+
+// ══════════════════════════════════════════
+//  QUIZ
+// ══════════════════════════════════════════
+function checkQuiz(qId, clickedEl, isCorrect) {
+  // Disable all options once one is chosen
+  var opts = document.querySelectorAll('#' + qId + ' .quiz-option');
+  opts.forEach(function(o) { o.style.pointerEvents = 'none'; });
+
+  // Mark the clicked option
+  clickedEl.classList.add(isCorrect ? 'correct' : 'wrong');
+
+  // If wrong, highlight the correct option
+  if (!isCorrect) {
+    opts.forEach(function(o) {
+      if (o.getAttribute('data-correct') === 'true') {
+        o.classList.add('correct');
+      }
+    });
+  }
+
+  // Show feedback message
+  var fb = document.getElementById(qId + '-fb');
+  if (!fb) return;
+  fb.className = 'quiz-feedback show ' + (isCorrect ? 'ok' : 'bad');
+  fb.textContent = isCorrect
+    ? '✦ Precisely correct! Your knowledge is most impressive, dear reader.'
+    : '✧ Not quite. Review the lesson above and try again — the correct answer is now marked.';
+}
+</script>
+</body>
+</html>
