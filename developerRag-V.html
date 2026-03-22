@@ -54,6 +54,8 @@ body {
   color: var(--ink);
   min-height: 100vh;
   overflow-x: hidden;
+  overflow-wrap: break-word;   /* cascade down to all text */
+  word-break: break-word;
 }
 
 /* subtle paper texture */
@@ -272,8 +274,11 @@ body::before {
 /* ── MAIN ── */
 .main-content {
   flex: 1;
+  min-width: 0; /* CRITICAL: flex children ignore container width without this */
+  width: 100%;
   padding: 36px 52px;
   max-width: 1000px;
+  overflow-x: hidden;
 }
 
 .tab-panel { display: none; }
@@ -286,12 +291,16 @@ body::before {
   margin-bottom: 32px;
   padding-bottom: 16px;
   border-bottom: 3px double var(--ink);
+  width: 100%;
+  overflow: hidden;
 }
 .col-header-pre {
   font-family: 'Josefin Sans', sans-serif;
   font-size: 9px; letter-spacing: 4px;
   text-transform: uppercase; color: var(--sepia);
   margin-bottom: 6px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 .col-header-title {
   font-family: 'Playfair Display', serif;
@@ -313,6 +322,8 @@ body::before {
   box-shadow: var(--shadow);
   position: relative;
   overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
   animation: fadeIn 0.3s ease;
 }
 .lesson-card::after {
@@ -354,6 +365,8 @@ body::before {
   color: var(--ink);
   margin-bottom: 4px;
   line-height: 1.25;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 .lesson-intro {
   font-family: 'Lora', serif;
@@ -365,12 +378,16 @@ body::before {
   border-left: 3px solid var(--sepia-light);
   background: var(--highlight);
   line-height: 1.6;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 .lesson-body {
   font-family: 'Lora', serif;
   font-size: 14.5px;
   line-height: 1.85;
   color: var(--ink-mid);
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 .lesson-body p { margin-bottom: 14px; color: var(--ink-mid); }
 .lesson-body ul, .lesson-body ol { margin: 10px 0 14px 22px; }
@@ -387,6 +404,8 @@ h3.sub-heading {
   padding-bottom: 5px;
   border-bottom: 1px solid var(--border);
   letter-spacing: 0.3px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* ── CODE DISPLAY ── */
