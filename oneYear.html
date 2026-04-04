@@ -1,906 +1,478 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>For My Ragave 🌸</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --cream: #fdf8f0;
-      --blush: #f2c4ce;
-      --rose: #d4829a;
-      --dusty: #b5606e;
-      --sage: #8a9e7d;
-      --sage-light: #b8cba8;
-      --bark: #7a5c4a;
-      --gold: #c9a96e;
-      --ink: #2d1f18;
-      --petal1: #f9d4dc;
-      --petal2: #fce0e8;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>For My Ragave 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&family=Sacramento&family=Spectral:ital,wght@0,300;1,300&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --cream:#fdf8f0;--blush:#f2c4ce;--rose:#d4829a;--dusty:#b5606e;
+  --sage:#8a9e7d;--sage-light:#b8cba8;--bark:#7a5c4a;--gold:#c9a96e;
+  --ink:#2d1f18;--petal1:#f9d4dc;--petal2:#fce0e8;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;-webkit-font-smoothing:antialiased;}
 
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+/* CURSOR — transform only, no left/top, no transition on dot */
+#cursor{width:11px;height:11px;background:var(--rose);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;will-change:transform;}
+#cursor-trail{width:34px;height:34px;border:1.5px solid var(--rose);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;opacity:0.28;will-change:transform;}
 
-html { scroll-behavior: smooth; }
+/* PROGRESS BAR — no box-shadow */
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--gold),var(--sage-light));z-index:9997;width:0%;}
 
-body {
-  background: var(--cream);
-  color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
-  overflow-x: hidden;
-  cursor: none;
-}
+/* CANVAS */
+#petal-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;}
 
-/* ── CUSTOM CURSOR ── */
-#cursor {
-  width: 18px; height: 18px;
-  background: var(--rose);
-  border-radius: 50%;
-  position: fixed; top:0; left:0;
-  pointer-events: none; z-index: 9999;
-  transform: translate(-50%,-50%);
-  transition: transform 0.1s ease, background 0.3s;
-  mix-blend-mode: multiply;
+/* NAV — solid bg, no backdrop-filter */
+#nav{
+  position:fixed;top:18px;left:50%;transform:translateX(-50%);
+  z-index:5000;display:flex;gap:2px;align-items:center;
+  background:rgba(253,248,240,0.95);
+  border:1px solid rgba(212,130,154,0.35);
+  border-radius:50px;padding:6px 10px;
+  box-shadow:0 4px 18px rgba(122,92,74,0.11);
 }
-#cursor-trail {
-  width: 38px; height: 38px;
-  border: 1.5px solid var(--rose);
-  border-radius: 50%;
-  position: fixed; top:0; left:0;
-  pointer-events: none; z-index: 9998;
-  transform: translate(-50%,-50%);
-  transition: transform 0.25s ease, opacity 0.3s;
-  opacity: 0.5;
-}
+#nav a{font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--bark);text-decoration:none;padding:7px 15px;border-radius:30px;transition:background .2s,color .2s;white-space:nowrap;}
+#nav a:hover{background:rgba(212,130,154,0.12);color:var(--dusty);}
+#nav a.active{background:var(--rose);color:white;}
 
-/* ── PETAL CANVAS ── */
-#petal-canvas {
-  position: fixed; top:0; left:0;
-  width:100%; height:100%;
-  pointer-events: none; z-index: 0;
+/* HERO */
+#hero{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:100px 24px 80px;text-align:center;position:relative;z-index:2;overflow:hidden;
+  background:radial-gradient(ellipse 70% 60% at 15% 20%,#fce8ee,transparent),
+             radial-gradient(ellipse 60% 50% at 85% 80%,#e8f0e4,transparent),
+             var(--cream);
 }
+/* 2 rings only, translate separate from rotate so translate is not recomputed per frame */
+.hero-ring{position:absolute;border-radius:50%;border:1px dashed rgba(212,130,154,0.14);pointer-events:none;will-change:transform;}
+.hero-ring:nth-child(1){width:560px;height:560px;top:calc(50% - 280px);left:calc(50% - 280px);animation:ring-spin 44s linear infinite;}
+.hero-ring:nth-child(2){width:380px;height:380px;top:calc(50% - 190px);left:calc(50% - 190px);animation:ring-spin 30s linear infinite reverse;border-color:rgba(138,158,125,0.12);}
+@keyframes ring-spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 
-/* ── SECTIONS ── */
-section { position: relative; z-index: 1; }
+.hero-wreath{font-size:2.6rem;letter-spacing:0.25em;animation:wreath-float 5s ease-in-out infinite;display:block;margin-bottom:18px;position:relative;z-index:2;}
+@keyframes wreath-float{0%,100%{transform:translateY(0) rotate(-1.5deg);}50%{transform:translateY(-10px) rotate(1.5deg);}}
 
-/* ══════════════════════════════
-   HERO
-══════════════════════════════ */
-#hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 60px 20px;
-  text-align: center;
-  background: radial-gradient(ellipse at 30% 20%, #fce8ee 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 80%, #e8f0e4 0%, transparent 55%),
-              var(--cream);
-}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.95rem;color:var(--rose);letter-spacing:0.38em;text-transform:uppercase;margin-bottom:22px;opacity:0;animation:fadeUp .9s .3s forwards;position:relative;z-index:2;}
+.hero-title{font-family:'Sacramento',cursive;font-size:clamp(4.5rem,13vw,9rem);line-height:1;color:var(--dusty);opacity:0;animation:fadeUp .9s .6s forwards;position:relative;z-index:2;}
+/* No filter/drop-shadow on title */
+.name-highlight{color:var(--bark);position:relative;display:inline-block;}
+.name-highlight::after{content:'';position:absolute;bottom:-6px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--rose),var(--gold),transparent);border-radius:2px;}
 
-.hero-wreath {
-  font-size: 3.5rem;
-  letter-spacing: 0.15em;
-  animation: wreath-float 4s ease-in-out infinite;
-  display: block;
-  margin-bottom: 10px;
-}
-@keyframes wreath-float {
-  0%,100% { transform: translateY(0) rotate(-2deg); }
-  50% { transform: translateY(-10px) rotate(2deg); }
-}
+.hero-divider{display:flex;align-items:center;gap:18px;margin:30px 0;opacity:0;animation:fadeUp .9s .9s forwards;position:relative;z-index:2;}
+.hdl{flex:1;max-width:100px;height:1px;background:linear-gradient(to right,transparent,var(--rose));}
+.hdl.r{background:linear-gradient(to left,transparent,var(--rose));}
+.hero-divider span{font-size:1.1rem;}
 
-.hero-sub {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 1.1rem;
-  color: var(--rose);
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  margin-bottom: 18px;
-  opacity: 0;
-  animation: fadeUp 1s 0.3s forwards;
-}
+.hero-tagline{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.8vw,1.4rem);color:var(--bark);max-width:500px;line-height:2;min-height:3em;opacity:0;animation:fadeUp .9s 1.1s forwards;position:relative;z-index:2;}
+#typed-text{border-right:2px solid var(--rose);padding-right:2px;animation:blink .9s step-end infinite;}
+@keyframes blink{0%,100%{border-color:var(--rose);}50%{border-color:transparent;}}
 
-.hero-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.8rem, 8vw, 5.5rem);
-  line-height: 1.1;
-  color: var(--dusty);
-  opacity: 0;
-  animation: fadeUp 1s 0.6s forwards;
-}
-.hero-title em {
-  font-style: italic;
-  color: var(--bark);
-}
+.scroll-hint{margin-top:55px;font-size:0.7rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rose);opacity:0;animation:fadeUp .9s 1.7s forwards;display:flex;flex-direction:column;align-items:center;gap:12px;position:relative;z-index:2;}
+.scroll-arrow{width:18px;height:18px;border-right:1.5px solid var(--rose);border-bottom:1.5px solid var(--rose);transform:rotate(45deg);animation:bounce 1.6s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:rotate(45deg) translateY(0);}50%{transform:rotate(45deg) translateY(6px);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
 
-.hero-divider {
-  display: flex; align-items: center; gap: 14px;
-  margin: 28px 0;
-  opacity: 0;
-  animation: fadeUp 1s 0.9s forwards;
-}
-.hero-divider span { font-size: 1.4rem; }
-.hero-divider::before, .hero-divider::after {
-  content: '';
-  flex: 1; max-width: 80px;
-  height: 1px;
-  background: linear-gradient(to right, transparent, var(--rose));
-}
-.hero-divider::after { background: linear-gradient(to left, transparent, var(--rose)); }
+/* COUNTER */
+#counter-strip{background:linear-gradient(135deg,#b5606e,#d4829a 50%,#c9a96e);padding:38px 24px;display:flex;justify-content:center;gap:clamp(28px,7vw,110px);flex-wrap:wrap;position:relative;z-index:2;overflow:hidden;}
+#counter-strip::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:40px;background:var(--cream);clip-path:ellipse(55% 100% at 50% 100%);}
+.counter-item{text-align:center;color:white;position:relative;z-index:1;}
+.counter-num{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,8vw,4.5rem);font-weight:700;display:block;line-height:1;}
+.counter-label{font-size:0.68rem;letter-spacing:0.24em;text-transform:uppercase;opacity:0.9;margin-top:8px;display:block;}
+.counter-sublabel{opacity:0.55;font-size:0.58rem;display:block;margin-top:4px;font-family:'Cormorant Garamond',serif;font-style:italic;}
 
-.hero-tagline {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.25rem;
-  color: var(--bark);
-  max-width: 440px;
-  line-height: 1.8;
-  opacity: 0;
-  animation: fadeUp 1s 1.1s forwards;
-}
+/* SECTION HEADS */
+.section-head{text-align:center;padding:80px 24px 48px;}
+.section-eyebrow{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.95rem;color:var(--rose);letter-spacing:0.4em;text-transform:uppercase;display:block;margin-bottom:14px;}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5.5vw,3.2rem);color:var(--bark);line-height:1.15;}
+.section-line{width:60px;height:2px;background:linear-gradient(90deg,var(--rose),var(--gold),var(--sage));margin:20px auto 0;border-radius:2px;}
 
-.scroll-hint {
-  margin-top: 50px;
-  font-size: 0.78rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--rose);
-  opacity: 0;
-  animation: fadeUp 1s 1.5s forwards;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-}
-.scroll-arrow {
-  width: 22px; height: 22px;
-  border-right: 1.5px solid var(--rose);
-  border-bottom: 1.5px solid var(--rose);
-  transform: rotate(45deg);
-  animation: bounce 1.5s infinite;
-}
-@keyframes bounce { 0%,100%{transform:rotate(45deg) translateY(0)}50%{transform:rotate(45deg) translateY(5px)} }
+/* TIMELINE */
+#story{padding-bottom:80px;position:relative;z-index:2;}
+.timeline{max-width:660px;margin:0 auto;padding:0 24px;position:relative;}
+.timeline::before{content:'';position:absolute;left:44px;top:0;bottom:0;width:1.5px;background:linear-gradient(to bottom,var(--blush),var(--sage-light),var(--gold),var(--blush));}
+.tl-item{display:flex;gap:28px;margin-bottom:52px;opacity:0;transform:translateX(-22px);transition:opacity .6s ease,transform .6s ease;}
+.tl-item.visible{opacity:1;transform:translateX(0);}
+.tl-item:nth-child(2){transition-delay:.1s;}
+.tl-item:nth-child(3){transition-delay:.2s;}
+.tl-item:nth-child(4){transition-delay:.3s;}
+.tl-dot{flex-shrink:0;width:50px;height:50px;background:white;border:2px solid var(--rose);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 4px 14px rgba(212,130,154,0.18);z-index:1;position:relative;}
+.tl-item.visible .tl-dot{animation:pop-in .45s .15s both;}
+@keyframes pop-in{0%{transform:scale(0.5);}70%{transform:scale(1.14);}100%{transform:scale(1);}}
+.tl-content{background:white;border-radius:22px;padding:24px 28px;box-shadow:0 4px 18px rgba(122,92,74,0.07);border:1px solid rgba(242,196,206,0.45);flex:1;transition:transform .28s ease;position:relative;overflow:hidden;}
+.tl-content::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .32s ease;}
+.tl-content:hover::before{transform:scaleX(1);}
+.tl-content:hover{transform:translateY(-4px);}
+.tl-date{font-family:'Cormorant Garamond',serif;font-size:0.8rem;color:var(--rose);letter-spacing:0.24em;text-transform:uppercase;margin-bottom:6px;font-style:italic;}
+.tl-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--bark);margin-bottom:9px;}
+.tl-desc{font-family:'Spectral',serif;font-weight:300;font-size:0.88rem;line-height:1.8;color:#7a6055;}
 
-@keyframes fadeUp {
-  from { opacity:0; transform: translateY(20px); }
-  to   { opacity:1; transform: translateY(0); }
-}
+/* GUNDU */
+#gundu{background:linear-gradient(160deg,#fdf0f3,#f0f5ec);padding:0 24px 80px;position:relative;z-index:2;}
+.gundu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:22px;max-width:980px;margin:0 auto;}
+.gundu-card{background:white;border-radius:28px;padding:36px 24px;text-align:center;box-shadow:0 5px 20px rgba(122,92,74,0.07);border:1px solid rgba(242,196,206,0.35);opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease;}
+.gundu-card.visible{opacity:1;transform:translateY(0);}
+.gundu-card:nth-child(1){transition-delay:0s;}.gundu-card:nth-child(2){transition-delay:.08s;}.gundu-card:nth-child(3){transition-delay:.16s;}.gundu-card:nth-child(4){transition-delay:.24s;}.gundu-card:nth-child(5){transition-delay:.32s;}
+.gundu-icon{font-size:2rem;margin-bottom:14px;display:block;transition:transform .25s ease;}
+.gundu-card:hover .gundu-icon{transform:scale(1.2) rotate(-5deg);}
+.gundu-letter{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;background:linear-gradient(135deg,var(--rose),var(--dusty),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:8px;}
+.gundu-word{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:var(--bark);margin-bottom:12px;}
+.gundu-desc{font-family:'Cormorant Garamond',serif;font-size:0.95rem;color:#9a7b72;line-height:1.7;}
 
-/* ══════════════════════════════
-   COUNTER STRIP
-══════════════════════════════ */
-#counter-strip {
-  background: linear-gradient(135deg, var(--dusty), var(--rose));
-  padding: 30px 20px;
-  display: flex;
-  justify-content: center;
-  gap: clamp(20px, 5vw, 80px);
-  flex-wrap: wrap;
-}
-.counter-item {
-  text-align: center;
-  color: white;
-}
-.counter-num {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  font-weight: 700;
-  display: block;
-  line-height: 1;
-}
-.counter-label {
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  opacity: 0.85;
-  margin-top: 6px;
-  display: block;
-}
+/* GALLERY */
+#gallery{padding:0 24px 100px;position:relative;z-index:2;}
+.gallery-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(212,130,154,0.1);border:1px solid rgba(212,130,154,0.3);border-radius:30px;padding:6px 16px;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--rose);margin-bottom:12px;}
+.gallery-badge::before{content:'✦';}
+.gallery-intro{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:var(--bark);max-width:520px;margin:0 auto 48px;line-height:2;}
+.gallery-masonry{columns:3;column-gap:18px;max-width:980px;margin:0 auto;}
+@media(max-width:700px){.gallery-masonry{columns:2;}}
+@media(max-width:420px){.gallery-masonry{columns:1;}}
+.gallery-item{break-inside:avoid;margin-bottom:18px;border-radius:22px;overflow:hidden;background:linear-gradient(135deg,var(--petal1),var(--petal2));border:1px solid rgba(242,196,206,0.5);box-shadow:0 4px 16px rgba(122,92,74,0.09);cursor:pointer;position:relative;opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease;}
+.gallery-item.visible{opacity:1;transform:translateY(0);}
+.gallery-item:nth-child(1){transition-delay:.04s;}.gallery-item:nth-child(2){transition-delay:.1s;}.gallery-item:nth-child(3){transition-delay:.16s;}.gallery-item:nth-child(4){transition-delay:.22s;}.gallery-item:nth-child(5){transition-delay:.28s;}
+/* hover: transform only, no shadow change */
+.gallery-item:hover{transform:translateY(-4px) !important;}
+.gallery-item img{width:100%;display:block;object-fit:cover;transition:transform .38s ease;}
+.gallery-item:hover img{transform:scale(1.05);}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(90,62,48,0.68) 0%,transparent 55%);opacity:0;transition:opacity .28s;display:flex;align-items:flex-end;padding:16px;}
+.gallery-item:hover .gallery-overlay{opacity:1;}
+.gallery-caption{font-family:'Sacramento',cursive;font-size:1.1rem;color:white;}
+.gallery-placeholder{aspect-ratio:4/5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;}
+.ph-icon{font-size:2.2rem;opacity:0.4;}.ph-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.82rem;color:var(--rose);opacity:0.6;}
 
-/* ══════════════════════════════
-   SECTION TITLES
-══════════════════════════════ */
-.section-head {
-  text-align: center;
-  padding: 70px 20px 40px;
-}
-.section-eyebrow {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 1rem;
-  color: var(--rose);
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  display: block;
-  margin-bottom: 10px;
-}
-.section-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.8rem, 5vw, 3rem);
-  color: var(--bark);
-}
-.section-line {
-  width: 60px; height: 2px;
-  background: linear-gradient(90deg, var(--rose), var(--sage));
-  margin: 16px auto 0;
-  border-radius: 2px;
-}
+/* LIGHTBOX — no backdrop-filter */
+#lightbox{position:fixed;inset:0;background:rgba(16,7,5,0.95);z-index:9000;display:none;align-items:center;justify-content:center;padding:28px;}
+#lightbox.open{display:flex;}
+#lightbox img{max-width:88vw;max-height:84vh;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,0.55);object-fit:contain;animation:lb-pop .32s ease;}
+@keyframes lb-pop{from{opacity:0;transform:scale(0.9);}to{opacity:1;transform:scale(1);}}
+#lb-close{position:absolute;top:24px;right:28px;width:44px;height:44px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.18);border-radius:50%;color:white;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+#lb-close:hover{background:rgba(212,130,154,0.4);}
+.lb-btn{position:absolute;top:50%;margin-top:-24px;width:48px;height:48px;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.18);border-radius:50%;color:white;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.lb-btn:hover{background:rgba(212,130,154,0.4);}
+#lb-prev{left:20px;}#lb-next{right:20px;}
+#lb-counter{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);font-size:0.7rem;letter-spacing:0.2em;color:rgba(255,255,255,0.42);text-transform:uppercase;}
 
-/* ══════════════════════════════
-   OUR STORY TIMELINE
-══════════════════════════════ */
-#story { padding-bottom: 70px; }
+/* POLAROID STRIP */
+#strip{background:linear-gradient(135deg,#6b4535,#7a5c4a 60%,#5a3e30);padding:52px 0;overflow:hidden;position:relative;z-index:2;}
+#strip::before,#strip::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:10;pointer-events:none;}
+#strip::before{left:0;background:linear-gradient(to right,#6b4535,transparent);}
+#strip::after{right:0;background:linear-gradient(to left,#6b4535,transparent);}
+.strip-label{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.9rem;color:rgba(255,255,255,0.38);letter-spacing:0.35em;text-transform:uppercase;margin-bottom:32px;display:block;}
+.strip-track{display:flex;gap:20px;animation:marquee 40s linear infinite;width:max-content;}
+.strip-track:hover{animation-play-state:paused;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.polaroid{background:white;padding:12px 12px 36px;border-radius:3px;width:155px;flex-shrink:0;box-shadow:0 7px 24px rgba(0,0,0,0.22);transform:rotate(var(--rot,0deg));transition:transform .3s ease;}
+.polaroid:hover{transform:rotate(0deg) scale(1.07) translateY(-5px);}
+.p-img{width:100%;aspect-ratio:1;overflow:hidden;background:linear-gradient(135deg,var(--petal1),var(--petal2));}
+.p-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.p-caption{text-align:center;font-family:'Sacramento',cursive;font-size:0.98rem;color:#666;margin-top:8px;}
 
-.timeline {
-  max-width: 620px;
-  margin: 0 auto;
-  padding: 0 24px;
-  position: relative;
-}
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 44px;
-  top: 0; bottom: 0;
-  width: 1.5px;
-  background: linear-gradient(to bottom, var(--blush), var(--sage-light), var(--blush));
-}
+/* LETTER */
+#letter{background:linear-gradient(160deg,#f5ede8,#fdf8f0);padding:0 24px 100px;position:relative;z-index:2;}
+.letter-wrapper{max-width:720px;margin:0 auto;position:relative;}
+.letter-corner{position:absolute;font-size:1.8rem;opacity:0.22;pointer-events:none;}
+.letter-corner:nth-child(1){top:-10px;left:-10px;transform:rotate(-15deg);}
+.letter-corner:nth-child(2){top:-10px;right:-10px;transform:rotate(15deg);}
+.letter-corner:nth-child(3){bottom:-10px;left:-10px;transform:rotate(10deg);}
+.letter-corner:nth-child(4){bottom:-10px;right:-10px;transform:rotate(-10deg);}
+.letter-card{background:white;border-radius:32px;padding:clamp(40px,7vw,74px);box-shadow:0 8px 36px rgba(122,92,74,0.09);border:1px solid rgba(242,196,206,0.4);position:relative;overflow:hidden;}
+.letter-card::before{content:'❝';position:absolute;top:12px;left:24px;font-size:8rem;color:var(--blush);font-family:Georgia,serif;line-height:1;opacity:0.36;pointer-events:none;}
+.letter-card::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 39px,rgba(242,196,206,0.09) 39px,rgba(242,196,206,0.09) 40px);pointer-events:none;}
+.wax-seal{position:absolute;top:-22px;right:44px;width:64px;height:64px;background:radial-gradient(circle at 38% 32%,#e8909f,#a03040);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 5px 16px rgba(160,48,64,0.32);transform:rotate(-14deg);z-index:2;transition:transform .32s ease;}
+.letter-wrapper:hover .wax-seal{transform:rotate(-4deg) scale(1.07);}
+.letter-body{font-family:'Spectral',serif;font-weight:300;font-size:clamp(1.02rem,2.4vw,1.22rem);line-height:2.1;color:var(--bark);padding-top:40px;position:relative;z-index:1;}
+.letter-body p{margin-bottom:1.3em;}
+.letter-body p:first-child{font-family:'Playfair Display',serif;font-size:1.1em;font-weight:600;color:var(--dusty);}
+.letter-sig{margin-top:36px;font-family:'Sacramento',cursive;font-size:2.6rem;color:var(--dusty);text-align:right;}
 
-.tl-item {
-  display: flex;
-  gap: 24px;
-  margin-bottom: 44px;
-  opacity: 0;
-  transform: translateX(-20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.tl-item.visible { opacity:1; transform:translateX(0); }
+/* BOTANICAL */
+.botanical-divider{text-align:center;font-size:1.4rem;letter-spacing:0.55em;color:var(--sage);opacity:0.48;padding:14px 0;position:relative;z-index:2;}
 
-.tl-dot {
-  flex-shrink: 0;
-  width: 44px; height: 44px;
-  background: white;
-  border: 2px solid var(--rose);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.2rem;
-  box-shadow: 0 4px 15px rgba(212,130,154,0.2);
-  z-index: 1;
-  position: relative;
-}
+/* FOOTER */
+#footer{background:linear-gradient(135deg,#5a3e30,#7a5c4a);color:rgba(255,255,255,0.7);text-align:center;padding:70px 24px;position:relative;z-index:2;}
+#footer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--rose),var(--gold),transparent);}
+#footer h3{font-family:'Sacramento',cursive;font-size:2.4rem;color:white;margin-bottom:12px;}
+#footer p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;margin-bottom:6px;}
+.footer-heart{font-size:2.4rem;display:block;margin-top:28px;animation:heartbeat 1.6s ease-in-out infinite;}
+@keyframes heartbeat{0%,100%{transform:scale(1);}20%{transform:scale(1.3);}40%{transform:scale(1);}60%{transform:scale(1.16);}}
 
-.tl-content {
-  background: white;
-  border-radius: 18px;
-  padding: 20px 22px;
-  box-shadow: 0 6px 30px rgba(122,92,74,0.07);
-  border: 1px solid rgba(242,196,206,0.4);
-  flex: 1;
-}
-.tl-date {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.85rem;
-  color: var(--rose);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-.tl-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.15rem;
-  color: var(--bark);
-  margin-bottom: 8px;
-}
-.tl-desc {
-  font-size: 0.88rem;
-  line-height: 1.7;
-  color: #7a6055;
-}
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .62s ease,transform .62s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
 
-/* ══════════════════════════════
-   GUNDÚ SECTION
-══════════════════════════════ */
-#gundu {
-  background: linear-gradient(160deg, #fdf0f3 0%, #f0f5ec 100%);
-  padding: 0 20px 70px;
-}
+/* HEART BURST */
+.heart-burst{position:fixed;pointer-events:none;z-index:9996;animation:heart-fly .82s ease-out forwards;}
+@keyframes heart-fly{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(--tx,0px),var(--ty,-52px)) scale(0.35);}}
 
-.gundu-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  max-width: 900px;
-  margin: 0 auto;
+@media(max-width:500px){
+  .timeline::before{left:22px;}.tl-dot{width:40px;height:40px;font-size:1rem;}
+  #nav{gap:0;padding:5px 8px;}#nav a{padding:5px 9px;font-size:0.62rem;}
+  .hero-ring:nth-child(1){width:300px;height:300px;top:calc(50% - 150px);left:calc(50% - 150px);}
+  .hero-ring:nth-child(2){width:200px;height:200px;top:calc(50% - 100px);left:calc(50% - 100px);}
 }
-
-.gundu-card {
-  background: white;
-  border-radius: 24px;
-  padding: 32px 24px;
-  text-align: center;
-  box-shadow: 0 8px 30px rgba(122,92,74,0.06);
-  border: 1px solid rgba(242,196,206,0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  opacity: 0;
-  transform: translateY(25px);
-}
-.gundu-card.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.gundu-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(212,130,154,0.18);
-}
-.gundu-icon { font-size: 2.2rem; margin-bottom: 14px; display: block; }
-.gundu-letter {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--rose);
-  line-height: 1;
-  margin-bottom: 8px;
-}
-.gundu-word {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 1rem;
-  color: var(--bark);
-  margin-bottom: 10px;
-}
-.gundu-desc {
-  font-size: 0.8rem;
-  color: #9a7b72;
-  line-height: 1.6;
-}
-
-/* ══════════════════════════════
-   GALLERY
-══════════════════════════════ */
-#gallery { padding: 0 20px 80px; }
-
-.gallery-intro {
-  text-align: center;
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 1.1rem;
-  color: var(--bark);
-  max-width: 500px;
-  margin: 0 auto 40px;
-  line-height: 1.8;
-}
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.gallery-item {
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  aspect-ratio: 3/4;
-  background: linear-gradient(135deg, var(--petal1), var(--petal2));
-  border: 1px solid rgba(242,196,206,0.5);
-  box-shadow: 0 6px 25px rgba(122,92,74,0.1);
-  cursor: pointer;
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
-}
-.gallery-item:nth-child(3n+2) { margin-top: 24px; }
-.gallery-item:hover {
-  transform: scale(1.04) rotate(1deg);
-  box-shadow: 0 14px 40px rgba(212,130,154,0.25);
-}
-
-.gallery-item img {
-  width:100%; height:100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Corner botanical decoration */
-.gallery-item::after {
-  content: '🌸';
-  position: absolute;
-  bottom: 8px; right: 10px;
-  font-size: 1rem;
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-/* Lightbox */
-#lightbox {
-  position: fixed; inset:0;
-  background: rgba(30,15,10,0.92);
-  z-index: 500;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-#lightbox.open { display: flex; }
-#lightbox img {
-  max-width: 90vw;
-  max-height: 88vh;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  object-fit: contain;
-}
-#lb-close {
-  position: absolute; top: 20px; right: 24px;
-  font-size: 2rem; color: white; cursor: pointer; opacity: 0.7;
-  transition: opacity 0.2s;
-  background: none; border: none;
-}
-#lb-close:hover { opacity: 1; }
-
-/* ══════════════════════════════
-   LOVE LETTER
-══════════════════════════════ */
-#letter {
-  background: linear-gradient(160deg, #f5ede8 0%, #fdf8f0 100%);
-  padding: 0 20px 80px;
-}
-
-.letter-card {
-  max-width: 680px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 30px;
-  padding: clamp(30px, 6vw, 60px);
-  box-shadow: 0 10px 50px rgba(122,92,74,0.1);
-  border: 1px solid rgba(242,196,206,0.3);
-  position: relative;
-  overflow: hidden;
-}
-.letter-card::before {
-  content: '❝';
-  position: absolute; top: 20px; left: 30px;
-  font-size: 6rem;
-  color: var(--blush);
-  font-family: Georgia, serif;
-  line-height: 1;
-  opacity: 0.6;
-}
-.letter-card::after {
-  content: '';
-  position: absolute;
-  bottom: 0; right: 0;
-  width: 120px; height: 120px;
-  background: radial-gradient(circle, var(--petal1), transparent 70%);
-  pointer-events: none;
-}
-
-.letter-body {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1rem, 2.5vw, 1.2rem);
-  line-height: 2;
-  color: var(--bark);
-  padding-top: 30px;
-  position: relative;
-  z-index: 1;
-}
-.letter-body p { margin-bottom: 1.2em; }
-.letter-sig {
-  margin-top: 30px;
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 1.3rem;
-  color: var(--dusty);
-  text-align: right;
-}
-
-/* ══════════════════════════════
-   FOOTER
-══════════════════════════════ */
-#footer {
-  background: var(--bark);
-  color: rgba(255,255,255,0.7);
-  text-align: center;
-  padding: 50px 20px;
-}
-#footer h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
-  color: white;
-  margin-bottom: 10px;
-}
-#footer p {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 1rem;
-}
-.footer-heart {
-  font-size: 2rem;
-  display: block;
-  margin-top: 20px;
-  animation: heartbeat 1.5s ease-in-out infinite;
-}
-@keyframes heartbeat {
-  0%,100% { transform: scale(1); }
-  20% { transform: scale(1.25); }
-  40% { transform: scale(1); }
-  60% { transform: scale(1.15); }
-}
-
-/* ══════════════════════════════
-   BOTANICALS (decorative SVG dividers)
-══════════════════════════════ */
-.botanical-divider {
-  text-align: center;
-  font-size: 1.6rem;
-  letter-spacing: 0.4em;
-  color: var(--sage);
-  opacity: 0.6;
-  padding: 10px 0;
-}
-
-/* SCROLL REVEAL utility */
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.visible { opacity:1; transform:translateY(0); }
-
-/* stagger delays for gundu cards */
-.gundu-card:nth-child(1) { transition-delay: 0s; }
-.gundu-card:nth-child(2) { transition-delay: 0.1s; }
-.gundu-card:nth-child(3) { transition-delay: 0.2s; }
-.gundu-card:nth-child(4) { transition-delay: 0.3s; }
-.gundu-card:nth-child(5) { transition-delay: 0.4s; }
-
-@media (max-width: 480px) {
-  .gallery-item:nth-child(3n+2) { margin-top: 0; }
-  .timeline::before { left: 22px; }
-  .tl-dot { width:36px; height:36px; font-size:1rem; }
-}
-
-  </style>
+</style>
 </head>
 <body>
 
-<!-- Custom cursor -->
-
 <div id="cursor"></div>
 <div id="cursor-trail"></div>
-
-<!-- Petal canvas -->
-
+<div id="progress-bar"></div>
 <canvas id="petal-canvas"></canvas>
 
-<!-- ══ LIGHTBOX ══ -->
+<nav id="nav">
+  <a href="#hero" class="active">Home</a>
+  <a href="#story">Story</a>
+  <a href="#gundu">You</a>
+  <a href="#gallery">Memories</a>
+  <a href="#letter">Letter</a>
+</nav>
 
 <div id="lightbox">
   <button id="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-btn" id="lb-prev" onclick="lbNav(-1)">&#8249;</button>
   <img id="lb-img" src="" alt="Memory"/>
+  <button class="lb-btn" id="lb-next" onclick="lbNav(1)">&#8250;</button>
+  <div id="lb-counter"></div>
 </div>
-
-<!-- ══════════════════════════════════════
-     HERO
-══════════════════════════════════════ -->
 
 <section id="hero">
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
   <span class="hero-wreath">🌸 🌿 🌷 🌿 🌸</span>
   <p class="hero-sub">A little world, built just for you</p>
-  <h1 class="hero-title">Hello, <em>Ragave</em> 🥋</h1>
-  <div class="hero-divider"><span>🌺</span></div>
-  <p class="hero-tagline">
-    Before March 26, 2025 — I didn't know what was coming.<br/>
-    And then, quietly, you arrived and changed everything.
-  </p>
-  <div class="scroll-hint">
-    <span>Scroll to explore</span>
-    <div class="scroll-arrow"></div>
-  </div>
+  <h1 class="hero-title">Hello, <span class="name-highlight">Ragave</span> 🥋</h1>
+  <div class="hero-divider"><div class="hdl"></div><span>🌺</span><div class="hdl r"></div></div>
+  <p class="hero-tagline"><span id="typed-text"></span></p>
+  <div class="scroll-hint"><span>Scroll to explore</span><div class="scroll-arrow"></div></div>
 </section>
 
-<!-- ══ COUNTER STRIP ══ -->
-
 <div id="counter-strip">
-  <div class="counter-item">
-    <span class="counter-num" id="days-met">0</span>
-    <span class="counter-label">Days since we met 🌸<br/><small style="opacity:0.6;font-size:0.65rem;">26 March 2025</small></span>
-  </div>
-  <div class="counter-item">
-    <span class="counter-num" id="days-closer">0</span>
-    <span class="counter-label">Days of growing closer 💗<br/><small style="opacity:0.6;font-size:0.65rem;">4 April 2025</small></span>
-  </div>
-  <div class="counter-item">
-    <span class="counter-num">∞</span>
-    <span class="counter-label">Memories left to make 🌿</span>
-  </div>
+  <div class="counter-item"><span class="counter-num" id="days-met">0</span><span class="counter-label">Days since we met 🌸</span><span class="counter-sublabel">26 March 2025</span></div>
+  <div class="counter-item"><span class="counter-num" id="days-closer">0</span><span class="counter-label">Days of growing closer 💗</span><span class="counter-sublabel">4 April 2025</span></div>
+  <div class="counter-item"><span class="counter-num">&#8734;</span><span class="counter-label">Memories left to make 🌿</span></div>
 </div>
-
-<!-- ══════════════════════════════════════
-     OUR STORY
-══════════════════════════════════════ -->
 
 <section id="story">
-  <div class="section-head reveal">
-    <span class="section-eyebrow">How it all began</span>
-    <h2 class="section-title">Our Story</h2>
-    <div class="section-line"></div>
-  </div>
-
+  <div class="section-head reveal"><span class="section-eyebrow">How it all began</span><h2 class="section-title">Our Story</h2><div class="section-line"></div></div>
   <div class="timeline">
-    <div class="tl-item">
-      <div class="tl-dot">🌱</div>
-      <div class="tl-content">
-        <p class="tl-date">26 March 2025</p>
-        <h3 class="tl-title">The Beginning</h3>
-        <p class="tl-desc">The day I first met you. I didn't know it then, but something small and beautiful had just started growing — like a seed that hadn't opened yet.</p>
-      </div>
-    </div>
-
-```
-<div class="tl-item">
-  <div class="tl-dot">🌷</div>
-  <div class="tl-content">
-    <p class="tl-date">4 April 2025</p>
-    <h3 class="tl-title">The Bloom</h3>
-    <p class="tl-desc">The day we started talking closer. Like a flower opening after a quiet rain — unhurried, natural, and more beautiful than I expected.</p>
-  </div>
-</div>
-
-<div class="tl-item">
-  <div class="tl-dot">☕</div>
-  <div class="tl-content">
-    <p class="tl-date">Every café, every laugh</p>
-    <h3 class="tl-title">The Firsts</h3>
-    <p class="tl-desc">You were the first person who came out with me, sat across from me in a café and made it feel like the best place in the world. Every first with you felt like a gift I didn't know I needed.</p>
-  </div>
-</div>
-
-<div class="tl-item">
-  <div class="tl-dot">🤝</div>
-  <div class="tl-content">
-    <p class="tl-date">Right now & always</p>
-    <h3 class="tl-title">The Promise</h3>
-    <p class="tl-desc">To be genuinely yours — as a friend who will make you laugh like no one else, keep bringing you flowers, and never let you feel alone.</p>
-  </div>
-</div>
-```
-
+    <div class="tl-item"><div class="tl-dot">🌱</div><div class="tl-content"><p class="tl-date">26 March 2025</p><h3 class="tl-title">The Beginning</h3><p class="tl-desc">The day I first met you. I didn't know it then, but something small and beautiful had just started growing — like a seed that hadn't opened yet.</p></div></div>
+    <div class="tl-item"><div class="tl-dot">🌷</div><div class="tl-content"><p class="tl-date">4 April 2025</p><h3 class="tl-title">The Bloom</h3><p class="tl-desc">The day we started talking closer. Like a flower opening after a quiet rain — unhurried, natural, and more beautiful than I expected.</p></div></div>
+    <div class="tl-item"><div class="tl-dot">☕</div><div class="tl-content"><p class="tl-date">Every café, every laugh</p><h3 class="tl-title">The Firsts</h3><p class="tl-desc">You were the first person who came out with me, sat across from me in a café and made it feel like the best place in the world. Every first with you felt like a gift I didn't know I needed.</p></div></div>
+    <div class="tl-item"><div class="tl-dot">🤝</div><div class="tl-content"><p class="tl-date">Right now &amp; always</p><h3 class="tl-title">The Promise</h3><p class="tl-desc">To be genuinely yours — as a friend who will make you laugh like no one else, keep bringing you flowers, and never let you feel alone.</p></div></div>
   </div>
 </section>
 
 <div class="botanical-divider">🌿 ✿ 🌿 ✿ 🌿</div>
 
-<!-- ══════════════════════════════════════
-     G.U.N.D.U
-══════════════════════════════════════ -->
-
 <section id="gundu">
-  <div class="section-head reveal">
-    <span class="section-eyebrow">What you are to me</span>
-    <h2 class="section-title">My G.U.N.D.U 🥋</h2>
-    <div class="section-line"></div>
-  </div>
-
+  <div class="section-head reveal"><span class="section-eyebrow">What you are to me</span><h2 class="section-title">My G.U.N.D.U 🥋</h2><div class="section-line"></div></div>
   <div class="gundu-grid">
-    <div class="gundu-card">
-      <span class="gundu-icon">💫</span>
-      <div class="gundu-letter">G</div>
-      <div class="gundu-word">Gorgeous</div>
-      <p class="gundu-desc">Not just in the way you look, but in the way you carry yourself — effortlessly, uniquely you.</p>
-    </div>
-    <div class="gundu-card">
-      <span class="gundu-icon">🌸</span>
-      <div class="gundu-letter">U</div>
-      <div class="gundu-word">Unique</div>
-      <p class="gundu-desc">There is no one in the world quite like you. I searched, and the answer kept coming back — only Ragave.</p>
-    </div>
-    <div class="gundu-card">
-      <span class="gundu-icon">❤️</span>
-      <div class="gundu-letter">N</div>
-      <div class="gundu-word">Nice-hearted</div>
-      <p class="gundu-desc">Your heart is the most beautiful thing I've ever encountered — patient, warm, and endlessly kind.</p>
-    </div>
-    <div class="gundu-card">
-      <span class="gundu-icon">😊</span>
-      <div class="gundu-letter">D</div>
-      <div class="gundu-word">Delightful</div>
-      <p class="gundu-desc">Every moment with you is something I look forward to. You turn ordinary days into something worth remembering.</p>
-    </div>
-    <div class="gundu-card">
-      <span class="gundu-icon">🌟</span>
-      <div class="gundu-letter">U</div>
-      <div class="gundu-word">Unstoppable</div>
-      <p class="gundu-desc">You have a strength in you that I admire — quiet, steady, and completely unshakeable.</p>
-    </div>
+    <div class="gundu-card"><span class="gundu-icon">💫</span><div class="gundu-letter">G</div><div class="gundu-word">Gorgeous</div><p class="gundu-desc">Not just in the way you look, but in the way you carry yourself — effortlessly, uniquely you.</p></div>
+    <div class="gundu-card"><span class="gundu-icon">🌸</span><div class="gundu-letter">U</div><div class="gundu-word">Unique</div><p class="gundu-desc">There is no one in the world quite like you. I searched, and the answer kept coming back — only Ragave.</p></div>
+    <div class="gundu-card"><span class="gundu-icon">❤️</span><div class="gundu-letter">N</div><div class="gundu-word">Nice-hearted</div><p class="gundu-desc">Your heart is the most beautiful thing I've ever encountered — patient, warm, and endlessly kind.</p></div>
+    <div class="gundu-card"><span class="gundu-icon">😊</span><div class="gundu-letter">D</div><div class="gundu-word">Delightful</div><p class="gundu-desc">Every moment with you is something I look forward to. You turn ordinary days into something worth remembering.</p></div>
+    <div class="gundu-card"><span class="gundu-icon">🌟</span><div class="gundu-letter">U</div><div class="gundu-word">Unstoppable</div><p class="gundu-desc">You have a strength in you that I admire — quiet, steady, and completely unshakeable.</p></div>
   </div>
 </section>
 
 <div class="botanical-divider">🌺 ✿ 🌺 ✿ 🌺</div>
 
-<!-- ══════════════════════════════════════
-     GALLERY
-══════════════════════════════════════ -->
-
 <section id="gallery">
-  <div class="section-head reveal">
-    <span class="section-eyebrow">Captured moments</span>
-    <h2 class="section-title">Our Memories 🌿</h2>
-    <div class="section-line"></div>
-  </div>
+  <div class="section-head reveal"><span class="section-eyebrow">Captured moments</span><h2 class="section-title">Our Memories 🌿</h2><div class="section-line"></div></div>
+  <div style="text-align:center;margin-bottom:8px;"><span class="gallery-badge">5 random picks · refreshes every visit</span></div>
+  <p class="gallery-intro reveal">Every photo holds a heartbeat.<br/>Five favourites, chosen by fate, just for today.</p>
+  <div class="gallery-masonry" id="gallery-grid"></div>
+</section>
 
-  <p class="gallery-intro reveal">
-    "A photo is a secret about a secret.<br/>
-    The more it tells you, the less you know."<br/>
-    But ours tell the whole story.
-  </p>
-
-  <div class="gallery-grid" id="gallery-grid">
-    <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-02-14 at 12.38.18 AM.jpeg')">
-      <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM.jpeg" alt="Memory 1" />
-    </div>
-    <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-02-14 at 12.38.18 AM (1).jpeg')">
-      <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (1).jpeg" alt="Memory 2" />
-    </div>
-    <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-02-14 at 12.38.18 AM (2).jpeg')">
-      <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (2).jpeg" alt="Memory 3" />
-    </div>
-    <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-02-14 at 12.38.18 AM (3).jpeg')">
-      <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (3).jpeg" alt="Memory 4" />
-    </div>
-    <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-02-14 at 12.38.18 AM (4).jpeg')">
-      <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (4).jpeg" alt="Memory 5" />
-    </div>
-    <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-02-14 at 12.38.18 AM (5).jpeg')">
-      <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (5).jpeg" alt="Memory 6" />
-    </div>
-    <div class="gallery-item" onclick="openLightbox('WhatsApp Image 2026-02-14 at 12.38.18 AM (6).jpeg')">
-      <img src="WhatsApp Image 2026-02-14 at 12.38.18 AM (6).jpeg" alt="Memory 7" />
-    </div>
-  </div>
+<section id="strip">
+  <span class="strip-label">✿ &nbsp; scrolling through our moments &nbsp; ✿</span>
+  <div class="strip-track" id="strip-track"></div>
 </section>
 
 <div class="botanical-divider">🌿 ✿ 🌿 ✿ 🌿</div>
 
-<!-- ══════════════════════════════════════
-     LETTER
-══════════════════════════════════════ -->
-
 <section id="letter">
-  <div class="section-head reveal">
-    <span class="section-eyebrow">From my heart to yours</span>
-    <h2 class="section-title">A Little Letter 💗</h2>
-    <div class="section-line"></div>
-  </div>
-
-  <div class="letter-card reveal">
-    <div class="letter-body">
-      <p>Hey Rag-V 🥋,</p>
-      <p>I don't know how to start this, so I'll just say it the way I feel it.</p>
-      <p>You were the first person who made me feel like I was actually worth showing up for. The first person who came out with me, sat across from me in a café and made it feel like the best place in the world. You brought me flowers. You brought me gifts. You don't even know what those firsts meant to someone like me.</p>
-      <p>You changed me, Ragave. You gave me the ability to laugh from my stomach, to feel things I thought I was incapable of feeling, to believe that I'm worth something to someone. That's not small. That's everything.</p>
-      <p>So here I am — your loosu friend 😄 — telling you that you mean the entire world to me, and I'm grateful every single day that of all the people in this world, you chose to be my first in so many ways.</p>
-      <p>I love you, bubooo 💞 Always will. In every version of us.</p>
+  <div class="section-head reveal"><span class="section-eyebrow">From my heart to yours</span><h2 class="section-title">A Little Letter 💗</h2><div class="section-line"></div></div>
+  <div class="letter-wrapper reveal">
+    <span class="letter-corner">🌸</span><span class="letter-corner">🌷</span><span class="letter-corner">🌿</span><span class="letter-corner">✿</span>
+    <div class="wax-seal">💌</div>
+    <div class="letter-card">
+      <div class="letter-body">
+        <p>Hey Rag-V 🥋,</p>
+        <p>I don't know how to start this, so I'll just say it the way I feel it.</p>
+        <p>You were the first person who made me feel like I was actually worth showing up for. The first person who came out with me, sat across from me in a café and made it feel like the best place in the world. You brought me flowers. You brought me gifts. You don't even know what those firsts meant to someone like me.</p>
+        <p>You changed me, Ragave. You gave me the ability to laugh from my stomach, to feel things I thought I was incapable of feeling, to believe that I'm worth something to someone. That's not small. That's everything.</p>
+        <p>So here I am — your loosu friend 😄 — telling you that you mean the entire world to me, and I'm grateful every single day that of all the people in this world, you chose to be my first in so many ways.</p>
+        <p>I love you, bubooo 💞 Always will. In every version of us.</p>
+      </div>
+      <p class="letter-sig">— Shanu 🖤</p>
     </div>
-    <p class="letter-sig">— Shanu 🖤</p>
   </div>
 </section>
-
-<!-- ══ FOOTER ══ -->
 
 <footer id="footer">
   <h3>🌸 For Ragave, always 🌸</h3>
   <p>Built with love on April 4, 2025 — the day everything got closer.</p>
+  <p style="font-size:0.78rem;opacity:0.38;margin-top:8px;font-family:'DM Sans',sans-serif;">Showing 5 random memories · refreshes on every visit</p>
   <span class="footer-heart">💗</span>
 </footer>
 
-<!-- ════════════════ SCRIPTS ════════════════ -->
-
 <script>
-/* ── CURSOR ── */
-const cursor = document.getElementById('cursor');
-const trail  = document.getElementById('cursor-trail');
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top  = e.clientY + 'px';
-  setTimeout(() => {
-    trail.style.left = e.clientX + 'px';
-    trail.style.top  = e.clientY + 'px';
-  }, 80);
+/* ════ PHOTO LIBRARY — YOUR 15 PHOTOS ════ */
+const ALL_PHOTOS=[
+  /* Line 1  */{src:"p1.jpeg",  caption:"💗 Our first memory"    },
+  /* Line 2  */{src:"p2.jpeg",  caption:"✿ A beautiful moment"   },
+  /* Line 3  */{src:"p3.jpeg",  caption:"🌸 Pure happiness"      },
+  /* Line 4  */{src:"p4.jpeg",  caption:"🌿 Growing together"    },
+  /* Line 5  */{src:"p5.jpeg",  caption:"☕ Café moments"        },
+  /* Line 6  */{src:"p6.jpeg",  caption:"🌷 In full bloom"       },
+  /* Line 7  */{src:"p7.jpeg",  caption:"💫 Golden days"         },
+  /* Line 8  */{src:"p8.jpeg",  caption:"🌺 Something special"   },
+  /* Line 9  */{src:"p9.jpeg",  caption:"🌸 A quiet afternoon"   },
+  /* Line 10 */{src:"p10.jpeg", caption:"💗 Always smiling"      },
+  /* Line 11 */{src:"p11.jpeg", caption:"✿ Our little world"     },
+  /* Line 12 */{src:"p12.jpeg", caption:"🌿 Endless joy"         },
+  /* Line 13 */{src:"p13.jpeg", caption:"☕ Best conversations"  },
+  /* Line 14 */{src:"p14.jpeg", caption:"🌷 You and me"          },
+  /* Line 15 */{src:"p15.jpeg", caption:"💫 Forever in my heart" },
+];
+
+const chosen5=[...ALL_PHOTOS].sort(()=>Math.random()-.5).slice(0,5);
+let lbIndex=0;
+
+/* Gallery */
+const grid=document.getElementById('gallery-grid');
+chosen5.forEach((photo,i)=>{
+  const item=document.createElement('div');
+  item.className='gallery-item';
+  item.style.transitionDelay=(i*0.08)+'s';
+  item.innerHTML=photo.src
+    ?`<img src="${photo.src}" alt="Memory ${i+1}" loading="lazy"/><div class="gallery-overlay"><span class="gallery-caption">${photo.caption}</span></div>`
+    :`<div class="gallery-placeholder"><span class="ph-icon">🌸</span><span class="ph-text">${photo.caption}</span></div>`;
+  item.addEventListener('click',()=>openLightbox(i));
+  grid.appendChild(item);
 });
 
-/* ── PETAL CANVAS ── */
-const canvas = document.getElementById('petal-canvas');
-const ctx = canvas.getContext('2d');
-let W, H, petals = [];
+/* Lightbox */
+function updateCounter(){document.getElementById('lb-counter').textContent=(lbIndex+1)+' / '+chosen5.filter(p=>p.src).length;}
+function openLightbox(idx){lbIndex=idx;if(!chosen5[idx].src)return;document.getElementById('lb-img').src=chosen5[idx].src;document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';updateCounter();}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
+function lbNav(dir){let n=(lbIndex+dir+chosen5.length)%chosen5.length,t=0;while(!chosen5[n].src&&t++<chosen5.length)n=(n+dir+chosen5.length)%chosen5.length;lbIndex=n;document.getElementById('lb-img').src=chosen5[n].src;updateCounter();}
+document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLightbox();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();if(e.key==='ArrowRight')lbNav(1);if(e.key==='ArrowLeft')lbNav(-1);});
 
-function resize() {
-  W = canvas.width  = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', resize);
+/* Polaroid strip */
+const strip=document.getElementById('strip-track');
+const rots=[-3,-1,2.5,-2,3,1.5,-4,2,-1.5,3.5,-2,1,-3.5,2.5,-1];
+[...ALL_PHOTOS,...ALL_PHOTOS].forEach((photo,i)=>{
+  const p=document.createElement('div');
+  p.className='polaroid';p.style.setProperty('--rot',rots[i%rots.length]+'deg');
+  const cap=photo.caption.split(' ').slice(1).join(' ')||'our memory';
+  p.innerHTML=photo.src
+    ?`<div class="p-img"><img src="${photo.src}" alt="" loading="lazy"/></div><div class="p-caption">${cap}</div>`
+    :`<div class="p-img" style="display:flex;align-items:center;justify-content:center;font-size:2rem;">🌸</div><div class="p-caption">${cap}</div>`;
+  strip.appendChild(p);
+});
 
-const petalEmojis = ['🌸','🌺','🌷','✿','🍃'];
-class Petal {
-  constructor() { this.reset(true); }
-  reset(init) {
-    this.x = Math.random() * W;
-    this.y = init ? Math.random() * H : -30;
-    this.emoji = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
-    this.size  = Math.random() * 14 + 10;
-    this.speed = Math.random() * 1.2 + 0.4;
-    this.drift = (Math.random() - 0.5) * 0.6;
-    this.rot   = Math.random() * Math.PI * 2;
-    this.rotS  = (Math.random() - 0.5) * 0.02;
-    this.alpha = Math.random() * 0.5 + 0.3;
+/* ── CURSOR: pure transform, passive listener ── */
+const curEl=document.getElementById('cursor');
+const trailEl=document.getElementById('cursor-trail');
+let mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  curEl.style.transform=`translate(${mx-5}px,${my-5}px)`;
+},{passive:true});
+(function raf(){
+  tx+=(mx-tx)*0.12;ty+=(my-ty)*0.12;
+  trailEl.style.transform=`translate(${tx-17}px,${ty-17}px)`;
+  requestAnimationFrame(raf);
+})();
+
+/* ── PROGRESS BAR: passive ── */
+const bar=document.getElementById('progress-bar');
+document.addEventListener('scroll',()=>{
+  bar.style.width=(window.scrollY/(document.body.scrollHeight-innerHeight)*100)+'%';
+},{passive:true});
+
+/* ── PETAL CANVAS: simple coloured ellipses — no emoji ── */
+const canvas=document.getElementById('petal-canvas');
+const ctx=canvas.getContext('2d');
+let W,H;
+function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}
+resize();window.addEventListener('resize',resize,{passive:true});
+const COLORS=['#f2c4ce','#d4829a','#b8cba8','#c9a96e','#fce0e8','#8a9e7d','#f9d4dc'];
+class Petal{
+  constructor(){this.reset(true);}
+  reset(init){
+    this.x=Math.random()*W;this.y=init?Math.random()*H:-10;
+    this.r=Math.random()*4+2.5;this.vy=Math.random()*0.65+0.18;
+    this.vx=(Math.random()-.5)*0.3;this.al=Math.random()*0.45+0.12;
+    this.rot=Math.random()*Math.PI*2;this.rv=(Math.random()-.5)*0.014;
+    this.c=COLORS[Math.floor(Math.random()*COLORS.length)];
   }
-  update() {
-    this.y   += this.speed;
-    this.x   += this.drift;
-    this.rot += this.rotS;
-    if (this.y > H + 30) this.reset(false);
-  }
-  draw() {
-    ctx.save();
-    ctx.globalAlpha = this.alpha;
-    ctx.font = this.size + 'px serif';
-    ctx.translate(this.x, this.y);
-    ctx.rotate(this.rot);
-    ctx.fillText(this.emoji, -this.size/2, this.size/2);
-    ctx.restore();
+  step(){this.y+=this.vy;this.x+=this.vx;this.rot+=this.rv;if(this.y>H+10)this.reset(false);}
+  draw(){
+    ctx.save();ctx.globalAlpha=this.al;ctx.fillStyle=this.c;
+    ctx.translate(this.x,this.y);ctx.rotate(this.rot);
+    ctx.beginPath();ctx.ellipse(0,0,this.r,this.r*1.7,0,0,Math.PI*2);
+    ctx.fill();ctx.restore();
   }
 }
+const petals=Array.from({length:26},()=>new Petal());
+(function frame(){ctx.clearRect(0,0,W,H);petals.forEach(p=>{p.step();p.draw();});requestAnimationFrame(frame);})();
 
-for (let i = 0; i < 28; i++) petals.push(new Petal());
+/* ── Counters ── */
+function daysSince(d){const a=new Date(d),b=new Date();a.setHours(0,0,0,0);b.setHours(0,0,0,0);return Math.max(0,Math.floor((b-a)/86400000));}
+function countUp(el,target,dur){let v=0;const step=target/(dur/16);const t=setInterval(()=>{v+=step;if(v>=target){el.textContent=target;clearInterval(t);}else el.textContent=Math.floor(v);},16);}
+countUp(document.getElementById('days-met'),daysSince('2025-03-26'),1400);
+countUp(document.getElementById('days-closer'),daysSince('2025-04-04'),1400);
 
-function animatePetals() {
-  ctx.clearRect(0, 0, W, H);
-  petals.forEach(p => { p.update(); p.draw(); });
-  requestAnimationFrame(animatePetals);
-}
-animatePetals();
+/* ── Scroll reveal ── */
+const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}});},{threshold:0.1});
+document.querySelectorAll('.reveal,.tl-item,.gundu-card,.gallery-item').forEach(el=>ro.observe(el));
 
-/* ── COUNTER ── */
-function daysSince(dateStr) {
-  const start = new Date(dateStr);
-  const now   = new Date();
-  start.setHours(0,0,0,0);
-  now.setHours(0,0,0,0);
-  return Math.max(0, Math.floor((now - start) / 86400000));
-}
+/* ── Active nav ── */
+const navLinks=document.querySelectorAll('#nav a');
+const navObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){navLinks.forEach(l=>l.classList.remove('active'));const l=document.querySelector(`#nav a[href="#${e.target.id}"]`);if(l)l.classList.add('active');}});},{threshold:0.35});
+document.querySelectorAll('section[id]').forEach(s=>navObs.observe(s));
 
-function animateCount(el, target, duration) {
-  let start = 0, step = target / (duration / 16);
-  const timer = setInterval(() => {
-    start += step;
-    if (start >= target) { el.textContent = target; clearInterval(timer); }
-    else el.textContent = Math.floor(start);
-  }, 16);
-}
+/* ── Typing ── */
+const LINES=["Before March 26, 2025 — I didn't know what was coming.","And then, quietly, you arrived and changed everything.","Now I know. Now I'm sure.","It's always been you. 🌸"];
+let li=0,ci=0,del=false;
+const typedEl=document.getElementById('typed-text');
+function type(){const c=LINES[li];if(!del){typedEl.textContent=c.slice(0,++ci);if(ci===c.length){del=true;setTimeout(type,2400);return;}setTimeout(type,46);}else{typedEl.textContent=c.slice(0,--ci);if(ci===0){del=false;li=(li+1)%LINES.length;setTimeout(type,420);return;}setTimeout(type,26);}}
+setTimeout(type,1900);
 
-animateCount(document.getElementById('days-met'),    daysSince('2025-03-26'), 1400);
-animateCount(document.getElementById('days-closer'), daysSince('2025-04-04'), 1400);
-
-/* ── SCROLL REVEAL ── */
-const revealEls = document.querySelectorAll('.reveal, .tl-item, .gundu-card');
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+/* ── Gundu 3D tilt: will-change only during hover ── */
+document.querySelectorAll('.gundu-card').forEach(card=>{
+  card.addEventListener('mouseenter',()=>card.style.willChange='transform');
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width-.5)*15;
+    const y=((e.clientY-r.top)/r.height-.5)*-15;
+    card.style.transform=`perspective(700px) rotateY(${x}deg) rotateX(${y}deg) translateY(-5px)`;
   });
-}, { threshold: 0.12 });
-revealEls.forEach(el => obs.observe(el));
+  card.addEventListener('mouseleave',()=>{card.style.transform='';card.style.willChange='auto';});
+});
 
-/* ── LIGHTBOX ── */
-function openLightbox(src) {
-  document.getElementById('lb-img').src = src;
-  document.getElementById('lightbox').classList.add('open');
-}
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-}
-document.getElementById('lightbox').addEventListener('click', function(e) {
-  if (e.target === this) closeLightbox();
+/* ── Heart burst ── */
+const HEARTS=['💗','💕','🌸','✿','💖','🌷'];
+document.addEventListener('click',e=>{
+  if(e.target.closest('#lightbox')||e.target.closest('#nav'))return;
+  for(let i=0;i<4;i++){
+    const h=document.createElement('span');
+    h.className='heart-burst';
+    h.textContent=HEARTS[Math.floor(Math.random()*HEARTS.length)];
+    const angle=Math.random()*360,dist=32+Math.random()*42;
+    h.style.cssText=`left:${e.clientX}px;top:${e.clientY}px;font-size:${0.7+Math.random()*0.55}rem;animation-delay:${i*0.07}s;`;
+    h.style.setProperty('--tx',Math.cos(angle*Math.PI/180)*dist+'px');
+    h.style.setProperty('--ty',(Math.sin(angle*Math.PI/180)*dist-52)+'px');
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),920);
+  }
 });
 </script>
-
 </body>
 </html>
