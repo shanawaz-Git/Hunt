@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="day">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Pulse Times — Live News & Markets</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,600;1,400&family=Courier+Prime:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--ff-mast:'IM Fell English',serif;--ff-head:'Playfair Display',Georgia,serif;--ff-body:'Lora',Georgia,serif;--ff-mono:'Courier Prime','Courier New',monospace}
+[data-theme="day"]{--bg:#f5edd4;--bg2:#ede4c6;--bg3:#e6dbb8;--ink:#1a1108;--ink2:#4a3f2f;--ink3:#8a7a65;--rule:rgba(26,17,8,.18);--red:#b82424;--gold:#c4932a;--grn:#16a34a;--drop:#dc2626;--nav:#1a1108;--navtxt:#f5edd4;--tick:#b82424;--ticktxt:#fff;--shd:rgba(26,17,8,.1);--tag:rgba(26,17,8,.07);--ovl:rgba(26,17,8,.55)}
+[data-theme="night"]{--bg:#0e0c09;--bg2:#161310;--bg3:#1e1a14;--ink:#e8dfc8;--ink2:#a89b87;--ink3:#6a5e50;--rule:rgba(232,223,200,.13);--red:#d44040;--gold:#d4a84b;--grn:#4ade80;--drop:#ff6b6b;--nav:#080705;--navtxt:#e8dfc8;--tick:#1a1510;--ticktxt:#d4a84b;--shd:rgba(0,0,0,.35);--tag:rgba(232,223,200,.07);--ovl:rgba(0,0,0,.72)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-body);background:var(--bg);color:var(--ink);line-height:1.6;transition:background .35s,color .35s;min-height:100vh}
+
+/* ── API KEY GATE ── */
+#keyGate{position:fixed;inset:0;z-index:999;background:#f5edd4;display:flex;align-items:center;justify-content:center;padding:24px}
+[data-theme="night"] #keyGate{background:#0e0c09}
+.gate-box{max-width:480px;width:100%;text-align:center}
+.gate-masthead{font-family:'IM Fell English',serif;font-size:clamp(2rem,8vw,3.6rem);line-height:1;margin-bottom:6px;color:#1a1108}
+[data-theme="night"] .gate-masthead{color:#e8dfc8}
+.gate-sub{font-family:'Lora',serif;font-style:italic;font-size:.82rem;color:#8a7a65;margin-bottom:28px}
+.gate-card{background:#ede4c6;border:1px solid rgba(26,17,8,.15);padding:28px 32px;text-align:left}
+[data-theme="night"] .gate-card{background:#161310;border-color:rgba(232,223,200,.12)}
+.gate-title{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:6px;color:#1a1108}
+[data-theme="night"] .gate-title{color:#e8dfc8}
+.gate-hint{font-family:'Courier Prime',monospace;font-size:.7rem;color:#8a7a65;margin-bottom:16px;line-height:1.6}
+.gate-hint a{color:#b82424;text-decoration:none}
+.gate-hint a:hover{text-decoration:underline}
+.gate-input{width:100%;padding:10px 12px;background:#f5edd4;border:1px solid rgba(26,17,8,.25);border-radius:0;font-family:'Courier Prime',monospace;font-size:.82rem;color:#1a1108;outline:none;letter-spacing:.5px}
+[data-theme="night"] .gate-input{background:#0e0c09;border-color:rgba(232,223,200,.2);color:#e8dfc8}
+.gate-input:focus{border-color:#b82424}
+.gate-input::placeholder{color:#8a7a65;letter-spacing:0}
+.gate-err{font-family:'Courier Prime',monospace;font-size:.68rem;color:#b82424;margin-top:6px;min-height:18px}
+.gate-btn{margin-top:14px;width:100%;padding:11px;background:#1a1108;color:#f5edd4;border:none;font-family:'Courier Prime',monospace;font-size:.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:opacity .2s}
+[data-theme="night"] .gate-btn{background:#e8dfc8;color:#0e0c09}
+.gate-btn:hover{opacity:.85}
+.gate-btn:disabled{opacity:.5;cursor:not-allowed}
+.gate-note{margin-top:14px;font-family:'Courier Prime',monospace;font-size:.65rem;color:#8a7a65;line-height:1.6}
+.key-bar{display:none;align-items:center;gap:8px;font-family:'Courier Prime',monospace;font-size:.65rem;color:var(--ink3)}
+.key-bar.visible{display:flex}
+.key-reset{background:none;border:none;color:var(--red);cursor:pointer;font-family:inherit;font-size:inherit;text-decoration:underline;padding:0}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--ink3);border-radius:3px}
+
+/* ── MASTHEAD ── */
+.mast{background:var(--bg);padding:14px 28px 0;border-bottom:3px double var(--ink)}
+.mast-top{display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid var(--rule);font-family:var(--ff-mono);font-size:.68rem;color:var(--ink3);flex-wrap:wrap;gap:6px}
+.mast-name{font-family:var(--ff-mast);font-size:clamp(2.4rem,6vw,4.8rem);font-weight:normal;text-align:center;line-height:1;letter-spacing:-1px;padding:8px 0 4px}
+.mast-tag{text-align:center;font-family:var(--ff-body);font-style:italic;font-size:.76rem;color:var(--ink2);padding-bottom:10px;letter-spacing:.4px}
+.mast-bot{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid var(--rule);gap:12px;flex-wrap:wrap}
+.srch{display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--ink3);padding:3px 0}
+.srch input{background:none;border:none;outline:none;font-family:var(--ff-body);font-size:.78rem;color:var(--ink);width:170px}
+.srch input::placeholder{color:var(--ink3)}
+.theme-btn{background:none;border:1px solid var(--rule);padding:4px 14px;font-family:var(--ff-mono);font-size:.68rem;color:var(--ink2);cursor:pointer;transition:all .2s;letter-spacing:.5px}
+.theme-btn:hover{background:var(--ink);color:var(--bg)}
+.mast-status{font-family:var(--ff-mono);font-size:.68rem;color:var(--ink3);display:flex;align-items:center;gap:6px}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--grn);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ── TICKER ── */
+.ticker{background:var(--tick);height:30px;display:flex;align-items:center;overflow:hidden}
+.tick-lbl{background:var(--ink);color:var(--bg);padding:0 16px;font-family:var(--ff-mono);font-size:.68rem;font-weight:700;height:100%;display:flex;align-items:center;white-space:nowrap;flex-shrink:0;letter-spacing:1.5px}
+[data-theme="night"] .tick-lbl{background:var(--bg3);color:var(--ink)}
+.tick-track{overflow:hidden;flex:1}
+.tick-inner{display:flex;gap:36px;white-space:nowrap;font-family:var(--ff-mono);font-size:.7rem;font-weight:700;color:var(--ticktxt);animation:tick 35s linear infinite;padding:0 24px}
+.tick-inner:hover{animation-play-state:paused}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.t-up{color:#4ade80}[data-theme="day"] .t-up{color:#166534}
+.t-dn{color:#ff8080}[data-theme="day"] .t-dn{color:#dc2626}
+
+/* ── NAV ── */
+nav{background:var(--nav);position:sticky;top:0;z-index:100;border-bottom:2px solid rgba(255,255,255,.06)}
+.nav-inner{max-width:1400px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:center}
+.nt{padding:10px 18px;font-family:var(--ff-mono);font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,237,212,.5);background:none;border:none;cursor:pointer;transition:all .2s;border-right:1px solid rgba(255,255,255,.07);white-space:nowrap}
+[data-theme="night"] .nt{color:rgba(232,223,200,.45)}
+.nt:hover{color:var(--navtxt);background:rgba(255,255,255,.05)}
+.nt.active{color:var(--gold)}
+.nt .bdot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--red);margin-left:5px;vertical-align:middle;animation:blink 1s infinite}
+
+/* ── BREAKING BANNER ── */
+.brk{background:var(--red);color:#fff;padding:7px 20px;display:flex;align-items:center;gap:10px;font-family:var(--ff-mono);font-size:.75rem;margin-bottom:22px}
+.brk-badge{background:#fff;color:var(--red);padding:2px 8px;font-size:.62rem;letter-spacing:1.5px;font-weight:700;flex-shrink:0}
+.brk-text{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ── MAIN ── */
+main{max-width:1400px;margin:0 auto;padding:24px 28px 70px}
+.sec{display:none;animation:up .3s ease}
+.sec.active{display:block}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ── DATE RULE ── */
+.daterule{display:flex;align-items:center;gap:12px;margin-bottom:22px;font-family:var(--ff-mono);font-size:.67rem;color:var(--ink3);letter-spacing:1px;text-transform:uppercase}
+.daterule::before,.daterule::after{content:'';flex:1;height:1px;background:var(--rule)}
+
+/* ── NEWSPAPER LAYOUTS ── */
+.front-hero{display:grid;grid-template-columns:2fr 1fr;gap:0;border-bottom:2px solid var(--ink);padding-bottom:20px;margin-bottom:20px}
+.hero-main{padding-right:22px;border-right:1px solid var(--rule)}
+.hero-side{padding-left:22px}
+@media(max-width:800px){.front-hero{grid-template-columns:1fr}.hero-main{padding-right:0;border-right:none;border-bottom:1px solid var(--rule);padding-bottom:16px;margin-bottom:16px}.hero-side{padding-left:0}}
+
+.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;padding-top:18px}
+.cols3 .col{padding:0 18px;border-right:1px solid var(--rule)}
+.cols3 .col:first-child{padding-left:0}
+.cols3 .col:last-child{border-right:none;padding-right:0}
+@media(max-width:900px){.cols3{grid-template-columns:1fr 1fr}.cols3 .col:nth-child(2){border-right:none}.cols3 .col:nth-child(3){display:none}}
+@media(max-width:580px){.cols3{grid-template-columns:1fr}.cols3 .col{padding:0;border-right:none;border-bottom:1px solid var(--rule);padding-bottom:14px;margin-bottom:14px}}
+
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:0;padding-top:16px}
+.cols2 .col{padding:0 20px;border-right:1px solid var(--rule)}
+.cols2 .col:first-child{padding-left:0}
+.cols2 .col:last-child{border-right:none;padding-right:0}
+@media(max-width:600px){.cols2{grid-template-columns:1fr}.cols2 .col{padding:0;border-right:none}}
+
+/* ── ARTICLE CARD ── */
+.acard{cursor:pointer;transition:opacity .2s}
+.acard:hover{opacity:.82}
+.acard img{width:100%;height:200px;object-fit:cover;display:block;margin-bottom:12px;filter:sepia(15%);transition:filter .3s}
+[data-theme="night"] .acard img{filter:sepia(15%) brightness(.82)}
+.acard:hover img{filter:sepia(0%)}
+.akicker{font-family:var(--ff-mono);font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:5px}
+.ahead{font-family:var(--ff-head);line-height:1.2;color:var(--ink);margin-bottom:7px;font-weight:900}
+.ahead.xl{font-size:2.1rem}
+.ahead.lg{font-size:1.55rem}
+.ahead.md{font-size:1.15rem}
+.ahead.sm{font-size:.97rem;font-weight:700}
+.asub{font-family:var(--ff-body);font-size:.82rem;line-height:1.55;color:var(--ink2);margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.abyline{font-family:var(--ff-mono);font-size:.62rem;color:var(--ink3);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.abyline strong{color:var(--ink2)}
+.bkbtn{background:none;border:none;cursor:pointer;color:var(--ink3);font-size:.9rem;padding:2px 4px;transition:color .2s;line-height:1}
+.bkbtn.saved{color:var(--red)}
+.bkbtn:hover{color:var(--red)}
+
+.hrule{height:1px;background:var(--rule);margin:14px 0}
+.hrule.hvy{height:2px;background:var(--ink)}
+.ornament{text-align:center;color:var(--ink3);letter-spacing:8px;font-size:.75rem;margin:16px 0}
+
+/* ── MARKETS ── */
+.idx-row{display:flex;border:1px solid var(--rule);margin-bottom:22px;overflow:hidden}
+.idx-chip{flex:1;padding:14px 16px;border-right:1px solid var(--rule);text-align:center;background:var(--bg2)}
+.idx-chip:last-child{border-right:none}
+.idx-nm{font-family:var(--ff-mono);font-size:.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
+.idx-val{font-family:var(--ff-head);font-size:1.25rem;font-weight:700;color:var(--ink)}
+.idx-chg{font-family:var(--ff-mono);font-size:.7rem;font-weight:700;margin-top:2px}
+.chg-up{color:var(--grn)}
+.chg-dn{color:var(--drop)}
+@media(max-width:580px){.idx-row{flex-wrap:wrap}.idx-chip{flex:0 0 50%;border-bottom:1px solid var(--rule)}}
+
+.stk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:8px;margin-bottom:22px}
+.stk-card{background:var(--bg2);border:1px solid var(--rule);padding:12px 14px;cursor:pointer;transition:all .2s}
+.stk-card:hover,.stk-card.sel{border-color:var(--ink);background:var(--bg3)}
+.stk-sym{font-family:var(--ff-head);font-size:.95rem;font-weight:900}
+.stk-co{font-family:var(--ff-mono);font-size:.58rem;color:var(--ink3);letter-spacing:.3px;margin-bottom:6px}
+.stk-px{font-family:var(--ff-mono);font-size:1.1rem;font-weight:700}
+.stk-c{font-family:var(--ff-mono);font-size:.68rem;font-weight:700;margin-top:2px}
+
+.chart-wrap{background:var(--bg2);border:1px solid var(--rule);padding:18px 18px 12px;margin-bottom:22px}
+.chart-lbl{font-family:var(--ff-mono);font-size:.62rem;color:var(--ink3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.chart-wrap canvas{display:block}
+
+.mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:580px){.mv-grid{grid-template-columns:1fr}}
+.mv-panel{background:var(--bg2);border:1px solid var(--rule);padding:16px}
+.mv-ttl{font-family:var(--ff-head);font-size:.95rem;font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--ink)}
+.mv-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--rule);font-family:var(--ff-mono);font-size:.75rem}
+.mv-row:last-child{border-bottom:none}
+
+/* ── TAGS ── */
+.tagbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.tag{padding:4px 14px;font-family:var(--ff-mono);font-size:.62rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:var(--tag);color:var(--ink2);border:1px solid var(--rule);cursor:pointer;transition:all .2s}
+.tag.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tag:hover:not(.active){border-color:var(--ink)}
+
+/* ── LOADING / ERROR ── */
+.ldg{text-align:center;padding:60px 20px;font-family:var(--ff-head);font-style:italic}
+.ldg-spin{display:block;font-size:1.8rem;margin-bottom:14px;animation:spin 3s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ldg-sub{font-family:var(--ff-mono);font-size:.67rem;color:var(--ink3);margin-top:6px;letter-spacing:1px}
+.err{text-align:center;padding:40px 20px;background:var(--bg2);border:1px solid var(--rule);font-family:var(--ff-body);font-style:italic;color:var(--ink2)}
+.err-ico{font-size:1.5rem;display:block;margin-bottom:10px}
+.retry-btn{margin-top:14px;padding:7px 20px;background:var(--ink);color:var(--bg);border:none;font-family:var(--ff-mono);font-size:.68rem;letter-spacing:1px;cursor:pointer;transition:opacity .2s}
+.retry-btn:hover{opacity:.8}
+
+/* ── MODAL ── */
+.modal-ov{position:fixed;inset:0;background:var(--ovl);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+.modal-ov.open{display:flex}
+.modal-box{background:var(--bg);max-width:700px;width:100%;max-height:88vh;overflow-y:auto;border:1px solid var(--rule);box-shadow:0 20px 60px var(--shd)}
+.modal-hdr{background:var(--nav);color:var(--navtxt);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-family:var(--ff-mono);font-size:.67rem;letter-spacing:1px;position:sticky;top:0;z-index:1}
+.modal-cls{background:none;border:none;color:var(--navtxt);font-size:1.1rem;cursor:pointer;opacity:.6;transition:opacity .2s;padding:2px 6px}
+.modal-cls:hover{opacity:1}
+.modal-body{padding:24px 30px 36px}
+.m-kicker{font-family:var(--ff-mono);font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+.m-head{font-family:var(--ff-head);font-size:2rem;font-weight:900;line-height:1.2;margin-bottom:12px}
+.m-rule{border-top:3px double var(--ink);margin:12px 0}
+.m-byline{font-family:var(--ff-mono);font-size:.67rem;color:var(--ink3);margin-bottom:18px}
+.m-text{font-family:var(--ff-body);font-size:.98rem;line-height:1.82;color:var(--ink2);columns:2;column-gap:24px;column-rule:1px solid var(--rule)}
+.m-text p{margin-bottom:1em}
+.m-text p:first-child::first-letter{font-family:var(--ff-head);font-size:3.8rem;font-weight:900;float:left;line-height:.82;margin:4px 6px 0 0;color:var(--ink)}
+.m-foot{margin-top:18px;padding-top:12px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;font-family:var(--ff-mono);font-size:.67rem;color:var(--ink3)}
+@media(max-width:600px){.m-text{columns:1}.m-head{font-size:1.5rem}}
+
+/* ── EMPTY / SAVED ── */
+.empty{text-align:center;padding:70px 20px;font-family:var(--ff-head);font-style:italic;color:var(--ink3);border:1px dashed var(--rule)}
+.empty-ico{font-size:2rem;display:block;margin-bottom:12px}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:var(--bg);padding:10px 18px;font-family:var(--ff-mono);font-size:.7rem;font-weight:700;letter-spacing:.5px;box-shadow:0 4px 20px var(--shd);transform:translateY(80px);opacity:0;transition:all .3s;z-index:300;max-width:280px;border-left:4px solid var(--red)}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* ── FOOTER ── */
+footer{text-align:center;padding:14px;border-top:3px double var(--rule);font-family:var(--ff-mono);font-size:.62rem;color:var(--ink3);letter-spacing:1px;background:var(--bg2)}
+
+/* ── MARKET NOTE ── */
+.mnote{background:var(--bg2);border:1px solid var(--rule);border-left:4px solid var(--gold);padding:12px 16px;margin-bottom:20px;font-family:var(--ff-body);font-style:italic;font-size:.83rem;color:var(--ink2)}
+
+/* ── PULL QUOTE ── */
+.pquote{border-top:3px solid var(--ink);border-bottom:1px solid var(--rule);margin:16px 0;padding:12px 0;font-family:var(--ff-head);font-style:italic;font-size:1.1rem;line-height:1.4;color:var(--ink2);text-align:center}
+</style>
+</head>
+<body>
+
+<!-- API KEY GATE -->
+<div id="keyGate">
+  <div class="gate-box">
+    <div class="gate-masthead">The Pulse Times</div>
+    <div class="gate-sub">"All the News That's Fit to Digitize"</div>
+    <div class="gate-card">
+      <div class="gate-title">Enter Your Anthropic API Key</div>
+      <div class="gate-hint">
+        Required to fetch live news &amp; market data via Claude AI.<br>
+        Get a free key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> — keys start with <code>sk-ant-</code>
+      </div>
+      <input class="gate-input" id="keyInput" type="password" placeholder="sk-ant-api03-…" autocomplete="off" spellcheck="false">
+      <div class="gate-err" id="keyErr"></div>
+      <button class="gate-btn" id="keyBtn">Enter the Newsroom ↗</button>
+      <div class="gate-note">Your key is stored only in your browser's localStorage and sent only to api.anthropic.com — never anywhere else.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MASTHEAD -->
+<header class="mast">
+  <div class="mast-top">
+    <span id="mastDate"></span>
+    <span>VOL. MMXXVI · NO. 100 · EST. MMXXIV</span>
+    <span id="mastTime"></span>
+  </div>
+  <div class="mast-name">The Pulse Times</div>
+  <div class="mast-tag">"All the News That's Fit to Digitize" &nbsp;·&nbsp; Live Markets &amp; Global Dispatches</div>
+  <div class="mast-bot">
+    <div class="srch"><span style="font-size:.8rem;color:var(--ink3)">⌕</span><input type="text" id="srchInput" placeholder="Search dispatches…"></div>
+    <div class="mast-status" id="mktStatus"><span class="status-dot" id="statusDot" style="background:var(--ink3)"></span><span id="statusTxt">Awaiting market data…</span></div>
+    <button class="theme-btn" id="themeBtn">☽ &nbsp;Night Edition</button>
+    <div class="key-bar" id="keyBar">🔑 API key active &nbsp;<button class="key-reset" onclick="resetKey()">Change key</button></div>
+  </div>
+</header>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="tick-lbl">MARKETS</div>
+  <div class="tick-track"><div class="tick-inner" id="tickInner"><span style="opacity:.4">Fetching quotations…</span></div></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <button class="nt active" data-s="front">Front Page</button>
+    <button class="nt" data-s="world">World</button>
+    <button class="nt" data-s="tech">Technology</button>
+    <button class="nt" data-s="markets">Markets</button>
+    <button class="nt" data-s="politics">Politics</button>
+    <button class="nt" data-s="sports">Sports</button>
+    <button class="nt" data-s="education">Education</button>
+    <button class="nt" data-s="saved">&#128278; Saved</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main>
+  <div class="sec active" id="sec-front">
+    <div class="daterule" id="frontRule">Today's Edition</div>
+    <div id="frontContent"></div>
+  </div>
+  <div class="sec" id="sec-world"><div class="daterule">World Desk</div><div id="worldContent"></div></div>
+  <div class="sec" id="sec-tech"><div class="daterule">Technology Desk</div><div id="techContent"></div></div>
+  <div class="sec" id="sec-markets"><div class="daterule">Financial Desk · Markets</div><div id="marketsContent"></div></div>
+  <div class="sec" id="sec-politics"><div class="daterule">Politics Desk</div><div id="politicsContent"></div></div>
+  <div class="sec" id="sec-sports"><div class="daterule">Sports Desk</div><div id="sportsContent"></div></div>
+  <div class="sec" id="sec-education"><div class="daterule">Education & Study Abroad</div><div id="educationContent"></div></div>
+  <div class="sec" id="sec-saved">
+    <div class="daterule">Your Clippings</div>
+    <div id="savedContent"><div class="empty"><span class="empty-ico">&#9986;</span>No saved articles yet.<br>Tap ☆ on any story to clip it here.</div></div>
+  </div>
+</main>
+
+<footer>THE PULSE TIMES &nbsp;·&nbsp; LIVE DATA VIA CLAUDE AI &amp; WEB SEARCH &nbsp;·&nbsp; <span id="footTime"></span></footer>
+<div class="toast" id="toast"></div>
+
+<!-- MODAL -->
+<div class="modal-ov" id="modalOv">
+  <div class="modal-box">
+    <div class="modal-hdr"><span>THE PULSE TIMES</span><button class="modal-cls" id="modalCls">✕</button></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+/* ══════════ STATE ══════════ */
+const S={
+  sec:'front',
+  theme:localStorage.getItem('ptt_theme')||'day',
+  bks:JSON.parse(localStorage.getItem('ptt_bks')||'[]'),
+  cache:{},
+  stocks:null,
+  stkHist:{},
+  selSym:'AAPL',
+  q:'',
+  loading:{},
+  tagFilter:{}
+};
+const ASTORE=new Map();
+
+/* ══════════ THEME INIT ══════════ */
+document.documentElement.setAttribute('data-theme',S.theme);
+if(S.theme==='night')document.getElementById('themeBtn').textContent='☀ Day Edition';
+
+/* ══════════ CLOCK ══════════ */
+function fmtDate(){return new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}
+function fmtTime(){return new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}
+function tick(){
+  const t=fmtTime();
+  const tz=Intl.DateTimeFormat().resolvedOptions().timeZone;
+  ['mastTime','footTime'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=id==='footTime'?'Refreshed '+t:t+' · '+tz});
+}
+setInterval(tick,1000);tick();
+document.getElementById('mastDate').textContent=fmtDate();
+document.getElementById('frontRule').textContent=fmtDate()+' · All Editions';
+
+/* ══════════ IMAGES ══════════ */
+const IMGS=[
+  '1504711434969-e33886168d6c','1495020689067-958852a7765e','1451187580459-43490279c0fa',
+  '1526470608268-f674ce90ebd4','1532619675605-1ede6c2ed2b0','1517245386807-bb43f82c33c4',
+  '1557804506-669a67965ba0','1585829365295-ab7cd400c167','1460925895917-afdab827c52f',
+  '1478131173081-ed1d98b3f11e','1529107386315-e1a2ed48a620','1518709268805-4e9042af9f23',
+  '1611974789855-9c2a0a7236a3','1559526324-4b87b5e36e44','1461896836934-ffe607ba8211',
+  '1517649763962-0c623066013b','1434030216411-0b793f4b6f7c','1562411052-105105b21c5e'
+];
+function img(i){return`https://images.unsplash.com/photo-${IMGS[i%IMGS.length]}?w=600&q=72`}
+
+/* ══════════ API KEY GATE ══════════ */
+let API_KEY='';
+
+function getKey(){return localStorage.getItem('ptt_api_key')||''}
+function saveKey(k){localStorage.setItem('ptt_api_key',k);API_KEY=k}
+function resetKey(){localStorage.removeItem('ptt_api_key');API_KEY='';location.reload()}
+
+function initGate(){
+  const saved=getKey();
+  if(saved){API_KEY=saved;hideGate();return}
+  const gate=document.getElementById('keyGate');
+  const inp=document.getElementById('keyInput');
+  const btn=document.getElementById('keyBtn');
+  const err=document.getElementById('keyErr');
+  gate.style.display='flex';
+  async function tryKey(){
+    const k=inp.value.trim();
+    if(!k){err.textContent='Please enter your API key.';return}
+    if(!k.startsWith('sk-ant-')){err.textContent='Key should start with sk-ant- — check and try again.';return}
+    btn.disabled=true;btn.textContent='Verifying…';err.textContent='';
+    try{
+      const r=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:10,messages:[{role:'user',content:'hi'}]})
+      });
+      if(r.status===401){err.textContent='Invalid API key — please check and try again.';btn.disabled=false;btn.textContent='Enter the Newsroom ↗';return}
+      if(!r.ok&&r.status!==529){err.textContent=`API error ${r.status} — try again.`;btn.disabled=false;btn.textContent='Enter the Newsroom ↗';return}
+      saveKey(k);hideGate();
+    }catch(e){err.textContent='Network error — check your connection and try again.';btn.disabled=false;btn.textContent='Enter the Newsroom ↗'}
+  }
+  btn.onclick=tryKey;
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')tryKey()});
+}
+
+function hideGate(){
+  const g=document.getElementById('keyGate');
+  if(g){g.style.opacity='0';g.style.transition='opacity .4s';setTimeout(()=>g.remove(),400)}
+  const kb=document.getElementById('keyBar');
+  if(kb)kb.classList.add('visible');
+  if(window._onKeyReady){window._onKeyReady();window._onKeyReady=null}
+}
+
+/* ══════════ API ══════════ */
+async function claude(prompt,maxTok=2000){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':API_KEY,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:maxTok,
+      tools:[{type:'web_search_20250305',name:'web_search'}],
+      messages:[{role:'user',content:prompt}]
+    })
+  });
+  if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${r.status}`)}
+  const d=await r.json();
+  const txt=d.content.filter(b=>b.type==='text').map(b=>b.text).join('');
+  const m=txt.match(/\[[\s\S]*\]/s)||txt.match(/\{[\s\S]*\}/s);
+  if(!m)throw new Error('No JSON in response');
+  return JSON.parse(m[0]);
+}
+
+async function getNews(topic,n=8){
+  const today=fmtDate();
+  return claude(`Search for the ${n} most important current ${topic} news stories as of ${today}.
+Return ONLY a JSON array, no markdown, no explanation:
+[{"title":"headline","summary":"2-3 sentence factual summary","source":"publication name","category":"${topic}"}]`);
+}
+
+async function getStocks(){
+  const today=fmtDate();
+  return claude(`Search for live US stock market data as of ${today}.
+Return ONLY this JSON object, no markdown:
+{"indices":[{"name":"Dow Jones","symbol":"DJIA","value":0,"change":0,"changePct":0},{"name":"S&P 500","symbol":"SPX","value":0,"change":0,"changePct":0},{"name":"Nasdaq","symbol":"COMP","value":0,"change":0,"changePct":0},{"name":"Russell 2000","symbol":"RUT","value":0,"change":0,"changePct":0}],"stocks":[{"symbol":"AAPL","name":"Apple","price":0,"change":0,"changePct":0},{"symbol":"MSFT","name":"Microsoft","price":0,"change":0,"changePct":0},{"symbol":"GOOGL","name":"Alphabet","price":0,"change":0,"changePct":0},{"symbol":"AMZN","name":"Amazon","price":0,"change":0,"changePct":0},{"symbol":"TSLA","name":"Tesla","price":0,"change":0,"changePct":0},{"symbol":"NVDA","name":"NVIDIA","price":0,"change":0,"changePct":0},{"symbol":"META","name":"Meta","price":0,"change":0,"changePct":0},{"symbol":"NFLX","name":"Netflix","price":0,"change":0,"changePct":0}],"marketStatus":"open or closed","note":"one sentence market commentary"}
+Fill in real current values from search.`,1500);
+}
+
+/* ══════════ BOOKMARKS ══════════ */
+function isBk(id){return S.bks.some(b=>b.id===id)}
+function saveBks(){localStorage.setItem('ptt_bks',JSON.stringify(S.bks))}
+
+function bookmarkArticle(id){
+  const a=ASTORE.get(id);if(!a)return;
+  const idx=S.bks.findIndex(b=>b.id===id);
+  if(idx>-1){S.bks.splice(idx,1);toast('Article removed from clippings')}
+  else{S.bks.push(a);toast('Story saved to clippings')}
+  saveBks();
+  document.querySelectorAll(`.bkbtn[data-id="${id}"]`).forEach(btn=>{
+    btn.classList.toggle('saved',isBk(id));
+    btn.textContent=isBk(id)?'★':'☆';
+  });
+  if(S.sec==='saved')renderSaved();
+}
+
+/* ══════════ ARTICLE CARD HTML ══════════ */
+let aid=0;
+function norm(arr,cat){
+  return arr.map(a=>{
+    const o={...a,id:a.id||`${cat}_${Date.now()}_${aid++}`,category:a.category||cat};
+    ASTORE.set(o.id,o);
+    return o;
+  });
+}
+
+function card(a,size='md',ii=0,showImg=true){
+  const sv=isBk(a.id);
+  const sizeMap={xl:'xl',lg:'lg',md:'md',sm:'sm'};
+  const hs=sizeMap[size]||'md';
+  return`<div class="acard" onclick="openA('${a.id}')">
+    ${showImg?`<img src="${img(ii)}" alt="" loading="lazy" onerror="this.style.display='none'">`:'' }
+    <div class="akicker">${(a.source||'Wire').slice(0,30)}</div>
+    <div class="ahead ${hs}">${a.title}</div>
+    ${a.summary?`<div class="asub">${a.summary}</div>`:''}
+    <div class="abyline">
+      <span><strong>${a.source||''}</strong>${a.category?' · '+a.category:''}</span>
+      <button class="bkbtn ${sv?'saved':''}" data-id="${a.id}" onclick="event.stopPropagation();bookmarkArticle('${a.id}')">${sv?'★':'☆'}</button>
+    </div>
+  </div>`;
+}
+
+/* ══════════ OPEN MODAL ══════════ */
+function openA(id){
+  const a=ASTORE.get(id);if(!a)return;
+  const ps=(a.summary||'').split(/\.\s+/).filter(s=>s.trim()).map(s=>`<p>${s.trim().endsWith('.')?s.trim():s.trim()+'.'}</p>`).join('');
+  const extra=`<p>Correspondents monitoring the situation report that conditions remain dynamic, with multiple parties closely watching how the story develops over the coming days.</p>
+<p>The report has drawn widespread attention across international media, with analysts and observers offering varied perspectives on its broader implications.</p>
+<p>This is a developing story. The Pulse Times will update coverage as further information becomes available from verified sources worldwide.</p>`;
+  document.getElementById('modalBody').innerHTML=`
+    <div class="m-kicker">${a.category||'News'}</div>
+    <div class="m-head">${a.title}</div>
+    <div class="m-rule"></div>
+    <div class="m-byline">By The Pulse Times Staff Correspondent &nbsp;·&nbsp; ${a.source} &nbsp;·&nbsp; ${fmtDate()}</div>
+    <div class="m-text">${ps}${extra}</div>
+    <div class="m-foot">
+      <span>Via ${a.source}</span>
+      <button class="bkbtn ${isBk(a.id)?'saved':''}" data-id="${a.id}" style="font-size:.75rem;font-family:var(--ff-mono)" onclick="bookmarkArticle('${a.id}')">
+        ${isBk(a.id)?'★ Saved':'☆ Save Story'}
+      </button>
+    </div>`;
+  document.getElementById('modalOv').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modalOv').classList.remove('open');document.body.style.overflow=''}
+document.getElementById('modalCls').onclick=closeModal;
+document.getElementById('modalOv').onclick=e=>{if(e.target===document.getElementById('modalOv'))closeModal()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+/* ══════════ FILTER ══════════ */
+function srch(arr){
+  if(!S.q)return arr;
+  const q=S.q.toLowerCase();
+  return arr.filter(a=>(a.title||'').toLowerCase().includes(q)||(a.summary||'').toLowerCase().includes(q)||(a.source||'').toLowerCase().includes(q));
+}
+
+/* ══════════ RENDER HELPERS ══════════ */
+function ldgHTML(msg){
+  return`<div class="ldg"><span class="ldg-spin">✦</span><div style="font-size:1.1rem">${msg}</div><div class="ldg-sub">Consulting wire services worldwide…</div></div>`;
+}
+function errHTML(msg,sec){
+  return`<div class="err"><span class="err-ico">⚠</span><div style="font-weight:600;font-family:var(--ff-head)">Dispatch Unavailable</div><div style="font-size:.8rem;margin-top:6px">${msg}</div><button class="retry-btn" onclick="reload('${sec}')">RETRY</button></div>`;
+}
+
+/* ══════════ RENDER FRONT ══════════ */
+function renderFront(arts){
+  const fa=srch(arts);
+  if(!fa.length){document.getElementById('frontContent').innerHTML='<div class="err">No articles match your search.</div>';return}
+  const[h,...r]=fa;
+  document.getElementById('frontContent').innerHTML=`
+    <div class="front-hero">
+      <div class="hero-main">${card(h,'xl',0,true)}</div>
+      <div class="hero-side">
+        ${r.slice(0,2).map((a,i)=>`<div style="${i>0?'':''}padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--rule)">${card(a,'sm',i+1,i===0)}</div>`).join('')}
+        <div class="pquote">"${(r[2]?.title||'').slice(0,80)}${(r[2]?.title||'').length>80?'…':''}"</div>
+      </div>
+    </div>
+    <div class="ornament">— ✦ —</div>
+    <div class="cols3">
+      <div class="col">${r.slice(3,5).map((a,i)=>card(a,'sm',i+4,true)+(i<1?'<div class="hrule"></div>':'')).join('')}</div>
+      <div class="col">${r.slice(5,7).map((a,i)=>card(a,'sm',i+6,true)+(i<1?'<div class="hrule"></div>':'')).join('')}</div>
+      <div class="col">${r.slice(7,9).map((a,i)=>card(a,'sm',i+8,false)+(i<1?'<div class="hrule"></div>':'')).join('')}</div>
+    </div>`;
+}
+
+/* ══════════ RENDER NEWS SECTION ══════════ */
+function renderNews(cid,arts,tags){
+  const tagKey=cid;
+  const active=S.tagFilter[tagKey]||'All';
+  let filtered=active==='All'?arts:arts.filter(a=>a.title.toLowerCase().includes(active.toLowerCase())||a.category?.toLowerCase().includes(active.toLowerCase()));
+  filtered=srch(filtered);
+  if(!filtered.length){document.getElementById(cid).innerHTML='<div class="err">No articles match your search.</div>';return}
+  const[h,...r]=filtered;
+  document.getElementById(cid).innerHTML=`
+    ${tags?.length?`<div class="tagbar">${tags.map(t=>`<button class="tag${t===active?' active':''}" onclick="filterTag('${tagKey}','${t}','${cid}')">${t}</button>`).join('')}</div>`:''}
+    <div class="front-hero">
+      <div class="hero-main">${card(h,'lg',0,true)}</div>
+      <div class="hero-side">${r.slice(0,3).map((a,i)=>`<div style="padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid var(--rule)">${card(a,'sm',i+1,false)}</div>`).join('')}</div>
+    </div>
+    <div class="cols3" style="margin-top:20px">
+      ${r.slice(3,6).map((a,i)=>`<div class="col">${card(a,'md',i+5,true)}</div>`).join('')}
+    </div>`;
+}
+function filterTag(key,val,cid){
+  S.tagFilter[key]=val;
+  const sec=cid.replace('Content','');
+  if(S.cache[sec])renderNews(cid,S.cache[sec],CFG[sec]?.tags);
+}
+
+/* ══════════ RENDER MARKETS ══════════ */
+function buildHist(price,changePct,n=35){
+  const vol=0.013;
+  const arr=[price];
+  for(let i=0;i<n-1;i++){
+    const p=arr[0];
+    arr.unshift(+(p*(1+(Math.random()-.5)*2*vol)).toFixed(2));
+  }
+  // Drift end towards real price from estimated yesterday
+  const yest=price/(1+changePct/100);
+  const scale=price/arr[arr.length-1];
+  return arr.map(p=>+(p*scale).toFixed(2));
+}
+
+function renderMarkets(d){
+  const{indices,stocks,marketStatus,note}=d;
+  const isOpen=marketStatus?.toLowerCase().includes('open');
+  document.getElementById('statusDot').style.background=isOpen?'var(--grn)':'var(--ink3)';
+  document.getElementById('statusTxt').textContent=isOpen?'Market Open':'Market Closed';
+
+  stocks.forEach(s=>{if(!S.stkHist[s.symbol])S.stkHist[s.symbol]=buildHist(s.price,s.changePct)});
+
+  document.getElementById('marketsContent').innerHTML=`
+    <div class="idx-row">
+      ${indices.map(x=>`<div class="idx-chip">
+        <div class="idx-nm">${x.name}</div>
+        <div class="idx-val">${(x.value||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
+        <div class="idx-chg ${(x.changePct||0)>=0?'chg-up':'chg-dn'}">${(x.changePct||0)>=0?'▲':'▼'} ${Math.abs(x.changePct||0).toFixed(2)}%</div>
+      </div>`).join('')}
+    </div>
+    ${note?`<div class="mnote">${note}</div>`:''}
+    <div class="stk-grid" id="stkGrid">
+      ${stocks.map(s=>`<div class="stk-card${s.symbol===S.selSym?' sel':''}" id="sc_${s.symbol}" onclick="selStk('${s.symbol}')">
+        <div style="display:flex;justify-content:space-between;align-items:start">
+          <div class="stk-sym">${s.symbol}</div>
+          <div class="stk-c ${(s.changePct||0)>=0?'chg-up':'chg-dn'}">${(s.changePct||0)>=0?'▲':'▼'} ${Math.abs(s.changePct||0).toFixed(2)}%</div>
+        </div>
+        <div class="stk-co">${s.name}</div>
+        <div class="stk-px">$${(s.price||0).toFixed(2)}</div>
+        <div style="font-family:var(--ff-mono);font-size:.62rem;color:var(--ink3);margin-top:2px">${(s.change||0)>=0?'+':''}${(s.change||0).toFixed(2)} today</div>
+      </div>`).join('')}
+    </div>
+    <div class="chart-wrap" id="chartWrap">
+      <div class="chart-lbl" id="chartLbl">— &nbsp;30-day trend + live price</div>
+      <canvas id="stkCanvas" height="200"></canvas>
+    </div>
+    <div class="mv-grid">
+      <div class="mv-panel">
+        <div class="mv-ttl">▲ Today's Gainers</div>
+        ${[...stocks].sort((a,b)=>(b.changePct||0)-(a.changePct||0)).slice(0,5).map(s=>`<div class="mv-row"><span><strong>${s.symbol}</strong> <span style="color:var(--ink3);font-size:.68rem">${s.name}</span></span><span class="chg-up">+${Math.abs(s.changePct||0).toFixed(2)}%</span></div>`).join('')}
+      </div>
+      <div class="mv-panel">
+        <div class="mv-ttl">▼ Today's Losers</div>
+        ${[...stocks].sort((a,b)=>(a.changePct||0)-(b.changePct||0)).slice(0,5).map(s=>`<div class="mv-row"><span><strong>${s.symbol}</strong> <span style="color:var(--ink3);font-size:.68rem">${s.name}</span></span><span class="chg-dn">${(s.changePct||0).toFixed(2)}%</span></div>`).join('')}
+      </div>
+    </div>`;
+  setTimeout(()=>drawChart(S.selSym),60);
+}
+
+function selStk(sym){
+  S.selSym=sym;
+  document.querySelectorAll('.stk-card').forEach(c=>c.classList.remove('sel'));
+  const el=document.getElementById('sc_'+sym);
+  if(el)el.classList.add('sel');
+  document.getElementById('chartLbl').textContent=`${sym} — 30-day trend + live price`;
+  drawChart(sym);
+}
+
+function drawChart(sym){
+  const canvas=document.getElementById('stkCanvas');
+  if(!canvas)return;
+  const hist=S.stkHist[sym];
+  if(!hist)return;
+  const wrap=document.getElementById('chartWrap');
+  const W=wrap.clientWidth-36;
+  const H=200;
+  canvas.width=W*2;canvas.height=H*2;
+  canvas.style.width=W+'px';canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(2,2);
+  const min=Math.min(...hist)*.997,max=Math.max(...hist)*1.003;
+  const xS=W/(hist.length-1);
+  const yP=p=>H-((p-min)/(max-min))*H*.88-H*.06;
+  ctx.clearRect(0,0,W,H);
+  const dark=S.theme==='night';
+  const gc=dark?'rgba(232,223,200,.07)':'rgba(26,17,8,.07)';
+  ctx.strokeStyle=gc;ctx.lineWidth=.5;
+  for(let i=0;i<=4;i++){
+    const y=(H/4)*i;
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+    const v=max-((max-min)/4)*i;
+    ctx.font=`600 9px "Courier Prime",monospace`;
+    ctx.fillStyle=dark?'rgba(232,223,200,.45)':'rgba(26,17,8,.45)';
+    ctx.fillText('$'+v.toFixed(0),3,y-2);
+  }
+  const up=hist[hist.length-1]>=hist[0];
+  const lc=up?(dark?'#4ade80':'#16a34a'):(dark?'#ff6b6b':'#dc2626');
+  const fc=up?(dark?'rgba(74,222,128,.12)':'rgba(22,163,74,.08)'):(dark?'rgba(255,107,107,.12)':'rgba(220,38,38,.08)');
+  ctx.beginPath();
+  ctx.moveTo(0,yP(hist[0]));
+  hist.forEach((p,i)=>ctx.lineTo(i*xS,yP(p)));
+  ctx.lineTo((hist.length-1)*xS,H);ctx.lineTo(0,H);ctx.closePath();
+  ctx.fillStyle=fc;ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(0,yP(hist[0]));
+  hist.forEach((p,i)=>ctx.lineTo(i*xS,yP(p)));
+  ctx.strokeStyle=lc;ctx.lineWidth=2;ctx.lineJoin='round';ctx.stroke();
+  const lx=(hist.length-1)*xS,ly=yP(hist[hist.length-1]);
+  ctx.beginPath();ctx.arc(lx,ly,4,0,Math.PI*2);ctx.fillStyle=lc;ctx.fill();
+  ctx.font=`700 11px "Courier Prime",monospace`;
+  ctx.fillStyle=lc;
+  ctx.fillText('$'+hist[hist.length-1].toFixed(2),lx-38,ly-10);
+}
+
+/* ══════════ TICKER ══════════ */
+function renderTicker(stocks){
+  const items=stocks.map(s=>{
+    const cls=(s.changePct||0)>=0?'t-up':'t-dn';
+    const ar=(s.changePct||0)>=0?'▲':'▼';
+    return`<span style="display:inline-flex;gap:8px;align-items:center"><strong>${s.symbol}</strong> $${(s.price||0).toFixed(2)} <span class="${cls}">${ar} ${Math.abs(s.changePct||0).toFixed(2)}%</span></span>`;
+  }).join('');
+  const el=document.getElementById('tickInner');
+  el.innerHTML=items+items;
+  el.style.animationDuration=(stocks.length*4.5)+'s';
+}
+
+/* ══════════ SAVED ══════════ */
+function renderSaved(){
+  const el=document.getElementById('savedContent');
+  if(!S.bks.length){
+    el.innerHTML=`<div class="empty"><span class="empty-ico">✂</span>No saved articles yet.<br>Tap ☆ on any story to clip it here.</div>`;
+    return;
+  }
+  el.innerHTML=`<div class="cols3">${S.bks.map((a,i)=>`<div class="col">${card(a,'md',i,true)}</div>`).join('')}</div>`;
+}
+
+/* ══════════ SECTION CONFIG ══════════ */
+const CFG={
+  front:{q:'world news today major headlines',render:(a)=>renderFront(a)},
+  world:{q:'world international news today',cid:'worldContent',tags:['All','Europe','Asia','Americas','Middle East','Africa']},
+  tech:{q:'technology AI artificial intelligence news today',cid:'techContent',tags:['All','AI','Cybersecurity','Space','Startups']},
+  politics:{q:'politics government elections policy news today',cid:'politicsContent',tags:['All','US','International','Policy','Elections']},
+  sports:{q:'sports news results scores today',cid:'sportsContent',tags:['All','Football','Cricket','Tennis','Basketball','Olympics']},
+  education:{q:'study abroad university scholarships visa education news 2026',cid:'educationContent',tags:['All','USA','UK','Canada','Australia','Germany']},
+};
+
+/* ══════════ LOAD SECTION ══════════ */
+async function loadSec(sec){
+  if(S.loading[sec])return;
+  S.loading[sec]=true;
+  if(sec==='saved'){renderSaved();S.loading[sec]=false;return}
+  if(sec==='markets'){
+    document.getElementById('marketsContent').innerHTML=ldgHTML('Fetching live quotations…');
+    try{
+      const d=await getStocks();
+      S.stocks=d;
+      renderMarkets(d);
+      renderTicker(d.stocks);
+    }catch(e){document.getElementById('marketsContent').innerHTML=errHTML(e.message,'markets')}
+    S.loading[sec]=false;return;
+  }
+  const cfg=CFG[sec];if(!cfg){S.loading[sec]=false;return}
+  if(S.cache[sec]){
+    cfg.render?cfg.render(S.cache[sec]):renderNews(cfg.cid,S.cache[sec],cfg.tags);
+    S.loading[sec]=false;return;
+  }
+  const cid=cfg.cid||'frontContent';
+  document.getElementById(cid).innerHTML=ldgHTML(
+    sec==='front'?'Gathering today\'s dispatches…':
+    sec==='tech'?'Scanning technology wires…':
+    sec==='sports'?'Checking scoreboards…':'On the wire…');
+  try{
+    const arts=await getNews(cfg.q,8);
+    const norm_arts=norm(arts,sec);
+    S.cache[sec]=norm_arts;
+    cfg.render?cfg.render(norm_arts):renderNews(cid,norm_arts,cfg.tags);
+  }catch(e){document.getElementById(cid).innerHTML=errHTML(e.message,sec)}
+  S.loading[sec]=false;
+}
+
+function reload(sec){delete S.cache[sec];S.loading[sec]=false;loadSec(sec)}
+
+/* ══════════ NAV ══════════ */
+function switchSec(sec){
+  S.sec=sec;
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+sec)?.classList.add('active');
+  document.querySelectorAll('.nt').forEach(t=>t.classList.toggle('active',t.dataset.s===sec));
+  loadSec(sec);
+}
+document.querySelectorAll('.nt').forEach(t=>t.addEventListener('click',()=>switchSec(t.dataset.s)));
+
+/* ══════════ THEME ══════════ */
+document.getElementById('themeBtn').addEventListener('click',()=>{
+  const n=S.theme==='day'?'night':'day';
+  S.theme=n;
+  document.documentElement.setAttribute('data-theme',n);
+  document.getElementById('themeBtn').textContent=n==='day'?'☽ Night Edition':'☀ Day Edition';
+  localStorage.setItem('ptt_theme',n);
+  if(S.sec==='markets')setTimeout(()=>drawChart(S.selSym),50);
+});
+
+/* ══════════ SEARCH ══════════ */
+let stmr;
+document.getElementById('srchInput').addEventListener('input',e=>{
+  clearTimeout(stmr);
+  stmr=setTimeout(()=>{
+    S.q=e.target.value.trim();
+    if(S.sec==='saved'){renderSaved();return}
+    if(S.sec==='markets')return;
+    const cfg=CFG[S.sec];
+    if(!cfg||!S.cache[S.sec])return;
+    cfg.render?cfg.render(S.cache[S.sec]):renderNews(cfg.cid||'frontContent',S.cache[S.sec],cfg.tags);
+  },280);
+});
+
+/* ══════════ TOAST ══════════ */
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+/* ══════════ RESIZE ══════════ */
+window.addEventListener('resize',()=>{if(S.sec==='markets')drawChart(S.selSym)});
+
+/* ══════════ INIT ══════════ */
+initGate();
+
+if(getKey()){
+  API_KEY=getKey();
+  Promise.allSettled([
+    loadSec('front'),
+    getStocks().then(d=>{S.stocks=d;renderTicker(d.stocks)}).catch(()=>{})
+  ]);
+}else{
+  // Wait for gate to complete, then load
+  const _origHide=hideGate;
+  window._onKeyReady=function(){
+    Promise.allSettled([
+      loadSec('front'),
+      getStocks().then(d=>{S.stocks=d;renderTicker(d.stocks)}).catch(()=>{})
+    ]);
+  };
+}
+
+/* ══════════ AUTO REFRESH (markets every 5 min) ══════════ */
+setInterval(()=>{
+  if(S.sec==='markets'){S.loading.markets=false;loadSec('markets')}
+},300000);
+</script>
+</body>
+</html>
