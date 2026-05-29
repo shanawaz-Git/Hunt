@@ -6,7 +6,7 @@
 <title>ॐ Saravana Bhava — A Tribute to Lord Murugan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Marcellus&family=Yatra+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Marcellus&family=Tiro+Tamil:ital@0;1&family=Yatra+One&display=swap" rel="stylesheet">
 <style>
 :root{
   --oxblood:#2a0606;
@@ -65,6 +65,7 @@ section{position:relative;z-index:2;padding:90px 24px;text-align:center}
   background:conic-gradient(from 0deg, rgba(255,207,72,.10) 0 6deg, transparent 6deg 18deg);
   animation:spin 90s linear infinite;will-change:transform;-webkit-mask:radial-gradient(circle,black 0,transparent 62%);mask:radial-gradient(circle,black 0,transparent 62%)}
 @keyframes spin{to{transform:translate(-50%,-55%) rotate(360deg)}}
+@keyframes spinC{to{transform:translate(-50%,-50%) rotate(360deg)}}
 
 .om{font-family:'Yatra One',cursive;font-size:clamp(80px,16vw,200px);line-height:1;
   color:var(--gold);text-shadow:0 0 30px rgba(255,207,72,.6),0 0 60px rgba(245,158,11,.4);
@@ -86,7 +87,7 @@ section{position:relative;z-index:2;padding:90px 24px;text-align:center}
 .eyebrow{font-family:'Marcellus',serif;letter-spacing:.32em;text-transform:uppercase;color:var(--peacock-bright);font-size:13px;margin-bottom:14px;opacity:.85;overflow-wrap:break-word}
 h2.title{font-family:'Cinzel Decorative',serif;font-weight:700;font-size:clamp(28px,5vw,54px);
   color:var(--gold);text-shadow:0 0 24px rgba(255,207,72,.35);margin-bottom:8px;overflow-wrap:break-word;word-break:break-word}
-.tamil{font-family:'Yatra One',cursive;color:var(--gold-soft);font-size:clamp(19px,3vw,30px);margin-bottom:22px;overflow-wrap:break-word}
+.tamil{font-family:'Tiro Tamil','Yatra One',serif;color:var(--gold-soft);font-size:clamp(19px,3vw,30px);margin-bottom:22px;overflow-wrap:break-word}
 .body-text{font-size:clamp(17px,2.2vw,23px);line-height:1.7;max-width:620px;margin:0 auto;color:#f6e4c2;opacity:.95;overflow-wrap:break-word}
 .body-text em{color:var(--gold);font-style:italic}
 
@@ -133,7 +134,7 @@ h2.title{font-family:'Cinzel Decorative',serif;font-weight:700;font-size:clamp(2
   background:linear-gradient(180deg,var(--gold-soft),var(--saffron));-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0 14px;overflow-wrap:break-word}
 .note{font-size:clamp(17px,2.4vw,20px);line-height:1.7;font-style:italic;color:#f6e4c2;overflow-wrap:break-word}
 
-footer{text-align:center;padding:40px 20px 60px;color:var(--gold-soft);opacity:.6;font-family:'Marcellus',serif;letter-spacing:.2em;font-size:14px;position:relative;z-index:2}
+footer{text-align:center;padding:40px 20px 60px;color:var(--gold-soft);opacity:.6;font-family:'Marcellus','Yatra One',serif;letter-spacing:.2em;font-size:14px;position:relative;z-index:2}
 
 /* CSS-driven art motion (no JS, so scrolling stays smooth) */
 .fan{transform-box:fill-box;transform-origin:50% 100%;animation:fansway 7s ease-in-out infinite;will-change:transform}
@@ -151,6 +152,81 @@ footer{text-align:center;padding:40px 20px 60px;color:var(--gold-soft);opacity:.
   .eyebrow{letter-spacing:.22em}
   .divider{gap:12px}
 }
+/* ============ rich content components ============ */
+.lead{font-size:clamp(18px,2.4vw,24px);line-height:1.75;max-width:640px;margin:0 auto 8px;color:#f8ead0}
+.lead em{color:var(--gold);font-style:italic}
+
+/* six syllables */
+.syl{display:flex;flex-wrap:wrap;gap:clamp(10px,2.5vw,20px);justify-content:center;margin:30px auto 6px;max-width:680px}
+.syl .glyph{display:flex;flex-direction:column;align-items:center;gap:8px;width:clamp(82px,20vw,108px)}
+.syl .orb{width:clamp(58px,15vw,78px);height:clamp(58px,15vw,78px);border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel Decorative',serif;font-weight:700;font-size:clamp(18px,4.5vw,24px);color:var(--ink);
+  background:radial-gradient(circle at 35% 30%,var(--gold-soft),var(--saffron) 70%,#b97608);
+  box-shadow:0 8px 22px rgba(0,0,0,.45),0 0 22px rgba(255,207,72,.35)}
+.syl .smean{font-size:14px;color:#e7d4ad;opacity:.85;text-align:center;line-height:1.3}
+
+/* name chips */
+.names{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:760px;margin:28px auto 0}
+.chip{padding:12px 18px;border:1px solid rgba(255,207,72,.28);border-radius:999px;
+  background:linear-gradient(160deg,rgba(255,207,72,.08),rgba(22,185,179,.05));transition:transform .35s,border-color .35s,box-shadow .35s}
+.chip:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 10px 24px rgba(0,0,0,.45)}
+.chip .nm{font-family:'Marcellus',serif;color:var(--gold);font-size:clamp(16px,3.6vw,19px);letter-spacing:.02em}
+.chip .mn{font-size:14px;color:#e7d4ad;opacity:.85;margin-top:2px}
+
+/* story two-up */
+.story{max-width:760px;margin:30px auto 0;text-align:left;padding:28px 26px;border-radius:18px;
+  background:linear-gradient(160deg,rgba(74,13,13,.55),rgba(26,3,3,.55));border:1px solid rgba(255,207,72,.2);
+  box-shadow:0 16px 44px rgba(0,0,0,.4)}
+.story p{font-size:clamp(17px,2.2vw,21px);line-height:1.75;color:#f6e4c2;margin-bottom:14px;overflow-wrap:break-word}
+.story p:last-child{margin-bottom:0}
+.story em{color:var(--gold);font-style:italic}
+.story .moral{margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,207,72,.2);font-style:italic;color:var(--gold-soft)}
+
+/* devotional pull quote */
+.quote{max-width:640px;margin:34px auto 0;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(20px,3vw,28px);line-height:1.6;color:var(--gold-soft);position:relative;padding:0 30px}
+.quote::before,.quote::after{font-family:'Cinzel Decorative',serif;color:var(--gold);opacity:.5;font-size:1.4em;line-height:0}
+.quote::before{content:"“"}.quote::after{content:"”"}
+.quote .who{display:block;margin-top:14px;font-style:normal;font-family:'Marcellus',serif;letter-spacing:.16em;font-size:14px;text-transform:uppercase;color:var(--peacock-bright);opacity:.85}
+
+/* loves / consorts */
+.loves{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;max-width:760px;margin:30px auto 0;text-align:left}
+.love{padding:24px 22px;border-radius:16px;border:1px solid rgba(255,207,72,.22);
+  background:linear-gradient(160deg,rgba(255,207,72,.06),rgba(22,185,179,.04))}
+.love h4{font-family:'Cinzel Decorative',serif;color:var(--gold);font-size:clamp(20px,4vw,26px);margin-bottom:4px}
+.love .tag{font-family:'Marcellus',serif;color:var(--peacock-bright);letter-spacing:.14em;text-transform:uppercase;font-size:12px;opacity:.85;margin-bottom:10px}
+.love p{font-size:clamp(16px,2.1vw,19px);line-height:1.65;color:#f6e4c2;overflow-wrap:break-word}
+
+/* ============ SURPRISE COUNTDOWN GATE ============ */
+body.locked{overflow:hidden;height:100vh}
+#gate{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:28px 22px;gap:6px;
+  background:
+    radial-gradient(circle at 50% 18%, #6a1212 0%, var(--maroon) 34%, var(--oxblood) 64%, var(--deep) 100%);
+  transition:opacity 1.4s ease, transform 1.6s ease, filter 1.4s ease}
+#gate.open{opacity:0;transform:scale(1.12);filter:blur(14px);pointer-events:none}
+#gate .g-rays{position:absolute;top:50%;left:50%;width:140vmax;height:140vmax;transform:translate(-50%,-50%);z-index:-1;
+  background:conic-gradient(from 0deg,rgba(255,207,72,.08) 0 6deg,transparent 6deg 18deg);
+  animation:spinC 100s linear infinite;will-change:transform;
+  -webkit-mask:radial-gradient(circle,black 0,transparent 60%);mask:radial-gradient(circle,black 0,transparent 60%)}
+#gate .g-om{font-family:'Yatra One',cursive;font-size:clamp(64px,14vw,140px);line-height:1;color:var(--gold);
+  text-shadow:0 0 30px rgba(255,207,72,.6),0 0 60px rgba(245,158,11,.4);animation:breathe 4s ease-in-out infinite;cursor:default}
+#gate .g-eyebrow{font-family:'Marcellus',serif;letter-spacing:.3em;text-transform:uppercase;color:var(--peacock-bright);font-size:12px;opacity:.85;margin-top:6px}
+#gate .g-title{font-family:'Cinzel Decorative',serif;font-weight:700;font-size:clamp(24px,5.5vw,46px);
+  background:linear-gradient(180deg,var(--gold-soft),var(--saffron));-webkit-background-clip:text;background-clip:text;color:transparent;
+  margin:4px 0 2px;overflow-wrap:break-word}
+#gate .g-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:#f6e4c2;font-size:clamp(16px,2.6vw,21px);opacity:.9;max-width:440px}
+.cd{display:flex;gap:clamp(8px,2.4vw,18px);justify-content:center;margin:26px 0 10px;flex-wrap:wrap}
+.cd .unit{display:flex;flex-direction:column;align-items:center;min-width:clamp(58px,17vw,84px);
+  padding:14px 8px;border:1px solid rgba(255,207,72,.3);border-radius:14px;
+  background:linear-gradient(160deg,rgba(255,207,72,.07),rgba(22,185,179,.04));box-shadow:inset 0 0 30px rgba(255,207,72,.05)}
+.cd .num{font-family:'Cinzel Decorative',serif;font-weight:900;font-size:clamp(28px,8vw,52px);color:var(--gold-soft);
+  text-shadow:0 0 18px rgba(245,158,11,.5);font-variant-numeric:tabular-nums;line-height:1}
+.cd .lab{font-family:'Marcellus',serif;letter-spacing:.18em;text-transform:uppercase;font-size:11px;color:var(--peacock-bright);margin-top:8px;opacity:.85}
+#gate .g-mantra{font-family:'Marcellus','Yatra One',serif;letter-spacing:.16em;color:var(--gold);opacity:.8;font-size:clamp(13px,2.4vw,17px);margin-top:14px}
+.confetti{position:fixed;inset:0;z-index:49;pointer-events:none}
+@media(max-width:600px){#gate{padding:24px 14px}.cd{gap:8px}}
+
 /* respect users who prefer less motion */
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
@@ -158,7 +234,23 @@ footer{text-align:center;padding:40px 20px 60px;color:var(--gold-soft);opacity:.
 }
 </style>
 </head>
-<body>
+<body class="locked">
+
+<!-- ============ SURPRISE COUNTDOWN GATE ============ -->
+<div id="gate">
+  <div class="g-rays"></div>
+  <div class="g-om">ॐ</div>
+  <div class="g-eyebrow">A surprise awaits</div>
+  <div class="g-title">For Ragave</div>
+  <div class="g-sub">Something made with love is opening soon. Stay close…</div>
+  <div class="cd" id="cd">
+    <div class="unit"><span class="num" id="d">00</span><span class="lab">Days</span></div>
+    <div class="unit"><span class="num" id="h">00</span><span class="lab">Hours</span></div>
+    <div class="unit"><span class="num" id="m">00</span><span class="lab">Minutes</span></div>
+    <div class="unit"><span class="num" id="s">00</span><span class="lab">Seconds</span></div>
+  </div>
+  <div class="g-mantra">ॐ OM SARAVANA BHAVA ॐ</div>
+</div>
 
 <div class="sky" id="sky"></div>
 
@@ -348,6 +440,23 @@ footer{text-align:center;padding:40px 20px 60px;color:var(--gold-soft);opacity:.
   <p class="body-text">Upon His banner crows the <em>Seval</em> — the rooster who heralds the dawn and frightens away the darkness. It is the cry of awakening: rise, the night is over, the light of the Lord has come.</p>
 </section>
 
+<div class="divider"><span class="line"></span>
+  <svg viewBox="0 0 40 40"><path d="M20 4 L24 16 L36 16 L26 24 L30 36 L20 28 L10 36 L14 24 L4 16 L16 16 Z" fill="none" stroke="var(--gold)" stroke-width="2"/></svg>
+  <span class="line"></span></div>
+
+<!-- ============ BIRTH STORY ============ -->
+<section class="reveal">
+  <div class="eyebrow">How He Came to Be</div>
+  <h2 class="title">Born of Six Sparks</h2>
+  <div class="tamil">ஆறுமுகம் · Arumugam</div>
+  <p class="lead">When the world cried out for a saviour, six brilliant sparks leapt from the third eye of <em>Lord Shiva</em>. Carried by fire and wind, they came to rest on the still waters of <em>Saravana Poigai</em>, a lake of golden reeds.</p>
+  <div class="story">
+    <p>There, six radiant babies were cradled and nursed by the six <em>Krittika</em> star-maidens — the cluster we still call the Pleiades, shining in the night sky. From them He took the name <em>Kartikeya</em>.</p>
+    <p>When His mother <em>Parvati</em> gathered all six infants into Her arms in one loving embrace, they became a single child with <em>six faces</em> and twelve arms — and so He is <em>Shanmukha</em>, the six-faced one. Each face watches a direction; together they miss nothing, and turn away from no one who calls.</p>
+    <p class="moral">Six faces, six syllables, six sacred hills, six days of his festival — six is His sacred number, a reminder that grace looks upon you from every side.</p>
+  </div>
+</section>
+
 <!-- ============ MANTRA BANNER ============ -->
 <section class="banner reveal">
   <div class="eyebrow">The Sacred Praise</div>
@@ -358,6 +467,91 @@ footer{text-align:center;padding:40px 20px 60px;color:var(--gold-soft);opacity:.
 <div class="divider"><span class="line"></span>
   <svg viewBox="0 0 40 40"><path d="M20 4 L24 16 L36 16 L26 24 L30 36 L20 28 L10 36 L14 24 L4 16 L16 16 Z" fill="none" stroke="var(--gold)" stroke-width="2"/></svg>
   <span class="line"></span></div>
+
+<!-- ============ THE SIX SYLLABLES ============ -->
+<section class="reveal">
+  <div class="eyebrow">The Meaning of the Mantra</div>
+  <h2 class="title">The Six Sacred Syllables</h2>
+  <div class="tamil">ஓம் சரவணபவ</div>
+  <p class="lead">The mantra glowing at the top of this page — <em>Om Saravana Bhava</em> — is His most beloved chant. Beyond the <em>Om</em>, it holds six syllables, one for each face, one for each star-mother who raised Him. Together they mean simply: <em>“Born in the lake of reeds.”</em></p>
+  <div class="syl">
+    <div class="glyph"><div class="orb">Sa</div><div class="smean">Truth &amp; being</div></div>
+    <div class="glyph"><div class="orb">Ra</div><div class="smean">Radiance</div></div>
+    <div class="glyph"><div class="orb">Va</div><div class="smean">Flowing grace</div></div>
+    <div class="glyph"><div class="orb">Na</div><div class="smean">Stillness</div></div>
+    <div class="glyph"><div class="orb">Bha</div><div class="smean">Light born</div></div>
+    <div class="glyph"><div class="orb">Va</div><div class="smean">Into the world</div></div>
+  </div>
+  <p class="body-text" style="margin-top:22px">Chanted softly, it is said to steady a restless mind and clear the path ahead — a little candle of sound you can carry anywhere.</p>
+</section>
+
+<div class="divider"><span class="line"></span>
+  <svg viewBox="0 0 40 40"><path d="M8 20 Q20 6 32 20 Q20 34 8 20Z" fill="none" stroke="var(--gold)" stroke-width="2.4"/><circle cx="20" cy="20" r="3" fill="var(--gold)"/></svg>
+  <span class="line"></span></div>
+
+<!-- ============ HIS MANY NAMES ============ -->
+<section class="reveal">
+  <div class="eyebrow">By a Thousand Loving Names</div>
+  <h2 class="title">What Devotees Call Him</h2>
+  <div class="tamil">முருகன் · குமரன் · வேலன்</div>
+  <p class="lead">No single name can hold Him, so His devotees call Him many — each one a different door to the same heart.</p>
+  <div class="names">
+    <div class="chip"><div class="nm">Murugan</div><div class="mn">The ever-youthful, the beautiful</div></div>
+    <div class="chip"><div class="nm">Kumara</div><div class="mn">The eternal child</div></div>
+    <div class="chip"><div class="nm">Subramanya</div><div class="mn">Dear and auspicious one</div></div>
+    <div class="chip"><div class="nm">Skanda</div><div class="mn">The leap of pure energy</div></div>
+    <div class="chip"><div class="nm">Kartikeya</div><div class="mn">Son of the six stars</div></div>
+    <div class="chip"><div class="nm">Arumugam</div><div class="mn">The six-faced</div></div>
+    <div class="chip"><div class="nm">Guha</div><div class="mn">Who dwells in the cave of the heart</div></div>
+    <div class="chip"><div class="nm">Velan</div><div class="mn">Bearer of the Vel</div></div>
+    <div class="chip"><div class="nm">Saravanabhava</div><div class="mn">Born of the reed-lake</div></div>
+    <div class="chip"><div class="nm">Senthil</div><div class="mn">The red, beautiful flame</div></div>
+    <div class="chip"><div class="nm">Dandayudhapani</div><div class="mn">The serene hermit of Palani</div></div>
+    <div class="chip"><div class="nm">Devasenapati</div><div class="mn">Commander of the heavens</div></div>
+  </div>
+</section>
+
+<div class="divider"><span class="line"></span>
+  <svg viewBox="0 0 40 40"><path d="M8 20 Q20 6 32 20 Q20 34 8 20Z" fill="none" stroke="var(--gold)" stroke-width="2.4"/><circle cx="20" cy="20" r="3" fill="var(--gold)"/></svg>
+  <span class="line"></span></div>
+
+<!-- ============ THE MANGO STORY ============ -->
+<section class="reveal">
+  <div class="eyebrow">A Beloved Tale</div>
+  <h2 class="title">The Race Around the World</h2>
+  <div class="tamil">ஞானப் பழம் · The Fruit of Wisdom</div>
+  <div class="story">
+    <p>One day the sage <em>Narada</em> brought a single golden mango — the fruit of all wisdom — to Mount Kailash. Shiva and Parvati could not bear to cut it, so they set a contest for their two sons: <em>whoever circles the whole world three times first shall win it.</em></p>
+    <p>Murugan sprang onto His peacock at once and flew off to race around the earth. But His brother <em>Ganesha</em> simply walked slowly around His mother and father, and bowed. <em>“You two are my whole world,”</em> He said — and won the fruit.</p>
+    <p>Returning to find the mango gone, Murugan felt hurt and walked away to the hill of <em>Palani</em>, choosing the simple life of a hermit with only a staff. There His parents came to console Him: <em>“Pazham nee”</em> — <em>you yourself are the fruit, the very sweetness we sought.</em></p>
+    <p class="moral">A gentle reminder that the people we love are the whole world — and that the ones who feel things deeply are often the sweetest of all.</p>
+  </div>
+</section>
+
+<div class="divider"><span class="line"></span>
+  <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="6" fill="none" stroke="var(--gold)" stroke-width="2.4"/><path d="M20 4v8M20 28v8M4 20h8M28 20h8" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round"/></svg>
+  <span class="line"></span></div>
+
+<!-- ============ HIS LOVES ============ -->
+<section class="reveal">
+  <div class="eyebrow">The Two He Loved</div>
+  <h2 class="title">Valli &amp; Deivanai</h2>
+  <div class="tamil">வள்ளி · தெய்வானை</div>
+  <p class="lead">Murugan has two beloved companions, and together they tell us that love comes in two beautiful ways.</p>
+  <div class="loves">
+    <div class="love">
+      <h4>Valli</h4>
+      <div class="tag">Love that is earned</div>
+      <p>A spirited hill-girl who guarded the millet fields, Valli won His heart through devotion and a tender, playful courtship. She is the love freely given — the heart that chooses, and is chosen.</p>
+    </div>
+    <div class="love">
+      <h4>Deivanai</h4>
+      <div class="tag">Love that is destined</div>
+      <p>Daughter of the king of the heavens, Deivanai was wed to Him after His great victory. She is the love that arrives by grace — steady, honoured, and true.</p>
+    </div>
+  </div>
+  <p class="quote">He keeps them both close — for a full life needs both the love we strive toward and the love that simply finds us.</p>
+</section>
 
 <!-- ============ SIX ABODES ============ -->
 <section class="reveal">
@@ -376,6 +570,39 @@ footer{text-align:center;padding:40px 20px 60px;color:var(--gold-soft);opacity:.
 </section>
 
 <div class="divider"><span class="line"></span>
+  <svg viewBox="0 0 40 40"><path d="M20 4 L24 16 L36 16 L26 24 L30 36 L20 28 L10 36 L14 24 L4 16 L16 16 Z" fill="none" stroke="var(--gold)" stroke-width="2"/></svg>
+  <span class="line"></span></div>
+
+<!-- ============ FESTIVALS ============ -->
+<section class="reveal">
+  <div class="eyebrow">Days the World Sings His Name</div>
+  <h2 class="title">Festivals of Light</h2>
+  <div class="tamil">திருவிழாக்கள்</div>
+  <p class="lead">Across the year, millions climb hills, carry offerings, and chant for Him. These are His brightest days.</p>
+  <div class="abodes">
+    <div class="abode"><div class="name">Thaipusam</div><div class="desc">Devotees carry the <em>kavadi</em> in joyful vows of love</div></div>
+    <div class="abode"><div class="name">Skanda Sashti</div><div class="desc">Six days marking His victory over darkness</div></div>
+    <div class="abode"><div class="name">Vaikasi Visakam</div><div class="desc">The day He appeared, under His birth star</div></div>
+    <div class="abode"><div class="name">Panguni Uthiram</div><div class="desc">Celebrating His sacred wedding</div></div>
+  </div>
+  <p class="body-text" style="margin-top:24px">On <em>Skanda Sashti</em>, His Vel struck the demon Surapadman — who, transformed by grace, became the very <em>peacock</em> He rides and the <em>rooster</em> on His flag. Even what opposed Him was lifted into His glory.</p>
+</section>
+
+<div class="divider"><span class="line"></span>
+  <svg viewBox="0 0 40 40"><path d="M20 2 L20 38 M20 2 L13 10 M20 2 L27 10 M11 16 Q20 22 29 16" stroke="var(--gold)" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
+  <span class="line"></span></div>
+
+<!-- ============ TAMIL GOD ============ -->
+<section class="reveal">
+  <div class="eyebrow">Heart of the Tamil Land</div>
+  <h2 class="title">Tamil Kadavul</h2>
+  <div class="tamil">தமிழ்க் கடவுள் முருகன்</div>
+  <p class="lead">Long, long ago, the ancient Tamil poets sang of <em>Seyon</em> — the red god of the green hills. To this day He is cherished as the <em>God of the Tamils</em>, closest of all to the people who love Him.</p>
+  <p class="quote">Whoever utters even once “<em>Muruga</em>” with a melting heart — to him I will give my own form.<span class="who">— Arunagirinathar, Kandar Anubhuti</span></p>
+  <p class="body-text" style="margin-top:26px">The saint <em>Arunagirinathar</em> poured his whole life into the <em>Thiruppugazh</em>, thousands of honey-sweet verses of praise. He taught that Murugan asks for nothing grand — only a heart that softens when it calls His name.</p>
+</section>
+
+<div class="divider"><span class="line"></span>
   <svg viewBox="0 0 40 40"><path d="M20 2 L20 38 M20 2 L13 10 M20 2 L27 10 M11 16 Q20 22 29 16" stroke="var(--gold)" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
   <span class="line"></span></div>
 
@@ -384,13 +611,73 @@ footer{text-align:center;padding:40px 20px 60px;color:var(--gold-soft);opacity:.
   <div class="card">
     <div class="eyebrow">With love, on this special day</div>
     <div class="for-name">For Ragave</div>
-    <p class="note">May Lord Murugan's Vel clear every path before you, may His peacock's grace fill your days with colour, and may His banner of dawn always find you in the light. <br><br>Vel! Vel! Vetri Vel! ✨</p>
+    <p class="note">Like the fruit in the old story, the people we love are our whole world — and you are dearly loved.<br><br>May Lord Murugan's Vel clear every path before you, may His peacock's grace fill your days with colour, and may His banner of dawn always find you in the light.<br><br>Vel! Vel! Vetri Vel! ✨</p>
   </div>
 </section>
 
 <footer>ॐ &nbsp; OM SARAVANA BHAVA &nbsp; ॐ</footer>
 
 <script>
+/* ===== Surprise countdown — unlocks at 00:00:00 IST on 30 May 2026 ===== */
+// IST is UTC+5:30, so the target in UTC epoch ms is computed by subtracting 5h30m.
+// This is correct no matter what timezone the viewer's phone is set to.
+const TARGET = Date.UTC(2026, 4, 30, 0, 0, 0) - (5.5 * 60 * 60 * 1000);
+const gate = document.getElementById('gate');
+const elD=document.getElementById('d'),elH=document.getElementById('h'),elM=document.getElementById('m'),elS=document.getElementById('s');
+const pad=n=>String(n).padStart(2,'0');
+let revealed=false, tick=null;
+
+function revealSite(){
+  if(revealed)return; revealed=true;
+  if(tick)clearInterval(tick);
+  burst();
+  gate.classList.add('open');
+  document.body.classList.remove('locked');
+  setTimeout(()=>{ if(gate)gate.style.display='none'; },1700);
+}
+
+function update(){
+  const diff = TARGET - Date.now();
+  if(diff<=0){ elD.textContent=elH.textContent=elM.textContent=elS.textContent='00'; revealSite(); return; }
+  const dys=Math.floor(diff/86400000);
+  const hrs=Math.floor(diff%86400000/3600000);
+  const min=Math.floor(diff%3600000/60000);
+  const sec=Math.floor(diff%60000/1000);
+  elD.textContent=pad(dys); elH.textContent=pad(hrs); elM.textContent=pad(min); elS.textContent=pad(sec);
+}
+
+if(Date.now()>=TARGET){
+  // already past the moment — open straight away, no countdown
+  revealed=true; gate.style.display='none'; document.body.classList.remove('locked');
+}else{
+  update();
+  tick=setInterval(update,1000);
+}
+
+// celebratory light burst at the moment of reveal
+function burst(){
+  if(window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  const c=document.createElement('div'); c.className='confetti'; document.body.appendChild(c);
+  const cols=['var(--gold)','var(--peacock-bright)','var(--vermilion)','var(--gold-soft)'];
+  for(let i=0;i<60;i++){
+    const p=document.createElement('div');
+    const sz=Math.random()*9+4;
+    p.style.cssText=`position:absolute;left:50%;top:46%;width:${sz}px;height:${sz}px;border-radius:50%;
+      background:${cols[i%cols.length]};opacity:.95;will-change:transform,opacity`;
+    c.appendChild(p);
+    const ang=Math.random()*Math.PI*2, dist=Math.random()*window.innerHeight*.7+80;
+    p.animate([
+      {transform:'translate(0,0) scale(1)',opacity:1},
+      {transform:`translate(${Math.cos(ang)*dist}px,${Math.sin(ang)*dist}px) scale(.2)`,opacity:0}
+    ],{duration:1400+Math.random()*700,easing:'cubic-bezier(.18,.7,.3,1)',fill:'forwards'});
+  }
+  setTimeout(()=>c.remove(),2400);
+}
+
+/* Private preview for you (Shanawaz): type the word "vel" anywhere to unlock early and check it.
+   She is extremely unlikely to type this on a countdown screen. Remove this line before gifting if you prefer. */
+let _k=''; addEventListener('keydown',e=>{_k=(_k+e.key).slice(-3).toLowerCase(); if(_k==='vel')revealSite();});
+
 // floating sparks — fewer on small screens / low-power devices
 const sky=document.getElementById('sky');
 const reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
