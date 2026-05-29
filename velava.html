@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ॐ Saravana Bhava — A Tribute to Lord Murugan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Marcellus&family=Yatra+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --oxblood:#2a0606;
+  --maroon:#4a0d0d;
+  --deep:#1a0303;
+  --saffron:#f59e0b;
+  --gold:#ffcf48;
+  --gold-soft:#ffe9a8;
+  --vermilion:#e23b2e;
+  --peacock:#0e7c7b;
+  --peacock-bright:#16b9b3;
+  --peacock-blue:#0b5e8a;
+  --peacock-green:#0f7a4a;
+  --cream:#fff4dc;
+  --ink:#180202;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at 50% -10%, #6a1212 0%, var(--maroon) 32%, var(--oxblood) 62%, var(--deep) 100%);
+  color:var(--cream);
+  font-family:'Cormorant Garamond',serif;
+  overflow-x:hidden;
+  position:relative;
+}
+/* grain + glow overlay */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,207,72,.10), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(22,185,179,.09), transparent 40%);
+}
+::selection{background:var(--gold);color:var(--ink)}
+
+/* floating particles / petals */
+.sky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.spark{position:absolute;border-radius:50%;background:radial-gradient(circle,var(--gold-soft),transparent 70%);opacity:.7;animation:rise linear infinite;will-change:transform,opacity}
+@keyframes rise{
+  0%{transform:translateY(110vh) scale(.4);opacity:0}
+  10%{opacity:.8}
+  90%{opacity:.6}
+  100%{transform:translateY(-10vh) scale(1);opacity:0}
+}
+
+/* ornamental divider */
+.divider{display:flex;align-items:center;justify-content:center;gap:18px;margin:0 auto;width:min(90%,640px);opacity:.85}
+.divider .line{height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.divider svg{width:38px;height:38px;filter:drop-shadow(0 0 8px rgba(255,207,72,.5))}
+
+section{position:relative;z-index:2;padding:90px 24px;text-align:center}
+
+/* ============ HERO ============ */
+.hero{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-top:40px}
+.rays{position:absolute;top:50%;left:50%;width:140vmax;height:140vmax;transform:translate(-50%,-55%);z-index:-1;
+  background:conic-gradient(from 0deg, rgba(255,207,72,.10) 0 6deg, transparent 6deg 18deg);
+  animation:spin 90s linear infinite;will-change:transform;-webkit-mask:radial-gradient(circle,black 0,transparent 62%);mask:radial-gradient(circle,black 0,transparent 62%)}
+@keyframes spin{to{transform:translate(-50%,-55%) rotate(360deg)}}
+
+.om{font-family:'Yatra One',cursive;font-size:clamp(80px,16vw,200px);line-height:1;
+  color:var(--gold);text-shadow:0 0 30px rgba(255,207,72,.6),0 0 60px rgba(245,158,11,.4);
+  animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1);text-shadow:0 0 30px rgba(255,207,72,.6),0 0 60px rgba(245,158,11,.4)}50%{transform:scale(1.05);text-shadow:0 0 50px rgba(255,207,72,.9),0 0 90px rgba(245,158,11,.6)}}
+
+.mantra-main{font-family:'Cinzel Decorative',serif;font-weight:900;
+  font-size:clamp(28px,6vw,68px);letter-spacing:.08em;margin-top:10px;
+  max-width:100%;overflow-wrap:break-word;word-break:break-word;padding:0 6px;
+  background:linear-gradient(180deg,var(--gold-soft),var(--saffron) 60%,var(--vermilion));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 14px rgba(245,158,11,.45))}
+.subline{font-family:'Marcellus',serif;font-size:clamp(14px,2.4vw,24px);letter-spacing:.28em;
+  text-transform:uppercase;color:var(--peacock-bright);margin-top:18px;opacity:.9;overflow-wrap:break-word}
+.scroll-hint{margin-top:54px;color:var(--gold-soft);opacity:.7;font-style:italic;font-size:19px;animation:bob 2.5s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+
+/* ============ general typography ============ */
+.eyebrow{font-family:'Marcellus',serif;letter-spacing:.32em;text-transform:uppercase;color:var(--peacock-bright);font-size:13px;margin-bottom:14px;opacity:.85;overflow-wrap:break-word}
+h2.title{font-family:'Cinzel Decorative',serif;font-weight:700;font-size:clamp(28px,5vw,54px);
+  color:var(--gold);text-shadow:0 0 24px rgba(255,207,72,.35);margin-bottom:8px;overflow-wrap:break-word;word-break:break-word}
+.tamil{font-family:'Yatra One',cursive;color:var(--gold-soft);font-size:clamp(19px,3vw,30px);margin-bottom:22px;overflow-wrap:break-word}
+.body-text{font-size:clamp(17px,2.2vw,23px);line-height:1.7;max-width:620px;margin:0 auto;color:#f6e4c2;opacity:.95;overflow-wrap:break-word}
+.body-text em{color:var(--gold);font-style:italic}
+
+/* art frame */
+.art-stage{position:relative;display:flex;justify-content:center;margin:36px auto;max-width:560px}
+.art-stage svg{width:100%;height:auto;filter:drop-shadow(0 18px 40px rgba(0,0,0,.55))}
+
+.halo{position:absolute;inset:-6% ;border-radius:50%;z-index:-1;
+  background:radial-gradient(circle,rgba(255,207,72,.22),rgba(22,185,179,.10) 45%,transparent 70%);
+  animation:pulse 6s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.08);opacity:1}}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 1s ease,transform 1s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ============ mantra banner ============ */
+.banner{background:
+   linear-gradient(180deg,rgba(74,13,13,.6),rgba(26,3,3,.85)),
+   repeating-linear-gradient(45deg,rgba(255,207,72,.04) 0 14px,transparent 14px 28px);
+   border-top:1px solid rgba(255,207,72,.25);border-bottom:1px solid rgba(255,207,72,.25)}
+.jaya{font-family:'Cinzel Decorative',serif;font-weight:700;font-size:clamp(22px,4.5vw,46px);
+  line-height:1.5;color:var(--gold-soft);text-shadow:0 0 30px rgba(245,158,11,.5);max-width:900px;margin:0 auto;overflow-wrap:break-word;word-break:break-word;padding:0 4px}
+.jaya .pop{color:var(--vermilion);font-size:1.15em;display:inline-block;animation:glowpop 3s ease-in-out infinite}
+@keyframes glowpop{0%,100%{filter:drop-shadow(0 0 6px rgba(226,59,46,.5))}50%{filter:drop-shadow(0 0 22px rgba(226,59,46,.9));transform:scale(1.04)}}
+
+/* six abodes grid */
+.abodes{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:14px;max-width:780px;margin:30px auto 0}
+.abode{padding:22px 16px;border:1px solid rgba(255,207,72,.22);border-radius:14px;
+  background:linear-gradient(160deg,rgba(255,207,72,.06),rgba(22,185,179,.04));
+  backdrop-filter:blur(2px);transition:transform .4s,box-shadow .4s,border-color .4s}
+.abode:hover{transform:translateY(-6px);border-color:var(--gold);box-shadow:0 12px 30px rgba(0,0,0,.5),0 0 24px rgba(255,207,72,.2)}
+.abode .name{font-family:'Marcellus',serif;color:var(--gold);font-size:clamp(16px,4vw,20px);letter-spacing:.02em;overflow-wrap:break-word;word-break:break-word;line-height:1.25}
+.abode .desc{font-size:15px;color:#e7d4ad;opacity:.85;margin-top:6px;overflow-wrap:break-word}
+
+/* dedication */
+.dedicate{padding:110px 24px 130px}
+.card{max-width:620px;margin:0 auto;padding:46px 34px;border-radius:20px;
+  background:linear-gradient(160deg,rgba(74,13,13,.7),rgba(26,3,3,.75));
+  border:1px solid rgba(255,207,72,.3);box-shadow:0 20px 60px rgba(0,0,0,.5),inset 0 0 60px rgba(255,207,72,.05);position:relative}
+.card::before,.card::after{content:"❈";position:absolute;color:var(--gold);font-size:24px;opacity:.7}
+.card::before{top:14px;left:18px}.card::after{bottom:14px;right:18px}
+.for-name{font-family:'Cinzel Decorative',serif;font-weight:900;font-size:clamp(34px,7vw,58px);
+  background:linear-gradient(180deg,var(--gold-soft),var(--saffron));-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0 14px;overflow-wrap:break-word}
+.note{font-size:clamp(17px,2.4vw,20px);line-height:1.7;font-style:italic;color:#f6e4c2;overflow-wrap:break-word}
+
+footer{text-align:center;padding:40px 20px 60px;color:var(--gold-soft);opacity:.6;font-family:'Marcellus',serif;letter-spacing:.2em;font-size:14px;position:relative;z-index:2}
+
+/* CSS-driven art motion (no JS, so scrolling stays smooth) */
+.fan{transform-box:fill-box;transform-origin:50% 100%;animation:fansway 7s ease-in-out infinite;will-change:transform}
+.tailwave{transform-box:fill-box;transform-origin:50% 100%;animation:tailsway 5.5s ease-in-out infinite;will-change:transform}
+@keyframes fansway{0%,100%{transform:rotate(-2.2deg)}50%{transform:rotate(2.2deg)}}
+@keyframes tailsway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+
+@media(max-width:600px){
+  section{padding:60px 16px}
+  .hero{padding-top:30px}
+  .abode{padding:16px 10px}
+  .card{padding:38px 22px}
+  .mantra-main{letter-spacing:.04em}
+  .subline{letter-spacing:.18em}
+  .eyebrow{letter-spacing:.22em}
+  .divider{gap:12px}
+}
+/* respect users who prefer less motion */
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .reveal{opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="sky" id="sky"></div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="rays"></div>
+  <div class="om">ॐ</div>
+  <h1 class="mantra-main">OM SARAVANA BHAVA</h1>
+  <div class="subline">Vetri Vel · Veera Vel</div>
+  <div class="scroll-hint">— scroll, and let His grace unfold —</div>
+</section>
+
+<div class="divider"><span class="line"></span>
+  <svg viewBox="0 0 40 40"><path d="M20 2 L20 38 M20 2 L13 10 M20 2 L27 10 M11 16 Q20 22 29 16" stroke="var(--gold)" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
+  <span class="line"></span></div>
+
+<!-- ============ THE VEL ============ -->
+<section class="reveal">
+  <div class="eyebrow">The Divine Spear</div>
+  <h2 class="title">The Vel</h2>
+  <div class="tamil">வேல்முருகா · வேல்வேல்</div>
+  <div class="art-stage">
+    <div class="halo"></div>
+    <!-- VEL SVG -->
+    <svg viewBox="0 0 300 460" xmlns="http://www.w3.org/2000/svg" aria-label="Lord Murugan's Vel spear">
+      <defs>
+        <linearGradient id="goldV" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fff4d0"/><stop offset=".5" stop-color="#ffcf48"/><stop offset="1" stop-color="#c8860a"/>
+        </linearGradient>
+        <radialGradient id="glowV" cx="50%" cy="22%" r="55%">
+          <stop offset="0" stop-color="rgba(255,237,170,.95)"/><stop offset="1" stop-color="rgba(255,207,72,0)"/>
+        </radialGradient>
+      </defs>
+      <circle cx="150" cy="100" r="120" fill="url(#glowV)"/>
+      <!-- blade -->
+      <path d="M150 18 C188 70 196 120 150 200 C104 120 112 70 150 18 Z" fill="url(#goldV)" stroke="#8a5a05" stroke-width="2"/>
+      <path d="M150 40 C170 80 174 120 150 178 C126 120 130 80 150 40 Z" fill="rgba(255,255,255,.35)"/>
+      <line x1="150" y1="60" x2="150" y2="180" stroke="#8a5a05" stroke-width="1.6"/>
+      <!-- collar -->
+      <ellipse cx="150" cy="205" rx="34" ry="12" fill="url(#goldV)" stroke="#8a5a05" stroke-width="2"/>
+      <ellipse cx="150" cy="200" rx="26" ry="9" fill="#ffe9a8"/>
+      <!-- shaft -->
+      <rect x="143" y="212" width="14" height="226" rx="7" fill="url(#goldV)" stroke="#8a5a05" stroke-width="1.8"/>
+      <rect x="147" y="216" width="3" height="218" fill="rgba(255,255,255,.4)"/>
+      <!-- shaft bindings -->
+      <g fill="#e23b2e">
+        <rect x="139" y="250" width="22" height="7" rx="3"/>
+        <rect x="139" y="300" width="22" height="7" rx="3"/>
+        <rect x="139" y="350" width="22" height="7" rx="3"/>
+      </g>
+      <!-- base -->
+      <circle cx="150" cy="442" r="11" fill="url(#goldV)" stroke="#8a5a05" stroke-width="2"/>
+    </svg>
+  </div>
+  <p class="body-text">The <em>Vel</em> is wisdom that pierces ignorance — gifted by His mother Parvati. Sharp, broad and deep, it is the weapon that fells every demon of doubt and fear. Where the Vel goes, victory follows: <em>Vetri Vel, Veera Vel.</em></p>
+</section>
+
+<div class="divider"><span class="line"></span>
+  <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="6" fill="none" stroke="var(--gold)" stroke-width="2.4"/><path d="M20 4v8M20 28v8M4 20h8M28 20h8" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round"/></svg>
+  <span class="line"></span></div>
+
+<!-- ============ THE PEACOCK ============ -->
+<section class="reveal">
+  <div class="eyebrow">His Beloved Mount</div>
+  <h2 class="title">Mayil — The Peacock</h2>
+  <div class="tamil">மயில் வாகனன்</div>
+  <div class="art-stage" style="max-width:600px">
+    <div class="halo"></div>
+    <!-- PEACOCK SVG -->
+    <svg viewBox="0 0 600 520" xmlns="http://www.w3.org/2000/svg" aria-label="The peacock, vahana of Lord Murugan">
+      <defs>
+        <radialGradient id="feye" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#1a1a4e"/><stop offset=".4" stop-color="#0b5e8a"/>
+          <stop offset=".7" stop-color="#16b9b3"/><stop offset="1" stop-color="#0f7a4a"/>
+        </radialGradient>
+        <linearGradient id="plume" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#16b9b3"/><stop offset="1" stop-color="#0e7c7b"/>
+        </linearGradient>
+        <linearGradient id="pbody" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#16b9b3"/><stop offset=".6" stop-color="#0b5e8a"/><stop offset="1" stop-color="#0a2a5e"/>
+        </linearGradient>
+      </defs>
+      <!-- fanned tail -->
+      <g class="fan">
+        <g id="feather">
+          <path d="M300 360 Q300 200 300 150" stroke="url(#plume)" stroke-width="3" fill="none"/>
+          <ellipse cx="300" cy="150" rx="20" ry="30" fill="url(#feye)"/>
+          <ellipse cx="300" cy="150" rx="11" ry="17" fill="#0a1a3a"/>
+          <ellipse cx="300" cy="150" rx="5" ry="8" fill="#ffcf48"/>
+          <g stroke="#0f7a4a" stroke-width="1.4" opacity=".7">
+            <path d="M300 168 q-14 6 -22 18" fill="none"/><path d="M300 168 q14 6 22 18" fill="none"/>
+            <path d="M300 178 q-18 4 -28 14" fill="none"/><path d="M300 178 q18 4 28 14" fill="none"/>
+          </g>
+        </g>
+        <use href="#feather" transform="rotate(-12 300 360)"/>
+        <use href="#feather" transform="rotate(12 300 360)"/>
+        <use href="#feather" transform="rotate(-24 300 360)"/>
+        <use href="#feather" transform="rotate(24 300 360)"/>
+        <use href="#feather" transform="rotate(-36 300 360)"/>
+        <use href="#feather" transform="rotate(36 300 360)"/>
+        <use href="#feather" transform="rotate(-48 300 360)"/>
+        <use href="#feather" transform="rotate(48 300 360)"/>
+        <use href="#feather" transform="rotate(-60 300 360)"/>
+        <use href="#feather" transform="rotate(60 300 360)"/>
+        <use href="#feather" transform="rotate(-72 300 360)"/>
+        <use href="#feather" transform="rotate(72 300 360)"/>
+      </g>
+      <!-- body -->
+      <ellipse cx="300" cy="372" rx="46" ry="58" fill="url(#pbody)"/>
+      <!-- neck -->
+      <path d="M300 326 C296 280 300 250 320 232 C336 218 350 222 352 236 C354 252 338 262 330 278 C322 296 318 314 314 332 Z" fill="url(#pbody)"/>
+      <!-- head -->
+      <circle cx="350" cy="232" r="20" fill="#0b5e8a"/>
+      <!-- crest -->
+      <g stroke="#0e7c7b" stroke-width="2" fill="none">
+        <path d="M350 213 l-2 -16"/><path d="M356 215 l4 -14"/><path d="M344 215 l-6 -13"/>
+      </g>
+      <circle cx="348" cy="197" r="3" fill="#16b9b3"/><circle cx="362" cy="201" r="3" fill="#16b9b3"/><circle cx="332" cy="202" r="3" fill="#16b9b3"/>
+      <!-- beak -->
+      <path d="M369 230 l20 4 -20 8 Z" fill="#ffcf48"/>
+      <!-- eye -->
+      <circle cx="356" cy="228" r="4.5" fill="#fff4dc"/><circle cx="357" cy="228" r="2.4" fill="#180202"/>
+      <!-- legs -->
+      <g stroke="#c8860a" stroke-width="4" stroke-linecap="round">
+        <path d="M288 428 l-6 36"/><path d="M312 428 l6 36"/>
+        <path d="M282 464 l-8 4M282 464 l8 5M282 464 l0 8"/>
+        <path d="M318 464 l-8 5M318 464 l8 4M318 464 l0 8"/>
+      </g>
+    </svg>
+  </div>
+  <p class="body-text">Murugan rides the radiant <em>Mayil</em>, the peacock who once was the demon Surapadman — humbled, transformed, and made glorious. Its hundred eyes watch over the world, and its dance is pure joy. The peacock teaches us that even our pride, surrendered, can become beauty.</p>
+</section>
+
+<div class="divider"><span class="line"></span>
+  <svg viewBox="0 0 40 40"><path d="M8 20 Q20 6 32 20 Q20 34 8 20Z" fill="none" stroke="var(--gold)" stroke-width="2.4"/><circle cx="20" cy="20" r="3" fill="var(--gold)"/></svg>
+  <span class="line"></span></div>
+
+<!-- ============ THE ROOSTER ============ -->
+<section class="reveal">
+  <div class="eyebrow">Emblem of His Banner</div>
+  <h2 class="title">Seval — The Rooster</h2>
+  <div class="tamil">சேவல் கொடியோன்</div>
+  <div class="art-stage" style="max-width:440px">
+    <div class="halo"></div>
+    <!-- ROOSTER SVG -->
+    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-label="The rooster of Lord Murugan's banner">
+      <defs>
+        <linearGradient id="rbody" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#e23b2e"/><stop offset=".6" stop-color="#b21e1e"/><stop offset="1" stop-color="#6e0d0d"/>
+        </linearGradient>
+        <linearGradient id="rtail" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#16b9b3"/><stop offset=".5" stop-color="#0b5e8a"/><stop offset="1" stop-color="#ffcf48"/>
+        </linearGradient>
+      </defs>
+      <!-- tail plumes -->
+      <g class="tailwave" fill="none" stroke-width="14" stroke-linecap="round">
+        <path d="M150 250 C90 220 70 150 110 90" stroke="url(#rtail)"/>
+        <path d="M155 255 C100 240 70 180 130 110" stroke="#16b9b3"/>
+        <path d="M160 258 C120 250 100 200 160 130" stroke="#ffcf48"/>
+      </g>
+      <!-- body -->
+      <path d="M150 260 C140 200 180 168 230 178 C284 188 296 240 270 286 C246 326 186 330 160 300 C150 288 150 274 150 260 Z" fill="url(#rbody)"/>
+      <!-- wing -->
+      <path d="M210 218 C246 210 268 232 262 268 C236 262 214 250 200 230 Z" fill="#8a1212"/>
+      <path d="M214 226 C240 222 254 238 252 260" stroke="#ffcf48" stroke-width="2" fill="none"/>
+      <!-- neck + head -->
+      <path d="M236 182 C238 150 250 128 270 122 C286 117 296 128 294 142 C292 162 276 168 270 186 Z" fill="url(#rbody)"/>
+      <circle cx="280" cy="120" r="22" fill="#e23b2e"/>
+      <!-- comb -->
+      <g fill="#b21e1e">
+        <circle cx="270" cy="98" r="9"/><circle cx="284" cy="92" r="10"/><circle cx="298" cy="98" r="8"/>
+      </g>
+      <!-- beak -->
+      <path d="M300 116 l24 -2 -22 12 Z" fill="#ffcf48"/>
+      <!-- wattle -->
+      <ellipse cx="294" cy="138" rx="6" ry="11" fill="#b21e1e"/>
+      <!-- eye -->
+      <circle cx="284" cy="114" r="5" fill="#fff4dc"/><circle cx="285" cy="114" r="2.6" fill="#180202"/>
+      <!-- legs -->
+      <g stroke="#ffcf48" stroke-width="6" stroke-linecap="round">
+        <path d="M210 322 l-4 44"/><path d="M242 322 l6 44"/>
+        <path d="M206 366 l-12 6M206 366 l12 6M206 366 l0 10"/>
+        <path d="M248 366 l-12 6M248 366 l12 6M248 366 l0 10"/>
+      </g>
+    </svg>
+  </div>
+  <p class="body-text">Upon His banner crows the <em>Seval</em> — the rooster who heralds the dawn and frightens away the darkness. It is the cry of awakening: rise, the night is over, the light of the Lord has come.</p>
+</section>
+
+<!-- ============ MANTRA BANNER ============ -->
+<section class="banner reveal">
+  <div class="eyebrow">The Sacred Praise</div>
+  <p class="jaya">SAGALA KARIYA JAYAPRADHE<br><span class="pop">JAYA JAYA</span> &nbsp;·&nbsp; MURUGAA</p>
+  <p class="body-text" style="margin-top:26px">Giver of victory in all undertakings — may every task She begins be crowned with success. <em>Hara Hara Subramanya.</em></p>
+</section>
+
+<div class="divider"><span class="line"></span>
+  <svg viewBox="0 0 40 40"><path d="M20 4 L24 16 L36 16 L26 24 L30 36 L20 28 L10 36 L14 24 L4 16 L16 16 Z" fill="none" stroke="var(--gold)" stroke-width="2"/></svg>
+  <span class="line"></span></div>
+
+<!-- ============ SIX ABODES ============ -->
+<section class="reveal">
+  <div class="eyebrow">Arupadai Veedu</div>
+  <h2 class="title">His Six Sacred Abodes</h2>
+  <div class="tamil">அறுபடை வீடு</div>
+  <p class="body-text">Lord Murugan, the six-faced <em>Arumugam</em>, dwells across six hallowed hills of Tamil Nadu.</p>
+  <div class="abodes">
+    <div class="abode"><div class="name">Thiruparankundram</div><div class="desc">Where He wed Deivanai</div></div>
+    <div class="abode"><div class="name">Thiruchendur</div><div class="desc">By the roaring sea shore</div></div>
+    <div class="abode"><div class="name">Palani</div><div class="desc">The hermit on the hill</div></div>
+    <div class="abode"><div class="name">Swamimalai</div><div class="desc">Who taught Om to Shiva</div></div>
+    <div class="abode"><div class="name">Thiruthani</div><div class="desc">Where peace descended</div></div>
+    <div class="abode"><div class="name">Pazhamudircholai</div><div class="desc">Amid the forest groves</div></div>
+  </div>
+</section>
+
+<div class="divider"><span class="line"></span>
+  <svg viewBox="0 0 40 40"><path d="M20 2 L20 38 M20 2 L13 10 M20 2 L27 10 M11 16 Q20 22 29 16" stroke="var(--gold)" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
+  <span class="line"></span></div>
+
+<!-- ============ DEDICATION ============ -->
+<section class="dedicate reveal">
+  <div class="card">
+    <div class="eyebrow">With love, on this special day</div>
+    <div class="for-name">For Ragave</div>
+    <p class="note">May Lord Murugan's Vel clear every path before you, may His peacock's grace fill your days with colour, and may His banner of dawn always find you in the light. <br><br>Vel! Vel! Vetri Vel! ✨</p>
+  </div>
+</section>
+
+<footer>ॐ &nbsp; OM SARAVANA BHAVA &nbsp; ॐ</footer>
+
+<script>
+// floating sparks — fewer on small screens / low-power devices
+const sky=document.getElementById('sky');
+const reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+const count=reduce?0:(window.innerWidth<600?18:38);
+for(let i=0;i<count;i++){
+  const s=document.createElement('div');
+  s.className='spark';
+  const sz=Math.random()*7+3;
+  s.style.width=sz+'px';s.style.height=sz+'px';
+  s.style.left=Math.random()*100+'vw';
+  s.style.animationDuration=(Math.random()*16+14)+'s';
+  s.style.animationDelay=(-Math.random()*24)+'s';
+  if(Math.random()>.6){s.style.background='radial-gradient(circle,var(--peacock-bright),transparent 70%)';}
+  sky.appendChild(s);
+}
+// reveal on scroll (one-time, then disconnect)
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+},{threshold:.15,rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+// peacock fan + rooster tail now sway via pure CSS — no per-frame JS, so scrolling stays smooth
+</script>
+</body>
+</html>
