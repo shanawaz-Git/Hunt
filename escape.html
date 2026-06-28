@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Where the Lady Bug Lands</title>
+<meta name="description" content="A small private archive of moments, letters, and gifts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@300;400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep: #19121f;
+    --bg-deep-2: #150f1a;
+    --bg-card: #241a30;
+    --bg-card-soft: #2b2038;
+    --bg-card-softer: #312539;
+    --thread: #4a3b5c;
+    --thread-soft: #3a2f48;
+    --gold: #e8a33d;
+    --gold-soft: #f0c478;
+    --gold-dim: #a87a3a;
+    --berry: #d6566b;
+    --berry-soft: #e98a99;
+    --ladybug: #c23b3b;
+    --ink: #f3e9da;
+    --ink-muted: #c3b3d6;
+    --ink-faint: #8d7da3;
+    --line: rgba(232,163,61,0.18);
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Work Sans', -apple-system, sans-serif;
+    --hand: 'Caveat', cursive;
+    --container: 760px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin: 0;
+    background: var(--bg-deep);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img{ max-width: 100%; display: block; }
+  ::selection{ background: var(--gold); color: var(--bg-deep); }
+
+  a{ color: var(--gold-soft); text-decoration: none; }
+
+  .wrap{
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  .eyebrow{
+    font-family: var(--hand);
+    font-size: 1.35rem;
+    color: var(--gold-soft);
+    letter-spacing: 0.02em;
+    margin: 0 0 6px;
+  }
+
+  h1, h2, h3{
+    font-family: var(--serif);
+    font-weight: 500;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .section-title{
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .section-lede{
+    color: var(--ink-muted);
+    font-size: 1rem;
+    max-width: 520px;
+    margin: 0 0 44px;
+  }
+
+  section{
+    position: relative;
+    padding: 110px 0 70px;
+  }
+
+  /* ---------- ambient background glows ---------- */
+  body::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 600px 500px at 15% 8%, rgba(232,163,61,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 600px at 85% 35%, rgba(214,86,107,0.08), transparent 60%),
+      radial-gradient(ellipse 600px 700px at 20% 75%, rgba(232,163,61,0.07), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  main{ position: relative; z-index: 1; }
+
+  /* ---------- divider ---------- */
+  .divider{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 220px;
+    opacity: 0.7;
+  }
+  .divider .line{
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  }
+  .divider svg{ width: 22px; height: 22px; flex-shrink: 0; }
+
+  /* ---------- reveal animation ---------- */
+  .reveal{
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.is-visible{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal{ opacity: 1; transform: none; }
+  }
+
+  /* ====================== HERO ====================== */
+  .hero{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 70px;
+    padding-bottom: 40px;
+  }
+  .hero .ladybug-fly{
+    width: 56px;
+    height: 56px;
+    margin-bottom: 22px;
+    animation: float 4.5s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%, 100%{ transform: translateY(0) rotate(-3deg); }
+    50%{ transform: translateY(-10px) rotate(3deg); }
+  }
+  .hero h1{
+    font-size: clamp(2.3rem, 7vw, 4rem);
+    line-height: 1.08;
+    max-width: 720px;
+    background: linear-gradient(180deg, var(--ink), var(--gold-soft) 130%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .lede{
+    margin: 24px auto 0;
+    max-width: 480px;
+    color: var(--ink-muted);
+    font-size: 1.05rem;
+  }
+  .hero .scroll-cue{
+    margin-top: 56px;
+    font-family: var(--hand);
+    font-size: 1.2rem;
+    color: var(--ink-faint);
+    animation: bob 2.4s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%, 100%{ transform: translateY(0); opacity: 0.6; }
+    50%{ transform: translateY(6px); opacity: 1; }
+  }
+
+  /* ====================== STORY / TIMELINE ====================== */
+  .story-list{
+    position: relative;
+    margin-top: 10px;
+    padding-left: 28px;
+    border-left: 2px solid var(--thread-soft);
+  }
+  .story-item{
+    position: relative;
+    padding: 0 0 50px 26px;
+  }
+  .story-item:last-child{ padding-bottom: 0; }
+  .story-item::before{
+    content: "";
+    position: absolute;
+    left: -35px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 4px var(--bg-deep), 0 0 14px 2px rgba(232,163,61,0.5);
+  }
+  .story-item .date{
+    font-family: var(--hand);
+    color: var(--gold-soft);
+    font-size: 1.3rem;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .story-item h3{
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+  .story-item p{
+    color: var(--ink-muted);
+    margin: 0;
+    max-width: 460px;
+    font-size: 0.98rem;
+  }
+
+  /* ====================== LETTERS ====================== */
+  .letters-grid{
+    display: grid;
+    gap: 18px;
+  }
+  details.letter{
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px 26px;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  details.letter[open]{
+    background: var(--bg-card-soft);
+    border-color: rgba(232,163,61,0.35);
+  }
+  details.letter summary{
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: var(--ink);
+  }
+  details.letter summary::-webkit-details-marker{ display: none; }
+  details.letter summary .meta{ flex: 1; }
+  details.letter summary .meta .tag{
+    display: block;
+    font-family: var(--hand);
+    font-size: 1.05rem;
+    color: var(--ink-faint);
+    margin-bottom: 2px;
+  }
+  details.letter summary .chev{
+    flex-shrink: 0;
+    width: 20px; height: 20px;
+    color: var(--gold-soft);
+    transition: transform 0.3s ease;
+  }
+  details.letter[open] summary .chev{ transform: rotate(180deg); }
+  .letter-body{
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-muted);
+    font-size: 1rem;
+    line-height: 1.85;
+  }
+  .letter-body p{ margin: 0 0 14px; }
+  .letter-body p:last-child{ margin-bottom: 0; }
+  .letter-body .sign{
+    font-family: var(--hand);
+    color: var(--gold-soft);
+    font-size: 1.25rem;
+    margin-top: 16px;
+  }
+
+  /* ====================== GUNDU ====================== */
+  .gundu-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 16px;
+  }
+  .gundu-card{
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 26px 20px;
+    text-align: center;
+  }
+  .gundu-card .letter-badge{
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold-dim);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    color: var(--gold-soft);
+  }
+  .gundu-card h3{
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+  .gundu-card p{
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    margin: 0;
+  }
+
+  /* ====================== REMEMBER LIST ====================== */
+  .remember-note{
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 34px;
+  }
+  .remember-list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 12px 24px;
+  }
+  .remember-list li{
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.96rem;
+    color: var(--ink-muted);
+  }
+  .remember-list li svg{
+    flex-shrink: 0;
+    width: 16px; height: 16px;
+    margin-top: 4px;
+    color: var(--gold);
+  }
+  .remember-list li strong{ color: var(--ink); font-weight: 500; }
+
+  /* ====================== GIFTS ====================== */
+  .gift-block{ margin-bottom: 44px; }
+  .gift-block:last-child{ margin-bottom: 0; }
+  .gift-block h3{
+    font-size: 1.15rem;
+    margin-bottom: 16px;
+    color: var(--gold-soft);
+    font-family: var(--hand);
+    font-weight: 600;
+  }
+  .chips{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .chip{
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    color: var(--ink-muted);
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 0.88rem;
+  }
+  .chip.given{ color: var(--ink); }
+  .chip.wishlist{ border-style: dashed; }
+
+  .surprise-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+  }
+  .surprise-card{
+    border: 1.5px dashed var(--thread);
+    border-radius: 16px;
+    padding: 30px 18px;
+    text-align: center;
+    color: var(--ink-faint);
+  }
+  .surprise-card svg{ width: 26px; height: 26px; margin-bottom: 10px; color: var(--berry-soft); }
+  .surprise-card p{ margin: 0; font-size: 0.88rem; }
+
+  /* ====================== GALLERY ====================== */
+  .gallery-note{
+    color: var(--ink-faint);
+    font-family: var(--hand);
+    font-size: 1.1rem;
+    margin: -28px 0 30px;
+  }
+  .gallery-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .gallery-item{
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--bg-card);
+  }
+  .gallery-item img{
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .gallery-item:hover img{ transform: scale(1.06); }
+  .gallery-item figcaption{
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 8px 10px 7px;
+    font-size: 0.74rem;
+    color: var(--ink);
+    background: linear-gradient(180deg, transparent, rgba(20,14,26,0.85));
+    margin: 0;
+  }
+  .gallery-empty{
+    aspect-ratio: 1;
+    border-radius: 14px;
+    border: 1.5px dashed var(--thread);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--ink-faint);
+    text-align: center;
+    padding: 10px;
+  }
+  .gallery-empty svg{ width: 22px; height: 22px; }
+  .gallery-empty span{ font-size: 0.74rem; line-height: 1.3; }
+
+  .lightbox{
+    position: fixed;
+    inset: 0;
+    background: rgba(15,10,20,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 30px;
+  }
+  .lightbox[hidden]{ display: none; }
+  .lightbox figure{
+    margin: 0;
+    max-width: 90vw;
+    max-height: 86vh;
+    text-align: center;
+  }
+  .lightbox img{
+    max-width: 90vw;
+    max-height: 78vh;
+    border-radius: 10px;
+    object-fit: contain;
+  }
+  .lightbox figcaption{
+    color: var(--ink-muted);
+    font-family: var(--hand);
+    font-size: 1.15rem;
+    margin-top: 14px;
+  }
+  .lightbox .close-btn{
+    position: absolute;
+    top: 22px; right: 26px;
+    background: none;
+    border: none;
+    color: var(--ink);
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  .lightbox .close-btn:hover{ opacity: 1; }
+
+  /* ====================== CLOSING ====================== */
+  .closing{
+    text-align: center;
+    padding-bottom: 90px;
+  }
+  .closing .ladybug-fly{
+    width: 40px; height: 40px;
+    margin: 0 auto 20px;
+    animation: float 4.5s ease-in-out infinite;
+  }
+  .closing h2{
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    max-width: 460px;
+    margin: 0 auto 16px;
+  }
+  .closing p{
+    color: var(--ink-muted);
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  .closing .sign{
+    display: block;
+    margin-top: 26px;
+    font-family: var(--hand);
+    font-size: 1.4rem;
+    color: var(--gold-soft);
+  }
+
+  /* ====================== SIDE THREAD NAV (desktop only) ====================== */
+  .thread-nav{
+    position: fixed;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+  }
+  .thread-nav .rail{
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: var(--thread-soft);
+    transform: translateX(-50%);
+    z-index: -1;
+  }
+  .thread-nav button{
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink-faint);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  }
+  .thread-nav button.active{
+    background: var(--gold);
+    border-color: var(--gold);
+    transform: scale(1.3);
+  }
+  .thread-nav .marker{
+    position: absolute;
+    left: 50%;
+    width: 22px; height: 22px;
+    transform: translate(-50%, 0);
+    transition: top 0.45s cubic-bezier(.4,0,.2,1);
+    top: 0;
+    pointer-events: none;
+  }
+
+  @media (min-width: 980px){
+    .thread-nav{ display: flex; }
+  }
+
+  /* ====================== RESPONSIVE TWEAKS ====================== */
+  @media (max-width: 560px){
+    section{ padding: 80px 0 50px; }
+    .wrap{ padding: 0 20px; }
+    .gallery-grid{ grid-template-columns: repeat(2, 1fr); }
+    .story-list{ padding-left: 20px; }
+    .story-item{ padding-left: 20px; padding-bottom: 40px; }
+    .story-item::before{ left: -27px; }
+  }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible, summary:focus-visible{
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- decorative side thread nav, desktop only -->
+<nav class="thread-nav" aria-hidden="true">
+  <div class="rail"></div>
+  <div class="marker" id="threadMarker">
+    <svg viewBox="0 0 40 40"><circle cx="20" cy="11" r="5" fill="#1a1423"/><path d="M6 22a14 13 0 1 1 28 0a14 15 0 1 1-28 0Z" fill="#c23b3b"/><line x1="20" y1="9" x2="20" y2="35" stroke="#1a1423" stroke-width="2"/><circle cx="13" cy="18" r="2.2" fill="#1a1423"/><circle cx="27" cy="18" r="2.2" fill="#1a1423"/><circle cx="14" cy="28" r="2" fill="#1a1423"/><circle cx="26" cy="29" r="2.4" fill="#1a1423"/></svg>
+  </div>
+  <button data-target="hero" aria-label="Go to opening"></button>
+  <button data-target="story" aria-label="Go to story"></button>
+  <button data-target="letters" aria-label="Go to letters"></button>
+  <button data-target="gundu" aria-label="Go to gundu"></button>
+  <button data-target="remember" aria-label="Go to remember"></button>
+  <button data-target="gifts" aria-label="Go to gifts"></button>
+  <button data-target="gallery" aria-label="Go to gallery"></button>
+  <button data-target="closing" aria-label="Go to closing"></button>
+</nav>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section id="hero" class="hero">
+    <svg class="ladybug-fly" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="11" r="5" fill="#1a1423"/>
+      <path d="M6 22a14 13 0 1 1 28 0a14 15 0 1 1-28 0Z" fill="#c23b3b"/>
+      <line x1="20" y1="9" x2="20" y2="35" stroke="#1a1423" stroke-width="2"/>
+      <circle cx="13" cy="18" r="2.2" fill="#1a1423"/>
+      <circle cx="27" cy="18" r="2.2" fill="#1a1423"/>
+      <circle cx="14" cy="28" r="2" fill="#1a1423"/>
+      <circle cx="26" cy="29" r="2.4" fill="#1a1423"/>
+    </svg>
+    <p class="eyebrow">a small, private archive</p>
+    <h1>Where the Lady Bug Lands</h1>
+    <p class="lede">Some places you visit when you're happy. Some you visit when you're not. This one's built to hold both — the dates, the letters, the little gifts, the faces. Whichever kind of day this is, you can land here for a while.</p>
+    <p class="scroll-cue">scroll gently ↓</p>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="11" r="5" fill="#e8a33d" opacity="0.6"/><path d="M6 22a14 13 0 1 1 28 0a14 15 0 1 1-28 0Z" fill="none" stroke="#e8a33d" stroke-width="1.5" opacity="0.6"/></svg>
+    <span class="line"></span></div>
+
+  <!-- ============ STORY ============ -->
+  <section id="story">
+    <div class="wrap">
+      <p class="eyebrow">our story so far</p>
+      <h2 class="section-title reveal">A few dates worth keeping</h2>
+      <p class="section-lede reveal">Not every important day is loud. Some of these are quiet ones that mattered more than they looked like they would.</p>
+
+      <div class="story-list">
+        <div class="story-item reveal">
+          <span class="date">March 26</span>
+          <h3>First Meet</h3>
+          <p>The first time our paths crossed. Neither of us knew yet what it would turn into.</p>
+        </div>
+        <div class="story-item reveal">
+          <span class="date">April 4</span>
+          <h3>First Real Talk</h3>
+          <p>The first time we actually talked — just us, no performance, no distance.</p>
+        </div>
+        <div class="story-item reveal">
+          <span class="date">May 23</span>
+          <h3>The Magical Word</h3>
+          <p>Some words change everything. This one did.</p>
+        </div>
+        <div class="story-item reveal">
+          <span class="date">May 26</span>
+          <h3>Cake Bee</h3>
+          <p>Our first date — cake, conversation, and the start of something neither of us could quite name yet.</p>
+        </div>
+        <div class="story-item reveal">
+          <span class="date">June 4</span>
+          <h3>Indulgence</h3>
+          <p>A day we let ourselves have exactly what we wanted — each other's company, nothing else.</p>
+        </div>
+        <div class="story-item reveal">
+          <span class="date">June 6</span>
+          <h3>Her Dad's Birthday</h3>
+          <p>Family days matter, even the ones I'm not technically part of.</p>
+        </div>
+        <div class="story-item reveal">
+          <span class="date">January 8</span>
+          <h3>Ragave's Birthday</h3>
+          <p>Out of every day on this list, this is the one I'd protect first.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="11" r="5" fill="#e8a33d" opacity="0.6"/><path d="M6 22a14 13 0 1 1 28 0a14 15 0 1 1-28 0Z" fill="none" stroke="#e8a33d" stroke-width="1.5" opacity="0.6"/></svg>
+    <span class="line"></span></div>
+
+  <!-- ============ LETTERS ============ -->
+  <section id="letters">
+    <div class="wrap">
+      <p class="eyebrow">letters between us</p>
+      <h2 class="section-title reveal">Things we've written to each other</h2>
+      <p class="section-lede reveal">Tap one open. They're meant to be read slowly.</p>
+
+      <div class="letters-grid">
+
+        <details class="letter reveal">
+          <summary>
+            <div class="meta">
+              <span class="tag">a new year wish</span>
+              My G.U.N.D.U
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="letter-body">
+            <p>Hello Rag-V — my G.U.N.D.U: Gorgeous, Unique, Nice-hearted, Delightful, Unstoppable. At this exact moment, when the clock and the calendar lined up to 11:11, 1/1, I want to wish for both of us to be happy, smiling, laughing — together through all of it, the good and the bad.</p>
+            <p>Even on the days we hurt each other, I want us to keep choosing to fix it. My wish for this year is to hold your hand, take care of you, make you feel at home, make you laugh like no one else can, and be your shoulder whenever you need one.</p>
+            <p>I don't know what's planned for us, but I hope it's you.</p>
+            <p class="sign">I love you, buboooo</p>
+          </div>
+        </details>
+
+        <details class="letter reveal">
+          <summary>
+            <div class="meta">
+              <span class="tag">happy birthday</span>
+              For Rag-V, on her day
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="letter-body">
+            <p>I hope today reminds you of how special you truly are. You bring so much warmth, joy, and meaning into my life without even trying. Being around you feels easy, real, and comforting — like a place I want to stay.</p>
+            <p>I love your smile, your strength, and the way you make ordinary moments feel important. All I want today is for you to feel loved, valued, and genuinely happy.</p>
+            <p>No matter where life takes us, a part of my heart will always smile because of you.</p>
+            <p class="sign">Happy birthday, Rag-V 💗</p>
+          </div>
+        </details>
+
+        <details class="letter reveal">
+          <summary>
+            <div class="meta">
+              <span class="tag">what you told me</span>
+              "You are one big loosu"
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="letter-body">
+            <p>Hi, Shanu. You are one big loosu. Please don't be mad at me, I just wanted to tell you what you mean to me.</p>
+            <p>You're the first person who loved talking to me. The first person who valued me the way I'd always hoped to be valued. The first person who came out with me, who went to a café with me, who brought me flowers, who brought me gifts.</p>
+            <p>The first person who tolerated me and stayed. Who accepted me exactly as I am, and thought well of me anyway. The first person who showed me what real care feels like — the first I hugged, and the first to hug me back.</p>
+            <p>You never let me feel alone. There are still so many things left to say.</p>
+          </div>
+        </details>
+
+        <details class="letter reveal">
+          <summary>
+            <div class="meta">
+              <span class="tag">what i told you</span>
+              "We chose friendship"
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="letter-body">
+            <p>Hey Rag-V, I don't know how to start this, so I'll just say it the way I feel it.</p>
+            <p>Something shifted in my life that I didn't see coming. You happened. And nothing's been the same since — not the way I laugh, not the way I see myself, not the way I believe in people.</p>
+            <p>I know I haven't always been easy. There were moments I made things harder than they needed to be. I see that clearly now, and I carry it. But through all of it, you stayed.</p>
+            <p>We chose friendship, and I want you to know — I'm choosing it fully. Not as a consolation, not as a way to stay close just in case, but because losing you completely is something I refuse to let happen.</p>
+            <p>You changed me, Ragave. You gave me the ability to laugh from my stomach, to feel things I thought I couldn't feel, to believe I'm worth something to someone. So here I am — your loosu friend — telling you that you mean the entire world to me.</p>
+            <p class="sign">I love you, bubooo. Always will. In every version of us.</p>
+          </div>
+        </details>
+
+        <details class="letter reveal">
+          <summary>
+            <div class="meta">
+              <span class="tag">2:16 in the morning</span>
+              A dream I had
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="letter-body">
+            <p>I just woke up from the most beautiful dream. We were a family, living a happy, healthy life, full of laughter. I could hear a child's laughter through the whole dream.</p>
+            <p>I don't think anything else could make me feel that way except you. If there's ever a chance, and if it's meant to be, I want you to be my partner for the rest of my life.</p>
+            <p>I know there might be complications — with us, with our families — and I know that scares you. But deep down, I've already registered you as my soulmate, and nothing changes that from my end.</p>
+            <p>I'm so blessed to have you, and I ask every god I know to let me keep you, for good.</p>
+          </div>
+        </details>
+
+        <details class="letter reveal">
+          <summary>
+            <div class="meta">
+              <span class="tag">just gratitude</span>
+              Thank you for being my home
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </summary>
+          <div class="letter-body">
+            <p>Thank you for being my home. Thank you for being my best. Thank you for being my reason to smile. Thank you for being my reason to work.</p>
+            <p>Thank you for choosing me. Thank you for being with me.</p>
+            <p>No words can really describe what you're worth to me.</p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="11" r="5" fill="#e8a33d" opacity="0.6"/><path d="M6 22a14 13 0 1 1 28 0a14 15 0 1 1-28 0Z" fill="none" stroke="#e8a33d" stroke-width="1.5" opacity="0.6"/></svg>
+    <span class="line"></span></div>
+
+  <!-- ============ GUNDU ============ -->
+  <section id="gundu">
+    <div class="wrap">
+      <p class="eyebrow">five letters, one person</p>
+      <h2 class="section-title reveal">My G.U.N.D.U</h2>
+      <p class="section-lede reveal">Gorgeous, Unique, Nice-hearted, Delightful, Unstoppable. No matter what shape we take, this part never changes.</p>
+
+      <div class="gundu-grid">
+        <div class="gundu-card reveal">
+          <div class="letter-badge">G</div>
+          <h3>Gorgeous</h3>
+          <p>Not just how you look — how you carry yourself.</p>
+        </div>
+        <div class="gundu-card reveal">
+          <div class="letter-badge">U</div>
+          <h3>Unique</h3>
+          <p>There's no one else quite like you, and I've looked.</p>
+        </div>
+        <div class="gundu-card reveal">
+          <div class="letter-badge">N</div>
+          <h3>Nice-hearted</h3>
+          <p>The kindest heart I've ever come across.</p>
+        </div>
+        <div class="gundu-card reveal">
+          <div class="letter-badge">D</div>
+          <h3>Delightful</h3>
+          <p>You make ordinary days worth remembering.</p>
+        </div>
+        <div class="gundu-card reveal">
+          <div class="letter-badge">U</div>
+          <h3>Unstoppable</h3>
+          <p>A quiet strength in you that I really admire.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="11" r="5" fill="#e8a33d" opacity="0.6"/><path d="M6 22a14 13 0 1 1 28 0a14 15 0 1 1-28 0Z" fill="none" stroke="#e8a33d" stroke-width="1.5" opacity="0.6"/></svg>
+    <span class="line"></span></div>
+
+  <!-- ============ REMEMBER ============ -->
+  <section id="remember">
+    <div class="wrap">
+      <p class="eyebrow">things you tell me</p>
+      <h2 class="section-title reveal">Promises I'm keeping for you</h2>
+      <p class="section-lede reveal">Little reminders you've given me over time. Proof that you look out for me too.</p>
+
+      <div class="remember-note reveal">
+        <ul class="remember-list">
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Get a new metro card.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Remember your bike number — <strong>TN04BH3814</strong>.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Be careful crossing the road.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Drink plenty of water.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Stay calm around dogs — they sense panic.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Learn to say no when you mean it.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Don't ignore people — say so, or ask for time.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Watch your surroundings while walking.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Don't skip dinner.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Don't be too hard on your body with diet.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Pray for me and my family.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Light a lamp for Murugan in my name.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Be the first to say sorry — that's holding the rope, not losing.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Take care of yourself the way you always do.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Don't be afraid of taking the next step.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Keep smiling and laughing, like you always do.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Keep your friends happy.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Don't dwell on others' opinions more than you need to.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Be with people who think you're enough.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Stand on your own — don't lean only on others.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Take care of amma and appa.</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Spend more time with Ahaana.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="11" r="5" fill="#e8a33d" opacity="0.6"/><path d="M6 22a14 13 0 1 1 28 0a14 15 0 1 1-28 0Z" fill="none" stroke="#e8a33d" stroke-width="1.5" opacity="0.6"/></svg>
+    <span class="line"></span></div>
+
+  <!-- ============ GIFTS ============ -->
+  <section id="gifts">
+    <div class="wrap">
+      <p class="eyebrow">small things, given with thought</p>
+      <h2 class="section-title reveal">Gifts, given and dreamed of</h2>
+      <p class="section-lede reveal">Every one of these had a reason behind it, even the tiny ones.</p>
+
+      <div class="gift-block reveal">
+        <h3>Found their way to you</h3>
+        <div class="chips">
+          <span class="chip given">Kashmir jumka</span>
+          <span class="chip given">Jumka</span>
+          <span class="chip given">Mirror comb</span>
+          <span class="chip given">Wood comb</span>
+          <span class="chip given">Shawl</span>
+          <span class="chip given">Kurta</span>
+          <span class="chip given">Attar</span>
+          <span class="chip given">Saffron</span>
+          <span class="chip given">Globe</span>
+          <span class="chip given">Wooden box</span>
+          <span class="chip given">Pear</span>
+          <span class="chip given">Blue chain</span>
+          <span class="chip given">Chain</span>
+          <span class="chip given">Bangles</span>
+          <span class="chip given">Jal jal — black</span>
+          <span class="chip given">Jal jal — white</span>
+          <span class="chip given">Real bouquet</span>
+          <span class="chip given">Crochet bouquet</span>
+          <span class="chip given">Makeup box</span>
+          <span class="chip given">Lady bug</span>
+        </div>
+      </div>
+
+      <div class="gift-block reveal">
+        <h3>Still finding their way to you</h3>
+        <div class="chips">
+          <span class="chip wishlist">Another lady bug</span>
+          <span class="chip wishlist">Makeup tools</span>
+          <span class="chip wishlist">Lipstick — espresso brown</span>
+          <span class="chip wishlist">Lipstick — chocolate</span>
+          <span class="chip wishlist">Lipstick — red sangria</span>
+          <span class="chip wishlist">Jumkas</span>
+          <span class="chip wishlist">Bangles</span>
+          <span class="chip wishlist">Jal jal</span>
+          <span class="chip wishlist">Twisters</span>
+          <span class="chip wishlist">Golden ring</span>
+          <span class="chip wishlist">Golden chain</span>
+          <span class="chip wishlist">Golden studs</span>
+          <span class="chip wishlist">Perfume</span>
+        </div>
+      </div>
+
+      <div class="gift-block reveal">
+        <h3>Coming soon, still wrapped</h3>
+        <div class="surprise-grid">
+          <div class="surprise-card">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 9h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1V9z" stroke="currentColor" stroke-width="1.6"/><path d="M3 9V6a1 1 0 011-1h16a1 1 0 011 1v3" stroke="currentColor" stroke-width="1.6"/><path d="M12 5v16M8 5a2 2 0 110-4c1.5 0 2.5 1.5 4 4M16 5a2 2 0 100-4c-1.5 0-2.5 1.5-4 4" stroke="currentColor" stroke-width="1.6"/></svg>
+            <p>Upcoming gift one — even I don't want to spoil it.</p>
+          </div>
+          <div class="surprise-card">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 9h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1V9z" stroke="currentColor" stroke-width="1.6"/><path d="M3 9V6a1 1 0 011-1h16a1 1 0 011 1v3" stroke="currentColor" stroke-width="1.6"/><path d="M12 5v16M8 5a2 2 0 110-4c1.5 0 2.5 1.5 4 4M16 5a2 2 0 100-4c-1.5 0-2.5 1.5-4 4" stroke="currentColor" stroke-width="1.6"/></svg>
+            <p>Upcoming gift two — still figuring out when.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="11" r="5" fill="#e8a33d" opacity="0.6"/><path d="M6 22a14 13 0 1 1 28 0a14 15 0 1 1-28 0Z" fill="none" stroke="#e8a33d" stroke-width="1.5" opacity="0.6"/></svg>
+    <span class="line"></span></div>
+
+  <!-- ============ GALLERY ============ -->
+  <section id="gallery">
+    <div class="wrap">
+      <p class="eyebrow">faces and moments</p>
+      <h2 class="section-title reveal">Our memories</h2>
+      <p class="gallery-note reveal">tap any photo to see it bigger</p>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="11" r="5" fill="#e8a33d" opacity="0.6"/><path d="M6 22a14 13 0 1 1 28 0a14 15 0 1 1-28 0Z" fill="none" stroke="#e8a33d" stroke-width="1.5" opacity="0.6"/></svg>
+    <span class="line"></span></div>
+
+  <!-- ============ CLOSING ============ -->
+  <section id="closing" class="closing">
+    <svg class="ladybug-fly" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="11" r="5" fill="#1a1423"/>
+      <path d="M6 22a14 13 0 1 1 28 0a14 15 0 1 1-28 0Z" fill="#c23b3b"/>
+      <line x1="20" y1="9" x2="20" y2="35" stroke="#1a1423" stroke-width="2"/>
+      <circle cx="13" cy="18" r="2.2" fill="#1a1423"/>
+      <circle cx="27" cy="18" r="2.2" fill="#1a1423"/>
+      <circle cx="14" cy="28" r="2" fill="#1a1423"/>
+      <circle cx="26" cy="29" r="2.4" fill="#1a1423"/>
+    </svg>
+    <h2 class="reveal">This isn't everything. It never could be.</h2>
+    <p class="reveal">But it's enough to come back to — on the days that are too much, and the days that are everything. Whatever shape we take next, this stays.</p>
+    <span class="sign">— Shanu, for Gaga</span>
+  </section>
+
+</main>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" hidden>
+  <button class="close-btn" id="lightboxClose" aria-label="Close">&times;</button>
+  <figure>
+    <img id="lightboxImg" src="" alt="">
+    <figcaption id="lightboxCaption"></figcaption>
+  </figure>
+</div>
+
+<script>
+  /* ============================================================
+     ADD YOUR PHOTOS HERE.
+     Paste an image link into "src" and a short caption if you like.
+     Add as many objects as you want — the gallery grid will
+     grow to fit them. Leave src empty ("") to show an
+     "add a memory" placeholder card instead.
+     ============================================================ */
+  const photos = [
+    { src: "", caption: "" },
+    { src: "", caption: "" },
+    { src: "", caption: "" },
+    { src: "", caption: "" },
+    { src: "", caption: "" },
+    { src: "", caption: "" },
+    { src: "", caption: "" },
+    { src: "", caption: "" },
+    { src: "", caption: "" },
+  ];
+
+  function renderGallery(){
+    const grid = document.getElementById('galleryGrid');
+    grid.innerHTML = '';
+    photos.forEach((photo) => {
+      if (photo.src && photo.src.trim() !== ''){
+        const fig = document.createElement('figure');
+        fig.className = 'gallery-item';
+        fig.innerHTML = `<img src="${photo.src}" alt="${photo.caption || 'A memory'}" loading="lazy">` +
+          (photo.caption ? `<figcaption>${photo.caption}</figcaption>` : '');
+        fig.addEventListener('click', () => openLightbox(photo.src, photo.caption || ''));
+        grid.appendChild(fig);
+      } else {
+        const empty = document.createElement('div');
+        empty.className = 'gallery-empty';
+        empty.innerHTML = `<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="10" r="1.5" fill="currentColor"/><path d="M3 16l5-4 4 3 3-3 6 5" stroke="currentColor" stroke-width="1.5"/></svg><span>add a memory here</span>`;
+        grid.appendChild(empty);
+      }
+    });
+  }
+
+  function openLightbox(src, caption){
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightboxImg').alt = caption || 'A memory';
+    document.getElementById('lightboxCaption').textContent = caption || '';
+    lb.hidden = false;
+  }
+  function closeLightbox(){
+    document.getElementById('lightbox').hidden = true;
+  }
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.getElementById('lightbox').addEventListener('click', (e) => {
+    if (e.target.id === 'lightbox') closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  renderGallery();
+
+  /* ---------- reveal-on-scroll ---------- */
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  /* ---------- side thread nav ---------- */
+  const sectionIds = ['hero','story','letters','gundu','remember','gifts','gallery','closing'];
+  const navButtons = document.querySelectorAll('.thread-nav button');
+  const marker = document.getElementById('threadMarker');
+  const DOT_GAP = 26 + 9; // gap + dot height, matches CSS gap
+
+  function setActive(index){
+    navButtons.forEach((btn, i) => btn.classList.toggle('active', i === index));
+    marker.style.top = (index * DOT_GAP) + 'px';
+  }
+
+  const sectionEls = sectionIds.map(id => document.getElementById(id));
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        const idx = sectionIds.indexOf(entry.target.id);
+        if (idx > -1) setActive(idx);
+      }
+    });
+  }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+  sectionEls.forEach(el => { if (el) sectionObserver.observe(el); });
+
+  navButtons.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(sectionIds[i]);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  setActive(0);
+</script>
+
+</body>
+</html>
