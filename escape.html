@@ -7,19 +7,36 @@
 <title>Where the Lady Bug Lands</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,600&family=Inter:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root{
     --paper:#F7F1E7; --paper-2:#FBF6EE; --card:#FFFDF9;
     --ink:#2A211A; --ink-soft:#6B5C50; --ink-faint:#9F9082;
     --bug:#B23A38; --bug-deep:#8F2C2B;
     --plum:#7A4E63; --plum-deep:#5C3A4A; --blush:#F5E5DF;
-    --gold:#C69A5B; --gold-soft:#E7D3A6;
+    --gold:#C69A5B; --gold-soft:#E7D3A6; --sage:#6E7F63;
     --line:#EADFCD; --line-soft:#F1E8D9;
-    --sage:#6E7F63;
+    --bg-a:#FBEBE4; --bg-b:#F0E7EF;
+    --given-bg:#EEF1E9; --given-bd:#D8E0CC; --given-tx:#4d5a41;
+    --wrap-stripe:#FBF3E2; --shim-a:#f3e7e0; --shim-b:#faf2ec;
+    --setup-bg:#FFF8E9; --setup-bd:#EAD9A8; --setup-tx:#7a5a1e;
     --shadow:0 1px 2px rgba(42,33,26,.04), 0 10px 30px rgba(42,33,26,.06);
     --lift:0 3px 8px rgba(42,33,26,.07), 0 20px 46px rgba(122,78,99,.13);
     --r:16px;
+  }
+  :root[data-theme="dark"]{
+    --paper:#17120F; --paper-2:#1F1813; --card:#221A15;
+    --ink:#F0E7DC; --ink-soft:#B7A99A; --ink-faint:#7E7062;
+    --bug:#E36159; --bug-deep:#C4453A;
+    --plum:#CE93AC; --plum-deep:#E0AFC4; --blush:#2E211E;
+    --gold:#DDB878; --gold-soft:#5C4A2C; --sage:#8FA07F;
+    --line:#352A20; --line-soft:#2A211A;
+    --bg-a:#2A1C1A; --bg-b:#1B1722;
+    --given-bg:#232B1E; --given-bd:#374029; --given-tx:#A7BC8E;
+    --wrap-stripe:#2A2216; --shim-a:#2a221c; --shim-b:#33291f;
+    --setup-bg:#2A2214; --setup-bd:#4A3B1C; --setup-tx:#D9BE85;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    --lift:0 3px 8px rgba(0,0,0,.4), 0 20px 46px rgba(0,0,0,.5);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -27,9 +44,10 @@
     margin:0;color:var(--ink);line-height:1.62;
     font-family:"Inter",system-ui,sans-serif;-webkit-font-smoothing:antialiased;
     background:
-      radial-gradient(1100px 620px at 82% -8%, #FBEBE4 0%, rgba(251,235,228,0) 58%),
-      radial-gradient(1000px 560px at -12% 108%, #F0E7EF 0%, rgba(240,231,239,0) 55%),
+      radial-gradient(1100px 620px at 82% -8%, var(--bg-a) 0%, transparent 58%),
+      radial-gradient(1000px 560px at -12% 108%, var(--bg-b) 0%, transparent 55%),
       var(--paper);
+    transition:background-color .3s, color .3s;
   }
   a{color:var(--plum);text-decoration:none}
   .wrap{max-width:940px;margin:0 auto;padding:0 22px}
@@ -37,51 +55,69 @@
   h2.sec{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(26px,4.4vw,36px);
     letter-spacing:-.01em;margin:.15em 0 .35em;line-height:1.12}
   .lede{color:var(--ink-soft);font-size:16px;max-width:60ch;margin:0 0 34px}
-  section.block{padding:64px 0;position:relative}
+  section.block{padding:64px 0}
   section.block + section.block{border-top:1px solid var(--line-soft)}
 
   /* NAV */
-  nav.top{
-    position:sticky;top:0;z-index:40;backdrop-filter:blur(9px);
-    background:rgba(247,241,231,.82);border-bottom:1px solid var(--line-soft);
-  }
-  nav.top .row{display:flex;align-items:center;justify-content:space-between;gap:14px;
-    padding:11px 22px;max-width:940px;margin:0 auto}
+  nav.top{position:sticky;top:0;z-index:40;backdrop-filter:blur(9px);
+    background:color-mix(in srgb, var(--paper) 82%, transparent);border-bottom:1px solid var(--line-soft)}
+  nav.top .row{display:flex;align-items:center;gap:12px;padding:11px 22px;max-width:940px;margin:0 auto}
   .navmark{font-family:"Caveat",cursive;font-size:24px;color:var(--plum-deep);white-space:nowrap}
   .navmark b{color:var(--bug);font-weight:700}
-  .navlinks{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin:0 8px;flex:1;justify-content:center}
+  .navlinks{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;justify-content:center}
   .navlinks::-webkit-scrollbar{display:none}
   .navlinks a{font-size:13.5px;color:var(--ink-soft);padding:6px 11px;border-radius:8px;white-space:nowrap;transition:.15s}
-  .navlinks a:hover{color:var(--plum-deep);background:rgba(122,78,99,.08)}
+  .navlinks a:hover{color:var(--plum-deep);background:color-mix(in srgb,var(--plum) 12%,transparent)}
+  .nav-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+  .icon-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--card);
+    color:var(--ink-soft);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+    transition:.15s;padding:0}
+  .icon-btn:hover{color:var(--plum-deep);border-color:var(--plum)}
+  .menu-toggle{display:none}
   .btn{display:inline-flex;align-items:center;gap:7px;padding:8px 15px;border:none;border-radius:11px;
     font-family:inherit;font-size:13.5px;font-weight:500;cursor:pointer;background:var(--plum);color:#fff;
     box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s,background .15s;white-space:nowrap}
   .btn:hover{background:var(--plum-deep);transform:translateY(-1px);box-shadow:var(--lift)}
   .btn:active{transform:none}
   .btn.tiny{padding:6px 12px;font-size:12.5px;border-radius:9px}
-  .btn.ghost{background:transparent;color:var(--plum);border:1px solid var(--line)}
-  .btn.ghost:hover{background:#fff;color:var(--plum-deep);border-color:var(--plum)}
+  .btn.ghost{background:transparent;color:var(--plum);border:1px solid var(--line);box-shadow:none}
+  .btn.ghost:hover{background:var(--card);color:var(--plum-deep);border-color:var(--plum)}
   .btn:disabled{opacity:.5;cursor:default;transform:none}
   .btn.connected{background:var(--sage)}
-  .btn.connected:hover{background:#5c6b53}
+  .mobile-menu{display:none;flex-direction:column;padding:8px 14px 14px;border-top:1px solid var(--line-soft);
+    background:var(--paper-2)}
+  .mobile-menu a{padding:11px 8px;color:var(--ink);font-size:15px;border-bottom:1px solid var(--line-soft)}
+  .mobile-menu a:last-of-type{border-bottom:none}
+  .mobile-menu.open{display:flex}
+
+  @media(max-width:760px){
+    .navlinks{display:none}
+    .menu-toggle{display:inline-flex}
+    .navmark{font-size:21px}
+  }
 
   /* HERO */
-  .hero{position:relative;padding:78px 0 58px;text-align:center;overflow:hidden}
+  .hero{position:relative;padding:78px 0 54px;text-align:center;overflow:hidden}
   .hero .kicker{font-family:"Caveat",cursive;font-size:24px;color:var(--bug);margin-bottom:6px}
   .hero h1{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(38px,7.5vw,68px);
     line-height:1.04;letter-spacing:-.02em;margin:0 auto 20px;max-width:16ch}
-  .hero p{color:var(--ink-soft);font-size:17px;max-width:56ch;margin:0 auto 30px}
-  .scrollcue{font-family:"Caveat",cursive;font-size:19px;color:var(--ink-faint)}
-  .ladybug{position:absolute;width:38px;height:38px;pointer-events:none}
-  #bugLand{top:64px;left:calc(50% + 150px)}
-  @media(max-width:640px){#bugLand{left:calc(50% + 96px);top:40px;width:30px;height:30px}}
+  .hero p{color:var(--ink-soft);font-size:17px;max-width:56ch;margin:0 auto 26px}
+  .scrollcue{font-family:"Caveat",cursive;font-size:19px;color:var(--ink-faint);margin-top:24px}
+  .ladybug{position:absolute;width:38px;height:38px;pointer-events:none;top:64px;left:calc(50% + 150px)}
+  @media(max-width:640px){.ladybug{left:calc(50% + 96px);top:40px;width:30px;height:30px}}
 
-  /* ON THIS DAY / COUNTDOWN strip */
-  .today{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+  .today{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
   .chip-soft{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);
     border-radius:999px;padding:8px 16px;font-size:13.5px;color:var(--ink-soft);box-shadow:var(--shadow)}
   .chip-soft b{color:var(--bug);font-weight:600}
   .chip-soft .n{font-family:"Fraunces",serif;color:var(--plum-deep);font-size:15px}
+
+  /* section add button */
+  .add-btn{margin-top:22px}
+  .needs-drive{display:none}
+  body.connected .needs-drive{display:inline-flex}
+  .del-x{border:none;background:none;color:var(--ink-faint);cursor:pointer;font-size:12.5px;font-family:inherit;padding:0 2px}
+  .del-x:hover{color:var(--bug)}
 
   /* TIMELINE */
   .timeline{position:relative;margin-left:8px;padding-left:26px}
@@ -97,6 +133,7 @@
   .tl h3{font-family:"Fraunces",serif;font-weight:500;font-size:20px;margin:2px 0 4px}
   .tl p{color:var(--ink-soft);font-size:14.5px;margin:0;max-width:56ch}
   .tl.crown h3::after{content:"♛";color:var(--gold);font-size:15px;margin-left:8px}
+  .tl .row-del{margin-top:4px}
 
   /* LETTERS */
   .letters{display:grid;gap:14px}
@@ -108,24 +145,23 @@
   .letter summary::-webkit-details-marker{display:none}
   .letter .lmeta{display:flex;flex-direction:column;gap:2px}
   .letter .lkick{font-family:"Caveat",cursive;font-size:17px;color:var(--bug)}
-  .letter .ltitle{font-family:"Fraunces",serif;font-size:19px;font-weight:500}
+  .letter .ltitle{font-family:"Fraunces",serif;font-size:19px;font-weight:500;color:var(--ink)}
   .letter .plus{color:var(--ink-faint);font-size:22px;transition:transform .25s;flex:none;line-height:1}
   .letter[open] .plus{transform:rotate(45deg)}
-  .letter .body{padding:0 20px 22px;border-top:1px solid var(--line-soft);margin-top:-2px}
+  .letter .body{padding:0 20px 22px;border-top:1px solid var(--line-soft)}
   .letter .body p{margin:16px 0 0;color:var(--ink-soft);font-size:15px;line-height:1.72}
   .letter .body p:first-child{margin-top:18px}
+  .letter .body .row-del{margin-top:14px}
 
   /* GUNDU */
   .gundu-wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:34px;align-items:center}
   @media(max-width:720px){.gundu-wrap{grid-template-columns:1fr}}
-  .gundu-word{font-family:"Fraunces",serif;font-size:clamp(52px,12vw,104px);line-height:.9;
-    letter-spacing:.02em;color:var(--plum-deep)}
-  .gundu-word span{display:block}
-  .gundu-word .g{color:var(--bug)}
+  .gundu-word{font-family:"Fraunces",serif;font-size:clamp(52px,12vw,104px);line-height:.9;color:var(--plum-deep)}
+  .gundu-word span{display:block}.gundu-word .g{color:var(--bug)}
   .gundu-list{display:grid;gap:14px}
   .gundu-list .g-item{display:flex;gap:14px;align-items:flex-start}
   .g-letter{font-family:"Fraunces",serif;font-size:26px;color:var(--gold);width:26px;flex:none;line-height:1}
-  .g-item h4{margin:0 0 1px;font-family:"Fraunces",serif;font-weight:500;font-size:17px}
+  .g-item h4{margin:0 0 1px;font-family:"Fraunces",serif;font-weight:500;font-size:17px;color:var(--ink)}
   .g-item p{margin:0;color:var(--ink-soft);font-size:14px}
 
   /* PROMISES */
@@ -135,21 +171,25 @@
     border-bottom:1px dashed var(--line);font-size:14.5px;color:var(--ink-soft)}
   .promise .b{flex:none;margin-top:5px;width:12px;height:12px}
   .promise b{color:var(--ink);font-weight:600}
+  .promise .del-x{margin-left:auto}
 
   /* GIFTS */
   .gifts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
   @media(max-width:760px){.gifts{grid-template-columns:1fr}}
-  .gcol h4{font-family:"Caveat",cursive;font-size:20px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+  .gcol h4{font-family:"Caveat",cursive;font-size:20px;margin:0 0 12px}
   .gcol.given h4{color:var(--sage)} .gcol.way h4{color:var(--plum)} .gcol.wrapped h4{color:var(--gold)}
   .chips{display:flex;flex-wrap:wrap;gap:7px}
   .chip{font-size:12.5px;padding:5px 11px;border-radius:999px;background:var(--card);
-    border:1px solid var(--line);color:var(--ink-soft)}
-  .gcol.given .chip{background:#EEF1E9;border-color:#D8E0CC;color:#4d5a41}
+    border:1px solid var(--line);color:var(--ink-soft);display:inline-flex;align-items:center;gap:6px}
+  .gcol.given .chip{background:var(--given-bg);border-color:var(--given-bd);color:var(--given-tx)}
   .gcol.way .chip{background:transparent;border-color:var(--plum);color:var(--plum)}
-  .gcol.wrapped .chip{background:repeating-linear-gradient(45deg,#fff,#fff 6px,#FBF3E2 6px,#FBF3E2 12px);
+  .gcol.wrapped .chip{background:repeating-linear-gradient(45deg,var(--card),var(--card) 6px,var(--wrap-stripe) 6px,var(--wrap-stripe) 12px);
     border:1px dashed var(--gold);color:var(--gold);font-style:italic;width:100%;padding:9px 12px}
+  .chip .cx{cursor:pointer;opacity:.6;font-style:normal}
+  .chip .cx:hover{opacity:1;color:var(--bug)}
+  .gcol .add-btn{margin-top:12px}
 
-  /* LIVE (drive) — notes + memories */
+  /* LIVE */
   .live-flag{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-faint);
     background:var(--paper-2);border:1px solid var(--line);border-radius:999px;padding:4px 12px;margin-bottom:16px}
   .live-flag .d{width:7px;height:7px;border-radius:50%;background:var(--ink-faint)}
@@ -158,7 +198,6 @@
     padding:26px;text-align:center;color:var(--ink-soft);box-shadow:var(--shadow)}
   .connect-prompt .big{font-family:"Fraunces",serif;font-size:18px;color:var(--ink);margin-bottom:4px}
   .connect-prompt small{color:var(--ink-faint);font-size:12.5px;display:block;margin:4px 0 16px}
-
   .composer{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;
     box-shadow:var(--shadow);margin-bottom:20px}
   .composer input.title{width:100%;border:none;background:none;font-family:"Fraunces",serif;font-size:19px;
@@ -172,16 +211,13 @@
   .notes{display:grid;gap:13px}
   .note-card{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--bug);
     border-radius:var(--r);padding:16px 18px 14px;box-shadow:var(--shadow);animation:fade .4s ease both}
-  .note-card h3{font-family:"Fraunces",serif;font-weight:500;font-size:17px;margin:0 0 5px}
+  .note-card h3{font-family:"Fraunces",serif;font-weight:500;font-size:17px;margin:0 0 5px;color:var(--ink)}
   .note-card .ntext{font-size:14.5px;color:var(--ink-soft);white-space:pre-wrap;word-break:break-word}
   .note-card .meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;
     font-size:12px;color:var(--ink-faint)}
-  .link-danger{background:none;border:none;color:var(--ink-faint);font-size:12.5px;cursor:pointer;font-family:inherit}
-  .link-danger:hover{color:var(--bug)}
-
   .dropzone{border:1.5px dashed var(--line);border-radius:var(--r);background:var(--paper-2);padding:28px;
     text-align:center;color:var(--ink-soft);margin-bottom:20px;transition:.18s;cursor:pointer}
-  .dropzone:hover,.dropzone.drag{border-color:var(--bug);background:#fff;color:var(--bug-deep)}
+  .dropzone:hover,.dropzone.drag{border-color:var(--bug);background:var(--card);color:var(--bug-deep)}
   .dropzone .big{font-family:"Fraunces",serif;font-size:17px;color:var(--ink);margin-bottom:3px}
   .dropzone small{font-size:12.5px;color:var(--ink-faint)}
   .gallery{columns:3;column-gap:14px}
@@ -191,13 +227,12 @@
   .photo .imgwrap{background:var(--blush);min-height:120px;display:grid;place-items:center;cursor:zoom-in}
   .photo img{width:100%;display:block}
   .photo .ph-cap{padding:9px 12px 11px;font-size:13px;color:var(--ink-soft)}
-  .photo .ph-cap input{width:100%;border:none;background:none;font-family:inherit;font-size:13px;
-    color:var(--ink-soft);outline:none}
+  .photo .ph-cap input{width:100%;border:none;background:none;font-family:inherit;font-size:13px;color:var(--ink-soft);outline:none}
   .photo .del{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:8px;
-    background:rgba(255,253,249,.92);color:var(--bug);display:grid;place-items:center;opacity:0;
-    transition:.15s;box-shadow:var(--shadow);border:none;cursor:pointer;font-size:16px}
+    background:color-mix(in srgb,var(--card) 92%,transparent);color:var(--bug);display:grid;place-items:center;
+    opacity:0;transition:.15s;box-shadow:var(--shadow);border:none;cursor:pointer;font-size:16px}
   .photo:hover .del{opacity:1}
-  .shimmer{height:150px;width:100%;background:linear-gradient(100deg,#f3e7e0 30%,#faf2ec 50%,#f3e7e0 70%);
+  .shimmer{height:150px;width:100%;background:linear-gradient(100deg,var(--shim-a) 30%,var(--shim-b) 50%,var(--shim-a) 70%);
     background-size:200% 100%;animation:sh 1.3s infinite}
 
   /* SURPRISES */
@@ -207,37 +242,49 @@
     padding:22px;box-shadow:var(--shadow);transition:transform .16s,box-shadow .16s}
   .surprise:hover{transform:translateY(-3px);box-shadow:var(--lift)}
   .surprise .ico{font-size:24px} .surprise .sk{font-family:"Caveat",cursive;font-size:17px;color:var(--bug);margin-top:8px}
-  .surprise h4{font-family:"Fraunces",serif;font-weight:500;font-size:18px;margin:1px 0 6px}
+  .surprise h4{font-family:"Fraunces",serif;font-weight:500;font-size:18px;margin:1px 0 6px;color:var(--ink)}
   .surprise p{margin:0 0 12px;font-size:13.5px;color:var(--ink-soft)}
   .surprise .go{font-size:13px;color:var(--plum);font-weight:500}
 
-  /* CLOSING */
   .closing{text-align:center;padding:72px 0 30px}
   .closing h2{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(24px,4.6vw,34px);
-    max-width:20ch;margin:0 auto 16px;line-height:1.2}
+    max-width:20ch;margin:0 auto 16px;line-height:1.2;color:var(--ink)}
   .closing p{color:var(--ink-soft);max-width:52ch;margin:0 auto 24px}
   .closing .sign{font-family:"Caveat",cursive;font-size:26px;color:var(--plum-deep)}
   footer{text-align:center;padding:26px 0 44px;color:var(--ink-faint);font-size:12px}
   .footlinks{display:flex;gap:16px;justify-content:center;margin-bottom:14px;flex-wrap:wrap}
   .footlinks a{font-size:13.5px;color:var(--plum)}
 
-  /* LIGHTBOX */
-  #lightbox{position:fixed;inset:0;background:rgba(30,22,18,.9);display:none;place-items:center;z-index:60;
+  /* MODAL */
+  .modal-back{position:fixed;inset:0;background:rgba(30,22,18,.55);backdrop-filter:blur(3px);
+    display:none;place-items:center;z-index:80;padding:20px}
+  .modal-back.show{display:grid;animation:fade .18s ease}
+  .modal{background:var(--card);border:1px solid var(--line);border-radius:18px;width:min(480px,100%);
+    box-shadow:var(--lift);overflow:hidden}
+  .modal-h{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line-soft)}
+  .modal-h span{font-family:"Fraunces",serif;font-size:19px;color:var(--ink)}
+  .modal-h button{border:none;background:none;font-size:22px;color:var(--ink-faint);cursor:pointer;line-height:1}
+  .modal-body{padding:18px 20px;display:grid;gap:12px}
+  .field label{display:block;font-size:12.5px;color:var(--ink-faint);margin-bottom:4px}
+  .field input,.field textarea,.field select{width:100%;border:1px solid var(--line);background:var(--paper-2);
+    border-radius:10px;padding:10px 12px;font-family:inherit;font-size:14px;color:var(--ink);outline:none}
+  .field textarea{min-height:110px;resize:vertical;line-height:1.6}
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--plum)}
+  .modal-f{display:flex;justify-content:flex-end;gap:10px;padding:14px 20px 18px}
+
+  #lightbox{position:fixed;inset:0;background:rgba(20,14,11,.92);display:none;place-items:center;z-index:90;
     padding:24px;cursor:zoom-out;backdrop-filter:blur(3px)}
   #lightbox.show{display:grid;animation:fade .2s ease}
-  #lightbox img{max-width:min(92vw,1000px);max-height:82vh;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  #lightbox img{max-width:min(92vw,1000px);max-height:82vh;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
   #lightbox .cap{position:absolute;bottom:26px;left:0;right:0;text-align:center;color:#f4ece4;font-size:14px}
 
-  /* TOAST */
   #toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);
-    color:#fff;padding:11px 18px;border-radius:11px;font-size:13.5px;box-shadow:var(--lift);opacity:0;
-    pointer-events:none;transition:.25s;z-index:70}
+    color:var(--paper);padding:11px 18px;border-radius:11px;font-size:13.5px;box-shadow:var(--lift);opacity:0;
+    pointer-events:none;transition:.25s;z-index:100}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-  /* setup notice */
-  .setup{max-width:620px;margin:0 auto;text-align:left;background:#FFF8E9;border:1px solid #EAD9A8;
-    color:#7a5a1e;border-radius:12px;padding:14px 16px;font-size:13px}
-  .setup code{background:#fff;padding:1px 6px;border-radius:5px;color:var(--bug-deep)}
+  .setup{max-width:620px;margin:0 auto 14px;text-align:left;background:var(--setup-bg);border:1px solid var(--setup-bd);
+    color:var(--setup-tx);border-radius:12px;padding:14px 16px;font-size:13px}
+  .setup code{background:var(--card);padding:1px 6px;border-radius:5px;color:var(--bug)}
 
   .reveal{opacity:0;transform:translateY(16px)}
   .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
@@ -252,24 +299,27 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="top">
   <div class="row">
     <span class="navmark">Shanu <b>&amp;</b> Rag-V</span>
     <div class="navlinks">
-      <a href="#dates">Dates</a>
-      <a href="#letters">Letters</a>
-      <a href="#gundu">G.U.N.D.U</a>
-      <a href="#promises">Promises</a>
-      <a href="#gifts">Gifts</a>
-      <a href="#notes">Notes</a>
-      <a href="#memories">Memories</a>
+      <a href="#dates">Dates</a><a href="#letters">Letters</a><a href="#gundu">G.U.N.D.U</a>
+      <a href="#promises">Promises</a><a href="#gifts">Gifts</a><a href="#notes">Notes</a><a href="#memories">Memories</a>
     </div>
-    <button class="btn tiny" id="connectBtn">Connect Drive</button>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" title="Day / night" aria-label="Toggle day or night"></button>
+      <button class="btn tiny" id="connectBtn">Connect</button>
+      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#dates">Dates</a><a href="#letters">Letters</a><a href="#gundu">G.U.N.D.U</a>
+    <a href="#promises">Promises</a><a href="#gifts">Gifts</a><a href="#notes">Notes</a><a href="#memories">Memories</a><a href="#more">More</a>
   </div>
 </nav>
 
-<!-- HERO -->
 <header class="hero">
   <div class="wrap">
     <svg class="ladybug" id="bugLand" viewBox="0 0 40 40" aria-hidden="true">
@@ -285,168 +335,91 @@
     <h1>Where the Lady Bug Lands</h1>
     <p>Some places you visit when you're happy. Some you visit when you're not. This one's built to hold both — the dates, the letters, the little gifts, the faces. Whichever kind of day this is, you can land here for a while.</p>
     <div class="today" id="todayStrip"></div>
-    <div style="margin-top:26px" class="scrollcue">scroll gently ↓</div>
+    <div class="scrollcue">scroll gently ↓</div>
   </div>
 </header>
 
-<!-- DATES -->
-<section class="block" id="dates">
-  <div class="wrap reveal">
-    <div class="eyebrow">our story so far</div>
-    <h2 class="sec">A few dates worth keeping</h2>
-    <p class="lede">Not every important day is loud. Some of these are quiet ones that mattered more than they looked like they would.</p>
-    <div class="timeline">
-      <div class="tl"><div class="dot"></div><div class="date">March 26</div><h3>First Meet</h3><p>The first time our paths crossed. Neither of us knew yet what it would turn into.</p></div>
-      <div class="tl"><div class="dot"></div><div class="date">April 4</div><h3>First Real Talk</h3><p>The first time we actually talked — just us, no performance, no distance.</p></div>
-      <div class="tl"><div class="dot"></div><div class="date">May 23</div><h3>The Magical Word</h3><p>Some words change everything. This one did.</p></div>
-      <div class="tl"><div class="dot"></div><div class="date">May 26</div><h3>Cake Bee</h3><p>Our first date — cake, conversation, and the start of something neither of us could quite name yet.</p></div>
-      <div class="tl"><div class="dot"></div><div class="date">June 4</div><h3>Indulgence</h3><p>A day we let ourselves have exactly what we wanted — each other's company, nothing else.</p></div>
-      <div class="tl"><div class="dot"></div><div class="date">June 6</div><h3>Her Dad's Birthday</h3><p>Family days matter, even the ones I'm not technically part of.</p></div>
-      <div class="tl crown"><div class="dot"></div><div class="date">January 8</div><h3>Ragave's Birthday</h3><p>Out of every day on this list, this is the one I'd protect first.</p></div>
+<section class="block" id="dates"><div class="wrap reveal">
+  <div class="eyebrow">our story so far</div>
+  <h2 class="sec">A few dates worth keeping</h2>
+  <p class="lede">Not every important day is loud. Some of these are quiet ones that mattered more than they looked like they would.</p>
+  <div class="timeline" id="timeline"></div>
+  <button class="btn ghost add-btn needs-drive" onclick="openAdd('date')">+ Add a date</button>
+</div></section>
+
+<section class="block" id="letters"><div class="wrap reveal">
+  <div class="eyebrow">letters between us</div>
+  <h2 class="sec">Things we've written to each other</h2>
+  <p class="lede">Tap one open. They're meant to be read slowly.</p>
+  <div class="letters" id="letters"></div>
+  <button class="btn ghost add-btn needs-drive" onclick="openAdd('letter')">+ Add a letter</button>
+</div></section>
+
+<section class="block" id="gundu"><div class="wrap reveal">
+  <div class="eyebrow">five letters, one person</div>
+  <h2 class="sec">My G.U.N.D.U</h2>
+  <p class="lede">Gorgeous, Unique, Nice-hearted, Delightful, Unstoppable. No matter what shape we take, this part never changes.</p>
+  <div class="gundu-wrap">
+    <div class="gundu-word"><span class="g">G</span><span>U</span><span>N</span><span>D</span><span>U</span></div>
+    <div class="gundu-list">
+      <div class="g-item"><div class="g-letter">G</div><div><h4>Gorgeous</h4><p>Not just how you look — how you carry yourself.</p></div></div>
+      <div class="g-item"><div class="g-letter">U</div><div><h4>Unique</h4><p>There's no one else quite like you, and I've looked.</p></div></div>
+      <div class="g-item"><div class="g-letter">N</div><div><h4>Nice-hearted</h4><p>The kindest heart I've ever come across.</p></div></div>
+      <div class="g-item"><div class="g-letter">D</div><div><h4>Delightful</h4><p>You make ordinary days worth remembering.</p></div></div>
+      <div class="g-item"><div class="g-letter">U</div><div><h4>Unstoppable</h4><p>A quiet strength in you that I really admire.</p></div></div>
     </div>
   </div>
-</section>
+</div></section>
 
-<!-- LETTERS -->
-<section class="block" id="letters">
-  <div class="wrap reveal">
-    <div class="eyebrow">letters between us</div>
-    <h2 class="sec">Things we've written to each other</h2>
-    <p class="lede">Tap one open. They're meant to be read slowly.</p>
-    <div class="letters">
-      <details class="letter"><summary><span class="lmeta"><span class="lkick">a new year wish</span><span class="ltitle">My G.U.N.D.U</span></span><span class="plus">+</span></summary>
-        <div class="body">
-          <p>Hello Rag-V — my G.U.N.D.U: Gorgeous, Unique, Nice-hearted, Delightful, Unstoppable. At this exact moment, when the clock and the calendar lined up to 11:11, 1/1, I want to wish for both of us to be happy, smiling, laughing — together through all of it, the good and the bad.</p>
-          <p>Even on the days we hurt each other, I want us to keep choosing to fix it. My wish for this year is to hold your hand, take care of you, make you feel at home, make you laugh like no one else can, and be your shoulder whenever you need one.</p>
-          <p>I don't know what's planned for us, but I hope it's you.</p>
-          <p>I love you, buboooo</p>
-        </div>
-      </details>
-      <details class="letter"><summary><span class="lmeta"><span class="lkick">happy birthday</span><span class="ltitle">For Rag-V, on her day</span></span><span class="plus">+</span></summary>
-        <div class="body">
-          <p>I hope today reminds you of how special you truly are. You bring so much warmth, joy, and meaning into my life without even trying. Being around you feels easy, real, and comforting — like a place I want to stay.</p>
-          <p>I love your smile, your strength, and the way you make ordinary moments feel important. All I want today is for you to feel loved, valued, and genuinely happy.</p>
-          <p>No matter where life takes us, a part of my heart will always smile because of you.</p>
-          <p>Happy birthday, Rag-V 💗</p>
-        </div>
-      </details>
-      <details class="letter"><summary><span class="lmeta"><span class="lkick">what you told me</span><span class="ltitle">"You are one big loosu"</span></span><span class="plus">+</span></summary>
-        <div class="body">
-          <p>Hi, Shanu. You are one big loosu. Please don't be mad at me, I just wanted to tell you what you mean to me.</p>
-          <p>You're the first person who loved talking to me. The first person who valued me the way I'd always hoped to be valued. The first person who came out with me, who went to a café with me, who brought me flowers, who brought me gifts.</p>
-          <p>The first person who tolerated me and stayed. Who accepted me exactly as I am, and thought well of me anyway. The first person who showed me what real care feels like — the first I hugged, and the first to hug me back.</p>
-          <p>You never let me feel alone. There are still so many things left to say.</p>
-        </div>
-      </details>
-      <details class="letter"><summary><span class="lmeta"><span class="lkick">what i told you</span><span class="ltitle">"We chose friendship"</span></span><span class="plus">+</span></summary>
-        <div class="body">
-          <p>Hey Rag-V, I don't know how to start this, so I'll just say it the way I feel it.</p>
-          <p>Something shifted in my life that I didn't see coming. You happened. And nothing's been the same since — not the way I laugh, not the way I see myself, not the way I believe in people.</p>
-          <p>I know I haven't always been easy. There were moments I made things harder than they needed to be. I see that clearly now, and I carry it. But through all of it, you stayed.</p>
-          <p>We chose friendship, and I want you to know — I'm choosing it fully. Not as a consolation, not as a way to stay close just in case, but because losing you completely is something I refuse to let happen.</p>
-          <p>You changed me, Ragave. You gave me the ability to laugh from my stomach, to feel things I thought I couldn't feel, to believe I'm worth something to someone. So here I am — your loosu friend — telling you that you mean the entire world to me.</p>
-          <p>I love you, bubooo. Always will. In every version of us.</p>
-        </div>
-      </details>
-      <details class="letter"><summary><span class="lmeta"><span class="lkick">2:16 in the morning</span><span class="ltitle">A dream I had</span></span><span class="plus">+</span></summary>
-        <div class="body">
-          <p>I just woke up from the most beautiful dream. We were a family, living a happy, healthy life, full of laughter. I could hear a child's laughter through the whole dream.</p>
-          <p>I don't think anything else could make me feel that way except you. If there's ever a chance, and if it's meant to be, I want you to be my partner for the rest of my life.</p>
-          <p>I know there might be complications — with us, with our families — and I know that scares you. But deep down, I've already registered you as my soulmate, and nothing changes that from my end.</p>
-          <p>I'm so blessed to have you, and I ask every god I know to let me keep you, for good.</p>
-        </div>
-      </details>
-      <details class="letter"><summary><span class="lmeta"><span class="lkick">just gratitude</span><span class="ltitle">Thank you for being my home</span></span><span class="plus">+</span></summary>
-        <div class="body">
-          <p>Thank you for being my home. Thank you for being my best. Thank you for being my reason to smile. Thank you for being my reason to work.</p>
-          <p>Thank you for choosing me. Thank you for being with me.</p>
-          <p>No words can really describe what you're worth to me.</p>
-        </div>
-      </details>
-    </div>
+<section class="block" id="promises"><div class="wrap reveal">
+  <div class="eyebrow">things you tell me</div>
+  <h2 class="sec">Promises I'm keeping for you</h2>
+  <p class="lede">Little reminders you've given me over time. Proof that you look out for me too.</p>
+  <div class="promises" id="promiseList"></div>
+  <button class="btn ghost add-btn needs-drive" onclick="openAdd('promise')">+ Add a reminder</button>
+</div></section>
+
+<section class="block" id="gifts"><div class="wrap reveal">
+  <div class="eyebrow">small things, given with thought</div>
+  <h2 class="sec">Gifts, given and dreamed of</h2>
+  <p class="lede">Every one of these had a reason behind it, even the tiny ones.</p>
+  <div class="gifts">
+    <div class="gcol given"><h4>🌿 Found their way to you</h4><div class="chips" id="giftsGiven"></div>
+      <button class="btn ghost tiny add-btn needs-drive" onclick="openAdd('gift','given')">+ Add</button></div>
+    <div class="gcol way"><h4>✈ Still finding their way</h4><div class="chips" id="giftsWay"></div>
+      <button class="btn ghost tiny add-btn needs-drive" onclick="openAdd('gift','way')">+ Add</button></div>
+    <div class="gcol wrapped"><h4>🎁 Still wrapped</h4><div class="chips" id="giftsWrapped"></div>
+      <button class="btn ghost tiny add-btn needs-drive" onclick="openAdd('gift','wrapped')">+ Add</button></div>
   </div>
-</section>
+</div></section>
 
-<!-- GUNDU -->
-<section class="block" id="gundu">
-  <div class="wrap reveal">
-    <div class="eyebrow">five letters, one person</div>
-    <h2 class="sec">My G.U.N.D.U</h2>
-    <p class="lede">Gorgeous, Unique, Nice-hearted, Delightful, Unstoppable. No matter what shape we take, this part never changes.</p>
-    <div class="gundu-wrap">
-      <div class="gundu-word"><span class="g">G</span><span>U</span><span>N</span><span>D</span><span>U</span></div>
-      <div class="gundu-list">
-        <div class="g-item"><div class="g-letter">G</div><div><h4>Gorgeous</h4><p>Not just how you look — how you carry yourself.</p></div></div>
-        <div class="g-item"><div class="g-letter">U</div><div><h4>Unique</h4><p>There's no one else quite like you, and I've looked.</p></div></div>
-        <div class="g-item"><div class="g-letter">N</div><div><h4>Nice-hearted</h4><p>The kindest heart I've ever come across.</p></div></div>
-        <div class="g-item"><div class="g-letter">D</div><div><h4>Delightful</h4><p>You make ordinary days worth remembering.</p></div></div>
-        <div class="g-item"><div class="g-letter">U</div><div><h4>Unstoppable</h4><p>A quiet strength in you that I really admire.</p></div></div>
-      </div>
-    </div>
+<section class="block" id="notes"><div class="wrap reveal">
+  <div class="eyebrow">for whenever</div>
+  <h2 class="sec">Notes</h2>
+  <p class="lede">Quick thoughts, saved to your Drive — add to them any day, from any device.</p>
+  <div class="live-flag" id="notesFlag"><span class="d"></span><span id="notesFlagText">Not connected</span></div>
+  <div id="notesArea"></div>
+</div></section>
+
+<section class="block" id="memories"><div class="wrap reveal">
+  <div class="eyebrow">faces and moments</div>
+  <h2 class="sec">Our memories</h2>
+  <p class="lede">Tap any photo to see it bigger. New ones save straight to your Drive.</p>
+  <div class="live-flag" id="photosFlag"><span class="d"></span><span id="photosFlagText">Not connected</span></div>
+  <div id="photosArea"></div>
+</div></section>
+
+<section class="block" id="more"><div class="wrap reveal">
+  <div class="eyebrow">there's more, elsewhere</div>
+  <h2 class="sec">A few other surprises</h2>
+  <p class="lede">This archive isn't the only thing I've built for you. A few of the others, in case you want to wander back to them too.</p>
+  <div class="surprises">
+    <a class="surprise" href="https://hunt-olive.vercel.app/bridgerton.html"><div class="ico">🎻</div><div class="sk">the society papers</div><h4>The Diamond of the Season</h4><p>Witness our Grand Promenade, told in the voice of the ton itself.</p><span class="go">Read the papers →</span></a>
+    <a class="surprise" href="https://hunt-olive.vercel.app/valentines.html"><div class="ico">💌</div><div class="sk">a little game</div><h4>Catch My Heart</h4><p>23 hearts to catch. There's only ever been one winner.</p><span class="go">Play again →</span></a>
+    <a class="surprise" href="https://hunt-olive.vercel.app/velava.html"><div class="ico">ॐ</div><div class="sk">a blessing</div><h4>Vetri Vel, Veera Vel</h4><p>A tribute to Murugan, written the same way I write to you.</p><span class="go">Open the tribute →</span></a>
   </div>
-</section>
+</div></section>
 
-<!-- PROMISES -->
-<section class="block" id="promises">
-  <div class="wrap reveal">
-    <div class="eyebrow">things you tell me</div>
-    <h2 class="sec">Promises I'm keeping for you</h2>
-    <p class="lede">Little reminders you've given me over time. Proof that you look out for me too.</p>
-    <div class="promises" id="promiseList"></div>
-  </div>
-</section>
-
-<!-- GIFTS -->
-<section class="block" id="gifts">
-  <div class="wrap reveal">
-    <div class="eyebrow">small things, given with thought</div>
-    <h2 class="sec">Gifts, given and dreamed of</h2>
-    <p class="lede">Every one of these had a reason behind it, even the tiny ones.</p>
-    <div class="gifts">
-      <div class="gcol given"><h4>🌿 Found their way to you</h4><div class="chips" id="giftsGiven"></div></div>
-      <div class="gcol way"><h4>✈ Still finding their way</h4><div class="chips" id="giftsWay"></div></div>
-      <div class="gcol wrapped"><h4>🎁 Still wrapped</h4><div class="chips" id="giftsWrapped"></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- NOTES (live) -->
-<section class="block" id="notes">
-  <div class="wrap reveal">
-    <div class="eyebrow">for whenever</div>
-    <h2 class="sec">Notes</h2>
-    <p class="lede">Quick thoughts, saved to your Drive — add to them any day, from any device.</p>
-    <div class="live-flag" id="notesFlag"><span class="d"></span><span id="notesFlagText">Not connected</span></div>
-    <div id="notesArea"></div>
-  </div>
-</section>
-
-<!-- MEMORIES (live) -->
-<section class="block" id="memories">
-  <div class="wrap reveal">
-    <div class="eyebrow">faces and moments</div>
-    <h2 class="sec">Our memories</h2>
-    <p class="lede">Tap any photo to see it bigger. New ones save straight to your Drive.</p>
-    <div class="live-flag" id="photosFlag"><span class="d"></span><span id="photosFlagText">Not connected</span></div>
-    <div id="photosArea"></div>
-  </div>
-</section>
-
-<!-- SURPRISES -->
-<section class="block" id="more">
-  <div class="wrap reveal">
-    <div class="eyebrow">there's more, elsewhere</div>
-    <h2 class="sec">A few other surprises</h2>
-    <p class="lede">This archive isn't the only thing I've built for you. A few of the others, in case you want to wander back to them too.</p>
-    <div class="surprises">
-      <a class="surprise" href="https://hunt-olive.vercel.app/bridgerton.html"><div class="ico">🎻</div><div class="sk">the society papers</div><h4>The Diamond of the Season</h4><p>Witness our Grand Promenade, told in the voice of the ton itself.</p><span class="go">Read the papers →</span></a>
-      <a class="surprise" href="https://hunt-olive.vercel.app/valentines.html"><div class="ico">💌</div><div class="sk">a little game</div><h4>Catch My Heart</h4><p>23 hearts to catch. There's only ever been one winner.</p><span class="go">Play again →</span></a>
-      <a class="surprise" href="https://hunt-olive.vercel.app/velava.html"><div class="ico">ॐ</div><div class="sk">a blessing</div><h4>Vetri Vel, Veera Vel</h4><p>A tribute to Murugan, written the same way I write to you.</p><span class="go">Open the tribute →</span></a>
-    </div>
-  </div>
-</section>
-
-<!-- CLOSING -->
 <section class="closing wrap reveal">
   <h2>This isn't everything. It never could be.</h2>
   <p>But it's enough to come back to — on the days that are too much, and the days that are everything. Whatever shape we take next, this stays.</p>
@@ -463,23 +436,46 @@
   Backed by your Google Drive · made with care
 </footer>
 
+<div class="modal-back" id="modal"><div class="modal">
+  <div class="modal-h"><span id="modalTitle">Add</span><button id="modalX" aria-label="Close">&times;</button></div>
+  <div class="modal-body" id="modalBody"></div>
+  <div class="modal-f"><button class="btn ghost" id="modalCancel">Cancel</button><button class="btn" id="modalSave">Save</button></div>
+</div></div>
+
 <div id="lightbox"><img id="lbImg" alt="" /><div class="cap" id="lbCap"></div></div>
 <div id="toast"></div>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 /* =========================================================
-   CONFIG — paste the SAME OAuth client ID you already set up
-   for hunt-olive.vercel.app. Folder name is kept identical so
-   your existing notes & photos load right in.
+   CONFIG — paste the SAME OAuth client ID from your Vercel
+   setup. Folder name is kept identical so existing notes,
+   photos, and any items you add all live together on Drive.
    ========================================================= */
 const CLIENT_ID   = "544979873924-he4233i3ts54bpbvkmj4b6b68istl4hr.apps.googleusercontent.com";
 const SCOPES      = "https://www.googleapis.com/auth/drive.file";
 const FOLDER_NAME = "Shanu & Ragv — Notes & Photos";
 /* ========================================================= */
 
-/* ---- static content rendered by JS ---- */
-const PROMISES = [
+/* ---------- seed content (the originals) ---------- */
+const SEED_DATES = [
+  {date:"March 26",title:"First Meet",desc:"The first time our paths crossed. Neither of us knew yet what it would turn into."},
+  {date:"April 4",title:"First Real Talk",desc:"The first time we actually talked — just us, no performance, no distance."},
+  {date:"May 23",title:"The Magical Word",desc:"Some words change everything. This one did."},
+  {date:"May 26",title:"Cake Bee",desc:"Our first date — cake, conversation, and the start of something neither of us could quite name yet."},
+  {date:"June 4",title:"Indulgence",desc:"A day we let ourselves have exactly what we wanted — each other's company, nothing else."},
+  {date:"June 6",title:"Her Dad's Birthday",desc:"Family days matter, even the ones I'm not technically part of."},
+  {date:"January 8",title:"Ragave's Birthday",desc:"Out of every day on this list, this is the one I'd protect first.",crown:true}
+];
+const SEED_LETTERS = [
+  {kick:"a new year wish",title:"My G.U.N.D.U",body:["Hello Rag-V — my G.U.N.D.U: Gorgeous, Unique, Nice-hearted, Delightful, Unstoppable. At this exact moment, when the clock and the calendar lined up to 11:11, 1/1, I want to wish for both of us to be happy, smiling, laughing — together through all of it, the good and the bad.","Even on the days we hurt each other, I want us to keep choosing to fix it. My wish for this year is to hold your hand, take care of you, make you feel at home, make you laugh like no one else can, and be your shoulder whenever you need one.","I don't know what's planned for us, but I hope it's you.","I love you, buboooo"]},
+  {kick:"happy birthday",title:"For Rag-V, on her day",body:["I hope today reminds you of how special you truly are. You bring so much warmth, joy, and meaning into my life without even trying. Being around you feels easy, real, and comforting — like a place I want to stay.","I love your smile, your strength, and the way you make ordinary moments feel important. All I want today is for you to feel loved, valued, and genuinely happy.","No matter where life takes us, a part of my heart will always smile because of you.","Happy birthday, Rag-V 💗"]},
+  {kick:"what you told me",title:"\"You are one big loosu\"",body:["Hi, Shanu. You are one big loosu. Please don't be mad at me, I just wanted to tell you what you mean to me.","You're the first person who loved talking to me. The first person who valued me the way I'd always hoped to be valued. The first person who came out with me, who went to a café with me, who brought me flowers, who brought me gifts.","The first person who tolerated me and stayed. Who accepted me exactly as I am, and thought well of me anyway. The first person who showed me what real care feels like — the first I hugged, and the first to hug me back.","You never let me feel alone. There are still so many things left to say."]},
+  {kick:"what i told you",title:"\"We chose friendship\"",body:["Hey Rag-V, I don't know how to start this, so I'll just say it the way I feel it.","Something shifted in my life that I didn't see coming. You happened. And nothing's been the same since — not the way I laugh, not the way I see myself, not the way I believe in people.","I know I haven't always been easy. There were moments I made things harder than they needed to be. I see that clearly now, and I carry it. But through all of it, you stayed.","We chose friendship, and I want you to know — I'm choosing it fully. Not as a consolation, not as a way to stay close just in case, but because losing you completely is something I refuse to let happen.","You changed me, Ragave. You gave me the ability to laugh from my stomach, to feel things I thought I couldn't feel, to believe I'm worth something to someone. So here I am — your loosu friend — telling you that you mean the entire world to me.","I love you, bubooo. Always will. In every version of us."]},
+  {kick:"2:16 in the morning",title:"A dream I had",body:["I just woke up from the most beautiful dream. We were a family, living a happy, healthy life, full of laughter. I could hear a child's laughter through the whole dream.","I don't think anything else could make me feel that way except you. If there's ever a chance, and if it's meant to be, I want you to be my partner for the rest of my life.","I know there might be complications — with us, with our families — and I know that scares you. But deep down, I've already registered you as my soulmate, and nothing changes that from my end.","I'm so blessed to have you, and I ask every god I know to let me keep you, for good."]},
+  {kick:"just gratitude",title:"Thank you for being my home",body:["Thank you for being my home. Thank you for being my best. Thank you for being my reason to smile. Thank you for being my reason to work.","Thank you for choosing me. Thank you for being with me.","No words can really describe what you're worth to me."]}
+];
+const SEED_PROMISES = [
   "Get a new metro card.","Remember your bike number — <b>TN04BH3814</b>.","Be careful crossing the road.",
   "Drink plenty of water.","Stay calm around dogs — they sense panic.","Learn to say no when you mean it.",
   "Don't ignore people — say so, or ask for time.","Watch your surroundings while walking.","Don't skip dinner.",
@@ -489,229 +485,298 @@ const PROMISES = [
   "Don't dwell on others' opinions more than you need to.","Be with people who think you're enough.",
   "Stand on your own — don't lean only on others.","Take care of amma and appa.","Spend more time with Ahaana."
 ];
-const GIFTS_GIVEN = ["Kashmir jumka","Jumka","Mirror comb","Wood comb","Shawl","Kurta","Attar","Saffron","Globe","Wooden box","Pear","Blue chain","Chain","Bangles","Jal jal — black","Jal jal — white","Real bouquet","Crochet bouquet","Makeup box","Lady bug"];
-const GIFTS_WAY = ["Another lady bug","Makeup tools","Lipstick — espresso brown","Lipstick — chocolate","Lipstick — red sangria","Jumkas","Bangles","Jal jal","Twisters","Golden ring","Golden chain","Golden studs","Perfume"];
-const GIFTS_WRAPPED = ["Upcoming gift one — even I don't want to spoil it.","Upcoming gift two — still figuring out when."];
-/* dates for "on this day" + birthday countdown (month index 0-based, day) */
-const KEY_DATES = [
-  {m:2,d:26,t:"the day we first met"},{m:3,d:4,t:"our first real talk"},{m:4,d:23,t:"the magical word"},
-  {m:4,d:26,t:"Cake Bee — our first date"},{m:5,d:4,t:"Indulgence"},{m:5,d:6,t:"her dad's birthday"},
-  {m:0,d:8,t:"Ragave's birthday"}
-];
+const SEED_GIFTS = {
+  given:["Kashmir jumka","Jumka","Mirror comb","Wood comb","Shawl","Kurta","Attar","Saffron","Globe","Wooden box","Pear","Blue chain","Chain","Bangles","Jal jal — black","Jal jal — white","Real bouquet","Crochet bouquet","Makeup box","Lady bug"],
+  way:["Another lady bug","Makeup tools","Lipstick — espresso brown","Lipstick — chocolate","Lipstick — red sangria","Jumkas","Bangles","Jal jal","Twisters","Golden ring","Golden chain","Golden studs","Perfume"],
+  wrapped:["Upcoming gift one — even I don't want to spoil it.","Upcoming gift two — still figuring out when."]
+};
+const KEY_DATES=[{m:2,d:26,t:"the day we first met"},{m:3,d:4,t:"our first real talk"},{m:4,d:23,t:"the magical word"},{m:4,d:26,t:"Cake Bee — our first date"},{m:5,d:4,t:"Indulgence"},{m:5,d:6,t:"her dad's birthday"},{m:0,d:8,t:"Ragave's birthday"}];
 
-const $ = s => document.querySelector(s);
-const el = (t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;};
+const $=s=>document.querySelector(s);
+const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;};
+const uid=p=>p+Date.now()+Math.random().toString(36).slice(2,6);
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),2600);}
 function fmtDate(ts){return new Date(ts).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"});}
 function esc(s){return (s||"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
 
-/* ---- render static ---- */
-function renderStatic(){
-  const pl=$("#promiseList");
-  PROMISES.forEach(p=>{
-    const row=el("div","promise");
-    row.innerHTML='<svg class="b" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="#B23A38"/><path d="M6 1v10" stroke="#2A211A" stroke-width=".7"/></svg><span>'+p+'</span>';
-    pl.appendChild(row);
-  });
-  const mk=(arr,id)=>{const w=$(id);arr.forEach(g=>{const c=el("span","chip");c.innerHTML=g;w.appendChild(c);});};
-  mk(GIFTS_GIVEN,"#giftsGiven"); mk(GIFTS_WAY,"#giftsWay"); mk(GIFTS_WRAPPED,"#giftsWrapped");
+let data={notes:[],photos:[],dates:[],letters:[],promises:[],gifts:[],theme:null};
+let connected=false;
+const configured=CLIENT_ID&&!CLIENT_ID.startsWith("YOUR_");
 
-  // today strip: on-this-day + birthday countdown
-  const strip=$("#todayStrip"); const now=new Date();
+/* ================= THEME ================= */
+const SUN='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19"/></svg>';
+const MOON='<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8.5 8.5 0 019.5 4a7 7 0 108.9 10.9 8.6 8.6 0 001.6-.4z"/></svg>';
+function applyTheme(t){
+  document.documentElement.setAttribute("data-theme",t);
+  $("#themeBtn").innerHTML = t==="dark" ? SUN : MOON;
+  $("#themeBtn").title = t==="dark" ? "Switch to day" : "Switch to night";
+}
+function toggleTheme(){
+  const now=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";
+  applyTheme(now); data.theme=now;
+  if(connected){ saveData().catch(()=>{}); }
+}
+/* initial: system preference */
+applyTheme(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+
+/* ================= MOBILE MENU ================= */
+$("#menuToggle").onclick=()=>{
+  const m=$("#mobileMenu"),open=m.classList.toggle("open");
+  $("#menuToggle").setAttribute("aria-expanded",open);
+};
+$("#mobileMenu").querySelectorAll("a").forEach(a=>a.onclick=()=>{
+  $("#mobileMenu").classList.remove("open");$("#menuToggle").setAttribute("aria-expanded","false");
+});
+
+/* ================= RENDER: dates ================= */
+function renderDates(){
+  const tl=$("#timeline");tl.innerHTML="";
+  const add=(d,removable)=>{
+    const item=el("div","tl"+(d.crown?" crown":""));
+    item.innerHTML=`<div class="dot"></div><div class="date">${esc(d.date)}</div><h3>${esc(d.title)}</h3>`+
+      (d.desc?`<p>${esc(d.desc)}</p>`:"");
+    if(removable&&connected){
+      const del=el("div","row-del");const b=el("button","del-x","Remove");b.onclick=()=>removeItem("dates",d.id);
+      del.appendChild(b);item.appendChild(del);
+    }
+    tl.appendChild(item);
+  };
+  SEED_DATES.forEach(d=>add(d,false));
+  data.dates.forEach(d=>add(d,true));
+}
+/* ================= RENDER: letters ================= */
+function renderLetters(){
+  const box=$("#letters");box.innerHTML="";
+  const add=(l,removable)=>{
+    const det=el("details","letter");
+    const bodyHtml=(l.body||[]).map(p=>`<p>${esc(p)}</p>`).join("");
+    det.innerHTML=`<summary><span class="lmeta"><span class="lkick">${esc(l.kick||"")}</span><span class="ltitle">${esc(l.title||"")}</span></span><span class="plus">+</span></summary><div class="body">${bodyHtml}</div>`;
+    if(removable&&connected){
+      const del=el("div","row-del");const b=el("button","del-x","Remove this letter");b.onclick=()=>removeItem("letters",l.id);
+      del.appendChild(b);det.querySelector(".body").appendChild(del);
+    }
+    box.appendChild(det);
+  };
+  SEED_LETTERS.forEach(l=>add({...l,body:l.body},false));
+  data.letters.forEach(l=>add({kick:l.kick,title:l.title,body:(l.body||"").split(/\n\n+/).filter(Boolean),id:l.id},true));
+}
+/* ================= RENDER: promises ================= */
+function renderPromises(){
+  const pl=$("#promiseList");pl.innerHTML="";
+  const dot='<svg class="b" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="var(--bug)"/><path d="M6 1v10" stroke="var(--ink)" stroke-width=".7"/></svg>';
+  SEED_PROMISES.forEach(p=>{const r=el("div","promise");r.innerHTML=dot+"<span>"+p+"</span>";pl.appendChild(r);});
+  data.promises.forEach(p=>{
+    const r=el("div","promise");r.innerHTML=dot+"<span>"+esc(p.text)+"</span>";
+    if(connected){const x=el("button","del-x","✕");x.onclick=()=>removeItem("promises",p.id);r.appendChild(x);}
+    pl.appendChild(r);
+  });
+}
+/* ================= RENDER: gifts ================= */
+function renderGifts(){
+  const map={given:"#giftsGiven",way:"#giftsWay",wrapped:"#giftsWrapped"};
+  Object.keys(map).forEach(cat=>{
+    const c=$(map[cat]);c.innerHTML="";
+    SEED_GIFTS[cat].forEach(g=>{const chip=el("span","chip");chip.innerHTML=esc(g);c.appendChild(chip);});
+    data.gifts.filter(g=>g.cat===cat).forEach(g=>{
+      const chip=el("span","chip");chip.innerHTML=esc(g.text);
+      if(connected){const x=el("span","cx","×");x.onclick=()=>removeItem("gifts",g.id);chip.appendChild(x);}
+      c.appendChild(chip);
+    });
+  });
+}
+/* ================= today strip ================= */
+function renderToday(){
+  const strip=$("#todayStrip");strip.innerHTML="";const now=new Date();
   const hit=KEY_DATES.find(k=>k.m===now.getMonth()&&k.d===now.getDate());
-  if(hit){const c=el("div","chip-soft");c.innerHTML='<b>today</b> · '+hit.t;strip.appendChild(c);}
+  if(hit){const c=el("div","chip-soft");c.innerHTML="<b>today</b> · "+hit.t;strip.appendChild(c);}
   const bday=new Date(now.getFullYear(),0,8);
-  if(bday<now.setHours(0,0,0,0)) bday.setFullYear(bday.getFullYear()+1);
-  const days=Math.ceil((bday-new Date().setHours(0,0,0,0))/864e5);
+  if(bday.getTime()<new Date().setHours(0,0,0,0))bday.setFullYear(bday.getFullYear()+1);
+  const days=Math.ceil((bday.getTime()-new Date().setHours(0,0,0,0))/864e5);
   const c2=el("div","chip-soft");
-  c2.innerHTML = days===0 ? '<b>♛</b> it\'s Ragave\'s birthday today' :
-    '<span class="n">'+days+'</span> day'+(days===1?"":"s")+' until Ragave\'s birthday';
+  c2.innerHTML=days===0?"<b>♛</b> it's Ragave's birthday today":'<span class="n">'+days+"</span> day"+(days===1?"":"s")+" until Ragave's birthday";
   strip.appendChild(c2);
 }
 
-/* ---- Drive integration ---- */
-let tokenClient=null,accessToken=null,folderId=null,dataFileId=null;
-let data={notes:[],photos:[]}; const thumbCache=new Map();
-let connected=false;
-const configured = CLIENT_ID && !CLIENT_ID.startsWith("YOUR_");
+/* ================= ADD MODAL ================= */
+let modalSaveFn=null;
+function field(label,elm){const f=el("div","field");const l=el("label",null,label);f.appendChild(l);f.appendChild(elm);return f;}
+function inp(ph){const e=el("input");e.placeholder=ph||"";return e;}
+function openAdd(type,cat){
+  const body=$("#modalBody");body.innerHTML="";
+  const title=$("#modalTitle");
+  if(type==="date"){
+    title.textContent="Add a date worth keeping";
+    const when=inp("e.g. August 12"),t=inp("What is it?"),d=el("textarea");d.placeholder="A line about why it matters (optional)";
+    body.append(field("When",when),field("Title",t),field("A little about it",d));
+    modalSaveFn=()=>{if(!when.value.trim()||!t.value.trim())return toast("Add at least a date and title");
+      data.dates.push({id:uid("d"),date:when.value.trim(),title:t.value.trim(),desc:d.value.trim()});
+      commit(renderDates,"Date added");};
+  }else if(type==="gift"){
+    title.textContent="Add a gift";
+    const sel=el("select");[["given","Found their way to you"],["way","Still finding their way"],["wrapped","Still wrapped"]].forEach(([v,lab])=>{const o=el("option",null,lab);o.value=v;if(v===cat)o.selected=true;sel.appendChild(o);});
+    const t=inp("What's the gift?");
+    body.append(field("Which list",sel),field("Gift",t));
+    modalSaveFn=()=>{if(!t.value.trim())return toast("Add the gift");
+      data.gifts.push({id:uid("g"),text:t.value.trim(),cat:sel.value});
+      commit(renderGifts,"Gift added");};
+  }else if(type==="promise"){
+    title.textContent="Add a reminder";
+    const t=inp("Something to remember…");
+    body.append(field("Reminder",t));
+    modalSaveFn=()=>{if(!t.value.trim())return toast("Write the reminder");
+      data.promises.push({id:uid("p"),text:t.value.trim()});
+      commit(renderPromises,"Reminder added");};
+  }else if(type==="letter"){
+    title.textContent="Add a letter";
+    const k=inp("small label, e.g. \"a quiet night\""),t=inp("Title"),b=el("textarea");
+    b.placeholder="Write the letter… leave a blank line between paragraphs.";
+    body.append(field("Small label",k),field("Title",t),field("The letter",b));
+    modalSaveFn=()=>{if(!t.value.trim()||!b.value.trim())return toast("A title and the letter, at least");
+      data.letters.push({id:uid("l"),kick:k.value.trim(),title:t.value.trim(),body:b.value.trim()});
+      commit(renderLetters,"Letter added");};
+  }
+  $("#modal").classList.add("show");
+}
+async function commit(renderFn,msg){
+  renderFn();closeModal();
+  try{await saveData();toast(msg);}catch(e){console.error(e);toast("Saved on screen, but Drive sync hiccupped");}
+}
+async function removeItem(key,id){
+  data[key]=data[key].filter(x=>x.id!==id);
+  ({dates:renderDates,letters:renderLetters,promises:renderPromises,gifts:renderGifts})[key]();
+  try{await saveData();}catch{}
+}
+function closeModal(){$("#modal").classList.remove("show");modalSaveFn=null;}
+$("#modalX").onclick=closeModal;$("#modalCancel").onclick=closeModal;
+$("#modal").onclick=e=>{if(e.target===$("#modal"))closeModal();};
+$("#modalSave").onclick=()=>{if(modalSaveFn)modalSaveFn();};
 
+/* ================= DRIVE ================= */
+let tokenClient=null,accessToken=null,folderId=null,dataFileId=null;
+const thumbCache=new Map();
 function initGis(){
   if(!configured){
-    $("#setupWrap").innerHTML='<div class="setup"><b>One-time:</b> paste your OAuth client ID into <code>CLIENT_ID</code> at the top of the script (the same one from your Vercel setup), then redeploy. The archive works without it — only Notes &amp; Memories need Drive.</div>';
+    $("#setupWrap").innerHTML='<div class="setup"><b>One-time:</b> paste your OAuth client ID into <code>CLIENT_ID</code> at the top of the script (the same one from your Vercel setup), then redeploy. The archive works without it — only Notes, Memories &amp; the “+ Add” buttons need Drive.</div>';
     return;
   }
-  const w=setInterval(()=>{
-    if(window.google&&google.accounts&&google.accounts.oauth2){clearInterval(w);
-      tokenClient=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:()=>{}});
-    }
-  },120);
+  const w=setInterval(()=>{if(window.google&&google.accounts&&google.accounts.oauth2){clearInterval(w);
+    tokenClient=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:()=>{}});}} ,120);
 }
-function getToken(interactive){
-  return new Promise((res,rej)=>{
-    if(!tokenClient)return rej(new Error("Auth not ready — check the client ID and host domain."));
-    tokenClient.callback=r=>r.error?rej(r):(accessToken=r.access_token,res(r));
-    tokenClient.requestAccessToken({prompt:interactive?"consent":""});
-  });
-}
+function getToken(interactive){return new Promise((res,rej)=>{
+  if(!tokenClient)return rej(new Error("Auth not ready — check the client ID and host domain."));
+  tokenClient.callback=r=>r.error?rej(r):(accessToken=r.access_token,res(r));
+  tokenClient.requestAccessToken({prompt:interactive?"consent":""});});}
 async function driveApi(url,opts={},retry=true){
   const r=await fetch(url,{...opts,headers:{Authorization:"Bearer "+accessToken,...(opts.headers||{})}});
   if(r.status===401&&retry){await getToken(false);return driveApi(url,opts,false);}
-  if(!r.ok&&r.status!==404)throw new Error("Drive request failed ("+r.status+")");
-  return r;
-}
+  if(!r.ok&&r.status!==404)throw new Error("Drive request failed ("+r.status+")");return r;}
 async function ensureFolder(){
   const q=encodeURIComponent(`mimeType='application/vnd.google-apps.folder' and name='${FOLDER_NAME}' and trashed=false`);
   const j=await(await driveApi(`https://www.googleapis.com/drive/v3/files?q=${q}&spaces=drive&fields=files(id)`)).json();
   if(j.files&&j.files.length){folderId=j.files[0].id;return;}
   const meta={name:FOLDER_NAME,mimeType:"application/vnd.google-apps.folder"};
-  folderId=(await(await driveApi("https://www.googleapis.com/drive/v3/files?fields=id",
-    {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(meta)})).json()).id;
-}
+  folderId=(await(await driveApi("https://www.googleapis.com/drive/v3/files?fields=id",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(meta)})).json()).id;}
 async function loadData(){
   const q=encodeURIComponent(`name='data.json' and '${folderId}' in parents and trashed=false`);
   const j=await(await driveApi(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id)`)).json();
-  if(j.files&&j.files.length){
-    dataFileId=j.files[0].id;
+  if(j.files&&j.files.length){dataFileId=j.files[0].id;
     const p=await(await driveApi(`https://www.googleapis.com/drive/v3/files/${dataFileId}?alt=media`)).json();
-    data={notes:p.notes||[],photos:p.photos||[]};
-  }else{data={notes:[],photos:[]};await saveData();}
+    data={notes:p.notes||[],photos:p.photos||[],dates:p.dates||[],letters:p.letters||[],promises:p.promises||[],gifts:p.gifts||[],theme:p.theme||null};
+  }else{await saveData();}
 }
 async function saveData(){
   const body=JSON.stringify(data,null,2);
-  if(dataFileId){
-    await driveApi(`https://www.googleapis.com/upload/drive/v3/files/${dataFileId}?uploadType=media`,
-      {method:"PATCH",headers:{"Content-Type":"application/json"},body});
-  }else{
-    const meta={name:"data.json",parents:[folderId],mimeType:"application/json"},b="b"+Date.now();
+  if(dataFileId){await driveApi(`https://www.googleapis.com/upload/drive/v3/files/${dataFileId}?uploadType=media`,{method:"PATCH",headers:{"Content-Type":"application/json"},body});}
+  else{const meta={name:"data.json",parents:[folderId],mimeType:"application/json"},b="b"+Date.now();
     const multi=`--${b}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(meta)}\r\n--${b}\r\nContent-Type: application/json\r\n\r\n${body}\r\n--${b}--`;
-    dataFileId=(await(await driveApi("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",
-      {method:"POST",headers:{"Content-Type":`multipart/related; boundary=${b}`},body:multi})).json()).id;
-  }
+    dataFileId=(await(await driveApi("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",{method:"POST",headers:{"Content-Type":`multipart/related; boundary=${b}`},body:multi})).json()).id;}
 }
 async function uploadPhoto(file){
   const meta={name:file.name,parents:[folderId]},b="p"+Date.now()+Math.random().toString(36).slice(2,6);
   const head=`--${b}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(meta)}\r\n--${b}\r\nContent-Type: ${file.type||"application/octet-stream"}\r\n\r\n`;
-  const f=await(await driveApi("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name",
-    {method:"POST",headers:{"Content-Type":`multipart/related; boundary=${b}`},body:new Blob([head,file,`\r\n--${b}--`])})).json();
-  data.photos.unshift({id:f.id,name:f.name,caption:"",addedAt:Date.now()});
-  await saveData();
-}
-async function loadThumb(id){
-  if(thumbCache.has(id))return thumbCache.get(id);
-  const url=URL.createObjectURL(await(await driveApi(`https://www.googleapis.com/drive/v3/files/${id}?alt=media`)).blob());
-  thumbCache.set(id,url);return url;
-}
+  const f=await(await driveApi("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name",{method:"POST",headers:{"Content-Type":`multipart/related; boundary=${b}`},body:new Blob([head,file,`\r\n--${b}--`])})).json();
+  data.photos.unshift({id:f.id,name:f.name,caption:"",addedAt:Date.now()});await saveData();}
+async function loadThumb(id){if(thumbCache.has(id))return thumbCache.get(id);
+  const url=URL.createObjectURL(await(await driveApi(`https://www.googleapis.com/drive/v3/files/${id}?alt=media`)).blob());thumbCache.set(id,url);return url;}
 async function driveDelete(id){await driveApi(`https://www.googleapis.com/drive/v3/files/${id}`,{method:"DELETE"});}
 
-/* ---- connect flow ---- */
 async function connect(){
   const b=$("#connectBtn");b.disabled=true;b.textContent="Connecting…";
   try{
     try{await getToken(false);}catch{await getToken(true);}
     await ensureFolder();await loadData();
-    connected=true;
+    connected=true;document.body.classList.add("connected");
     b.disabled=false;b.textContent="Drive ✓";b.classList.add("connected");
     $("#notesFlag").classList.add("on");$("#notesFlagText").textContent="Saving to your Drive";
     $("#photosFlag").classList.add("on");$("#photosFlagText").textContent="Saving to your Drive";
-    renderNotes();renderPhotos();
-    toast("Connected — your notes & memories are live");
-  }catch(e){
-    console.error(e);toast(e.message||"Couldn't connect.");b.disabled=false;b.textContent="Connect Drive";
-  }
+    if(data.theme)applyTheme(data.theme);
+    renderDates();renderLetters();renderPromises();renderGifts();renderNotes();renderPhotos();
+    toast("Connected — you can add & edit everything now");
+  }catch(e){console.error(e);toast(e.message||"Couldn't connect.");b.disabled=false;b.textContent="Connect";}
 }
 
 /* ---- notes ---- */
 function renderNotes(){
   const area=$("#notesArea");area.innerHTML="";
-  if(!connected){
-    area.innerHTML='<div class="connect-prompt"><div class="big">Connect your Drive to write notes</div><small>They save privately to your own Google Drive.</small><button class="btn" onclick="connect()">Connect Drive</button></div>';
-    return;
-  }
+  if(!connected){area.innerHTML='<div class="connect-prompt"><div class="big">Connect your Drive to write notes</div><small>They save privately to your own Google Drive.</small><button class="btn" onclick="connect()">Connect Drive</button></div>';return;}
   const comp=el("div","composer");
   comp.innerHTML='<input class="title" id="noteTitle" placeholder="A title…" maxlength="120"/><div class="rule"></div><textarea id="noteBody" placeholder="Write something to remember…"></textarea><div class="row"><button class="btn tiny" id="addNote">Save note</button></div>';
-  area.appendChild(comp);
-  const list=el("div","notes");area.appendChild(list);
-  $("#addNote").onclick=addNote;
-  $("#noteBody").addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key==="Enter")addNote();});
+  area.appendChild(comp);const list=el("div","notes");area.appendChild(list);
+  $("#addNote").onclick=addNote;$("#noteBody").addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key==="Enter")addNote();});
   if(!data.notes.length){list.innerHTML='<div style="color:var(--ink-faint);padding:8px 2px;font-size:14px">Nothing written yet — the first note is always the sweetest.</div>';return;}
-  data.notes.forEach(n=>{
-    const c=el("div","note-card");
+  data.notes.forEach(n=>{const c=el("div","note-card");
     c.innerHTML=(n.title?`<h3>${esc(n.title)}</h3>`:"")+(n.body?`<div class="ntext">${esc(n.body)}</div>`:"")+`<div class="meta"><span>${fmtDate(n.at)}</span></div>`;
-    const del=el("button","link-danger","Delete");del.onclick=()=>deleteNote(n.id);
-    c.querySelector(".meta").appendChild(del);list.appendChild(c);
-  });
+    const del=el("button","del-x","Delete");del.onclick=()=>deleteNote(n.id);c.querySelector(".meta").appendChild(del);list.appendChild(c);});
 }
-async function addNote(){
-  const t=$("#noteTitle").value.trim(),bd=$("#noteBody").value.trim();
-  if(!t&&!bd)return;
-  data.notes.unshift({id:"n"+Date.now(),title:t,body:bd,at:Date.now()});
-  renderNotes();try{await saveData();}catch{toast("Saved, but Drive sync hiccupped");}
-}
+async function addNote(){const t=$("#noteTitle").value.trim(),bd=$("#noteBody").value.trim();if(!t&&!bd)return;
+  data.notes.unshift({id:"n"+Date.now(),title:t,body:bd,at:Date.now()});renderNotes();try{await saveData();}catch{toast("Saved, but Drive sync hiccupped");}}
 async function deleteNote(id){data.notes=data.notes.filter(n=>n.id!==id);renderNotes();try{await saveData();}catch{}}
 
 /* ---- photos ---- */
 function renderPhotos(){
   const area=$("#photosArea");area.innerHTML="";
-  if(!connected){
-    area.innerHTML='<div class="connect-prompt"><div class="big">Connect your Drive to add photos</div><small>Your memories stay in your own Google Drive.</small><button class="btn" onclick="connect()">Connect Drive</button></div>';
-    return;
-  }
+  if(!connected){area.innerHTML='<div class="connect-prompt"><div class="big">Connect your Drive to add photos</div><small>Your memories stay in your own Google Drive.</small><button class="btn" onclick="connect()">Connect Drive</button></div>';return;}
   const dz=el("div","dropzone");
   dz.innerHTML='<div class="big">Add photos of the two of you</div><small>Click to choose, or drag images here · saved to your Drive</small><input type="file" id="fileInput" accept="image/*" multiple hidden/>';
-  area.appendChild(dz);
-  const g=el("div","gallery");area.appendChild(g);
-  const fi=dz.querySelector("#fileInput");
-  dz.onclick=()=>fi.click();
-  fi.onchange=()=>{handleFiles(fi.files);fi.value="";};
+  area.appendChild(dz);const g=el("div","gallery");area.appendChild(g);
+  const fi=dz.querySelector("#fileInput");dz.onclick=()=>fi.click();fi.onchange=()=>{handleFiles(fi.files);fi.value="";};
   ["dragover","dragenter"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add("drag");}));
   ["dragleave","drop"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove("drag");}));
   dz.addEventListener("drop",e=>handleFiles(e.dataTransfer.files));
   if(!data.photos.length){g.innerHTML='<div style="color:var(--ink-faint);font-size:14px">No photos yet — add the first one above.</div>';return;}
-  data.photos.forEach(p=>{
-    const card=el("div","photo");
-    const wrap=el("div","imgwrap");wrap.appendChild(el("div","shimmer"));
+  data.photos.forEach(p=>{const card=el("div","photo");const wrap=el("div","imgwrap");wrap.appendChild(el("div","shimmer"));
     const del=el("button","del");del.innerHTML="&times;";del.onclick=e=>{e.stopPropagation();deletePhoto(p.id);};
-    const cap=el("div","ph-cap");const inp=el("input");inp.value=p.caption||"";inp.placeholder="Add a caption…";
-    inp.onchange=()=>saveCaption(p.id,inp.value.trim());cap.appendChild(inp);
+    const cap=el("div","ph-cap");const inpc=el("input");inpc.value=p.caption||"";inpc.placeholder="Add a caption…";
+    inpc.onchange=()=>saveCaption(p.id,inpc.value.trim());cap.appendChild(inpc);
     card.appendChild(wrap);card.appendChild(del);card.appendChild(cap);g.appendChild(card);
-    loadThumb(p.id).then(url=>{wrap.innerHTML="";const img=new Image();img.src=url;img.alt=p.caption||"our photo";
-      wrap.appendChild(img);wrap.onclick=()=>openLightbox(url,inp.value);})
-      .catch(()=>{wrap.innerHTML='<div class="ph-cap" style="color:var(--bug)">Couldn\'t load</div>';});
-  });
+    loadThumb(p.id).then(url=>{wrap.innerHTML="";const img=new Image();img.src=url;img.alt=p.caption||"our photo";wrap.appendChild(img);wrap.onclick=()=>openLightbox(url,inpc.value);})
+      .catch(()=>{wrap.innerHTML='<div class="ph-cap" style="color:var(--bug)">Couldn\'t load</div>';});});
 }
-async function handleFiles(files){
-  const imgs=[...files].filter(f=>f.type.startsWith("image/"));if(!imgs.length)return;
+async function handleFiles(files){const imgs=[...files].filter(f=>f.type.startsWith("image/"));if(!imgs.length)return;
   toast(`Uploading ${imgs.length} photo${imgs.length>1?"s":""}…`);
-  for(const f of imgs){try{await uploadPhoto(f);}catch(e){console.error(e);toast("A photo failed to upload");}}
-  renderPhotos();toast("Saved to your Drive");
-}
-async function deletePhoto(id){
-  data.photos=data.photos.filter(x=>x.id!==id);renderPhotos();
-  try{await driveDelete(id);await saveData();}catch{}
-  if(thumbCache.has(id)){URL.revokeObjectURL(thumbCache.get(id));thumbCache.delete(id);}
-}
+  for(const f of imgs){try{await uploadPhoto(f);}catch(e){console.error(e);toast("A photo failed to upload");}}renderPhotos();toast("Saved to your Drive");}
+async function deletePhoto(id){data.photos=data.photos.filter(x=>x.id!==id);renderPhotos();try{await driveDelete(id);await saveData();}catch{}
+  if(thumbCache.has(id)){URL.revokeObjectURL(thumbCache.get(id));thumbCache.delete(id);}}
 async function saveCaption(id,val){const p=data.photos.find(x=>x.id===id);if(!p)return;p.caption=val;try{await saveData();}catch{}}
 
 /* ---- lightbox ---- */
 function openLightbox(url,cap){$("#lbImg").src=url;$("#lbCap").textContent=cap||"";$("#lightbox").classList.add("show");}
 $("#lightbox").onclick=()=>$("#lightbox").classList.remove("show");
-document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#lightbox").classList.remove("show");});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#lightbox").classList.remove("show");closeModal();}});
 
-/* ---- reveal on scroll ---- */
+/* ---- reveal ---- */
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.12});
 document.querySelectorAll(".reveal").forEach(r=>io.observe(r));
 
-/* ---- ladybug landing ---- */
-window.addEventListener("load",()=>{
-  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
-  const bug=$("#bugLand");
-  bug.style.animation="landDrop 1.1s cubic-bezier(.2,.8,.2,1) both";
-  setTimeout(()=>{bug.style.animation="wob 3.5s ease-in-out 1s infinite";},1200);
-});
+/* ---- ladybug ---- */
+window.addEventListener("load",()=>{if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const bug=$("#bugLand");bug.style.animation="landDrop 1.1s cubic-bezier(.2,.8,.2,1) both";
+  setTimeout(()=>{bug.style.animation="wob 3.5s ease-in-out 1s infinite";},1200);});
 
 /* ---- init ---- */
+$("#themeBtn").onclick=toggleTheme;
 $("#connectBtn").onclick=connect;
-renderStatic();renderNotes();renderPhotos();initGis();
+renderDates();renderLetters();renderPromises();renderGifts();renderToday();renderNotes();renderPhotos();initGis();
 </script>
 </body>
 </html>
