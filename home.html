@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shanu & Ragv — our notes & photos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#F6F1E9; --paper-2:#FBF7F0; --card:#FFFDFA;
+    --ink:#2A231E; --ink-soft:#6B5D52; --ink-faint:#9C8E80;
+    --plum:#7A4E63; --plum-deep:#5E3A4C; --blush:#F3E4E0;
+    --gold:#C69A5B; --line:#E7DCCB; --line-soft:#EFE7DA;
+    --danger:#9A4A3E;
+    --shadow:0 1px 2px rgba(42,35,30,.04), 0 8px 26px rgba(42,35,30,.06);
+    --shadow-lift:0 2px 6px rgba(42,35,30,.06), 0 16px 40px rgba(94,58,76,.12);
+    --r:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:
+      radial-gradient(1100px 600px at 80% -10%, #FBEEE9 0%, rgba(251,238,233,0) 60%),
+      radial-gradient(900px 500px at -10% 110%, #F1EAF0 0%, rgba(241,234,240,0) 55%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    line-height:1.55;
+  }
+  a{color:var(--plum)}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px}
+
+  /* Header */
+  header.site{
+    padding:26px 0 18px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+  .brand{display:flex;flex-direction:column;line-height:1}
+  .brand .mark{
+    font-family:"Caveat",cursive;font-size:34px;color:var(--plum-deep);
+    letter-spacing:.3px;
+  }
+  .brand .mark span{color:var(--gold)}
+  .brand .sub{
+    font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-faint);margin-top:4px;font-weight:500;
+  }
+  .account{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-soft)}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--ink-faint)}
+  .dot.on{background:#5c8a5c}
+
+  /* Buttons */
+  button{font-family:inherit;cursor:pointer;border:none;background:none}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 16px;border-radius:11px;font-size:14px;font-weight:500;
+    background:var(--plum);color:#fff;box-shadow:var(--shadow);
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn:hover{background:var(--plum-deep);transform:translateY(-1px);box-shadow:var(--shadow-lift)}
+  .btn:active{transform:translateY(0)}
+  .btn.ghost{background:transparent;color:var(--plum);box-shadow:none;border:1px solid var(--line)}
+  .btn.ghost:hover{background:#fff;border-color:var(--plum);color:var(--plum-deep)}
+  .btn.tiny{padding:6px 11px;font-size:12.5px;border-radius:9px}
+  .btn:disabled{opacity:.55;cursor:default;transform:none;box-shadow:var(--shadow)}
+  .link-danger{color:var(--ink-faint);font-size:12.5px;background:none}
+  .link-danger:hover{color:var(--danger)}
+
+  /* Connect / hero */
+  .gate{
+    margin:8vh auto 0;max-width:560px;text-align:center;
+    background:var(--card);border:1px solid var(--line);border-radius:22px;
+    padding:44px 38px;box-shadow:var(--shadow);
+    animation:rise .6s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .gate .seal{
+    width:56px;height:56px;margin:0 auto 20px;border-radius:50%;
+    display:grid;place-items:center;
+    background:linear-gradient(150deg,var(--blush),#fff);
+    border:1px solid var(--line);color:var(--plum);
+  }
+  .gate h1{
+    font-family:"Fraunces",serif;font-weight:500;font-size:30px;line-height:1.15;
+    margin:0 0 10px;letter-spacing:-.01em;
+  }
+  .gate p{color:var(--ink-soft);font-size:15px;margin:0 auto 26px;max-width:42ch}
+  .gate .note{
+    margin-top:22px;font-size:12.5px;color:var(--ink-faint);
+    border-top:1px solid var(--line-soft);padding-top:16px;
+  }
+  .gate .note code{
+    background:var(--paper);padding:1px 6px;border-radius:5px;
+    font-size:12px;color:var(--plum-deep);
+  }
+  .setup{
+    text-align:left;background:#FFF8E9;border:1px solid #EAD9A8;
+    color:#7a5a1e;border-radius:12px;padding:14px 16px;font-size:13px;margin-bottom:24px;
+  }
+  .setup b{color:#5e440f}
+
+  /* App */
+  #app{display:none}
+  .tabs{
+    display:flex;gap:4px;background:var(--card);border:1px solid var(--line);
+    border-radius:13px;padding:5px;width:fit-content;margin:6px 0 22px;box-shadow:var(--shadow);
+  }
+  .tab{
+    padding:8px 18px;border-radius:9px;font-size:14px;font-weight:500;color:var(--ink-soft);
+    transition:.15s;
+  }
+  .tab.active{background:var(--plum);color:#fff}
+  .tab:not(.active):hover{color:var(--plum-deep)}
+  .panel{display:none;animation:fade .4s ease both}
+  .panel.active{display:block}
+
+  /* Composer */
+  .composer{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    padding:16px;box-shadow:var(--shadow);margin-bottom:22px;
+  }
+  .composer input.title{
+    width:100%;border:none;background:none;font-family:"Fraunces",serif;
+    font-size:19px;color:var(--ink);padding:2px 2px 8px;outline:none;font-weight:500;
+  }
+  .composer input.title::placeholder{color:var(--ink-faint)}
+  .composer .rule{height:1px;background:var(--line-soft);margin:2px 0 10px}
+  .composer textarea{
+    width:100%;border:none;background:none;resize:vertical;min-height:70px;
+    font-family:inherit;font-size:14.5px;color:var(--ink);outline:none;line-height:1.6;
+  }
+  .composer textarea::placeholder{color:var(--ink-faint)}
+  .composer .row{display:flex;justify-content:flex-end;margin-top:8px}
+
+  /* Notes list */
+  .notes{display:grid;gap:14px}
+  .note-card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    padding:18px 18px 16px;box-shadow:var(--shadow);position:relative;
+    border-left:3px solid var(--gold);
+    transition:transform .15s ease, box-shadow .15s ease;
+    animation:fade .4s ease both;
+  }
+  .note-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lift)}
+  .note-card h3{font-family:"Fraunces",serif;font-weight:500;font-size:18px;margin:0 0 6px}
+  .note-card .body{font-size:14.5px;color:var(--ink-soft);white-space:pre-wrap;word-break:break-word}
+  .note-card .meta{
+    display:flex;justify-content:space-between;align-items:center;margin-top:14px;
+    font-size:12px;color:var(--ink-faint);
+  }
+
+  /* Photos */
+  .dropzone{
+    border:1.5px dashed var(--line);border-radius:var(--r);background:var(--paper-2);
+    padding:30px;text-align:center;color:var(--ink-soft);margin-bottom:22px;
+    transition:.18s;cursor:pointer;
+  }
+  .dropzone:hover,.dropzone.drag{border-color:var(--plum);background:#fff;color:var(--plum-deep)}
+  .dropzone .big{font-family:"Fraunces",serif;font-size:17px;color:var(--ink);margin-bottom:3px}
+  .dropzone small{font-size:12.5px;color:var(--ink-faint)}
+  .gallery{columns:3;column-gap:14px}
+  @media(max-width:720px){.gallery{columns:2}}
+  @media(max-width:440px){.gallery{columns:1}}
+  .photo{
+    break-inside:avoid;margin-bottom:14px;background:var(--card);
+    border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);
+    position:relative;animation:fade .5s ease both;
+  }
+  .photo .imgwrap{background:var(--blush);min-height:120px;display:grid;place-items:center}
+  .photo img{width:100%;display:block}
+  .photo .ph-cap{padding:10px 12px 12px;font-size:13px;color:var(--ink-soft)}
+  .photo .ph-cap input{
+    width:100%;border:none;background:none;font-family:inherit;font-size:13px;
+    color:var(--ink-soft);outline:none;
+  }
+  .photo .del{
+    position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:8px;
+    background:rgba(255,253,250,.92);color:var(--danger);display:grid;place-items:center;
+    opacity:0;transition:.15s;backdrop-filter:blur(2px);box-shadow:var(--shadow);
+  }
+  .photo:hover .del{opacity:1}
+  .shimmer{height:150px;width:100%;background:linear-gradient(100deg,#f3e9e3 30%,#faf3ee 50%,#f3e9e3 70%);
+    background-size:200% 100%;animation:sh 1.3s infinite}
+
+  /* Empty */
+  .empty{
+    text-align:center;color:var(--ink-faint);padding:44px 20px;font-size:14.5px;
+  }
+  .empty .fig{font-family:"Fraunces",serif;font-size:19px;color:var(--ink-soft);margin-bottom:4px}
+
+  /* Toast */
+  #toast{
+    position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+    background:var(--ink);color:#fff;padding:11px 18px;border-radius:11px;font-size:13.5px;
+    box-shadow:var(--shadow-lift);opacity:0;pointer-events:none;transition:.25s;z-index:50;
+  }
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  footer{padding:40px 0 30px;text-align:center;color:var(--ink-faint);font-size:12px}
+
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @keyframes sh{to{background-position:-200% 0}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="site">
+    <div class="brand">
+      <div class="mark">Shanu <span>&amp;</span> Ragv</div>
+      <div class="sub">our notes &amp; photos</div>
+    </div>
+    <div class="account" id="account" style="display:none">
+      <span class="dot on"></span><span id="acctText">Connected to Drive</span>
+      <button class="link-danger" id="signout">Sign out</button>
+    </div>
+  </header>
+
+  <!-- GATE -->
+  <section class="gate" id="gate">
+    <div class="seal">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 21s-7.5-4.6-10-9.4C.6 8.4 2 5 5.2 5c2 0 3.3 1.1 4 2.2C9.7 6.1 11 5 13 5c3.2 0 4.6 3.4 3.2 6.6C21 16.4 12 21 12 21z"/>
+      </svg>
+    </div>
+    <h1>A quiet place for the two of you</h1>
+    <p>Your notes and photos live in your own Google Drive — nothing is stored anywhere else. Connect once and everything saves straight to a private folder only this app can touch.</p>
+
+    <div class="setup" id="setupNote" style="display:none">
+      <b>One-time setup needed.</b> Add your Google OAuth Client ID in the code
+      (<code>CLIENT_ID</code> near the top of the script) and host this file on an
+      authorised domain. Setup steps are in the message from Shanu's build notes.
+    </div>
+
+    <button class="btn" id="connect">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 11v2h2.8A3 3 0 1112 8a3 3 0 012.1.9l1.5-1.5A5 5 0 1017 12c0-.3 0-.7-.1-1H12z"/></svg>
+      Connect Google Drive
+    </button>
+    <div class="note">Uses the <code>drive.file</code> scope — this app can only see files it creates for you, never the rest of your Drive.</div>
+  </section>
+
+  <!-- APP -->
+  <section id="app">
+    <div class="tabs">
+      <button class="tab active" data-tab="notes">Notes</button>
+      <button class="tab" data-tab="photos">Photos</button>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel active" id="panel-notes">
+      <div class="composer">
+        <input class="title" id="noteTitle" placeholder="A title…" maxlength="120" />
+        <div class="rule"></div>
+        <textarea id="noteBody" placeholder="Write something to remember…"></textarea>
+        <div class="row"><button class="btn tiny" id="addNote">Save note</button></div>
+      </div>
+      <div class="notes" id="notesList"></div>
+    </div>
+
+    <!-- PHOTOS -->
+    <div class="panel" id="panel-photos">
+      <div class="dropzone" id="dropzone">
+        <div class="big">Add photos of the two of you</div>
+        <small>Click to choose, or drag images here · saved to your Drive</small>
+        <input type="file" id="fileInput" accept="image/*" multiple hidden />
+      </div>
+      <div class="gallery" id="gallery"></div>
+    </div>
+  </section>
+</div>
+
+<div id="toast"></div>
+<footer>Backed by your Google Drive · made with care</footer>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+/* ============================================================
+   CONFIG — set this one value, then host & open.
+   ============================================================ */
+const CLIENT_ID = "YOUR_GOOGLE_OAUTH_CLIENT_ID";   // <-- paste your OAuth Web client ID
+const SCOPES     = "https://www.googleapis.com/auth/drive.file";
+const FOLDER_NAME = "Shanu & Ragv — Notes & Photos";
+/* ============================================================ */
+
+let tokenClient = null, accessToken = null;
+let folderId = null, dataFileId = null;
+let data = { notes: [], photos: [] };
+const thumbCache = new Map();
+const configured = CLIENT_ID && !CLIENT_ID.startsWith("YOUR_");
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const el = (t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;};
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),2600);}
+function fmtDate(ts){return new Date(ts).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"});}
+function esc(s){return (s||"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+
+/* ---------- auth ---------- */
+function initGis(){
+  if(!configured){ $("#setupNote").style.display="block"; return; }
+  const wait = setInterval(()=>{
+    if(window.google && google.accounts && google.accounts.oauth2){
+      clearInterval(wait);
+      tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID, scope: SCOPES, callback: ()=>{}
+      });
+    }
+  },120);
+}
+function getToken(interactive){
+  return new Promise((resolve,reject)=>{
+    if(!tokenClient) return reject(new Error("Auth not ready — check your Client ID and host domain."));
+    tokenClient.callback = resp => resp.error ? reject(resp) : (accessToken=resp.access_token, resolve(resp));
+    tokenClient.requestAccessToken({ prompt: interactive ? "consent" : "" });
+  });
+}
+
+/* ---------- drive core ---------- */
+async function driveApi(url, opts={}, retry=true){
+  const res = await fetch(url,{...opts,headers:{Authorization:"Bearer "+accessToken,...(opts.headers||{})}});
+  if(res.status===401 && retry){ await getToken(false); return driveApi(url,opts,false); }
+  if(!res.ok && res.status!==404) throw new Error("Drive request failed ("+res.status+")");
+  return res;
+}
+async function ensureFolder(){
+  const q = encodeURIComponent(`mimeType='application/vnd.google-apps.folder' and name='${FOLDER_NAME}' and trashed=false`);
+  const r = await driveApi(`https://www.googleapis.com/drive/v3/files?q=${q}&spaces=drive&fields=files(id)`);
+  const j = await r.json();
+  if(j.files && j.files.length){ folderId = j.files[0].id; return; }
+  const meta = { name:FOLDER_NAME, mimeType:"application/vnd.google-apps.folder" };
+  const cr = await driveApi("https://www.googleapis.com/drive/v3/files?fields=id",
+    { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(meta) });
+  folderId = (await cr.json()).id;
+}
+async function loadData(){
+  const q = encodeURIComponent(`name='data.json' and '${folderId}' in parents and trashed=false`);
+  const r = await driveApi(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id)`);
+  const j = await r.json();
+  if(j.files && j.files.length){
+    dataFileId = j.files[0].id;
+    const dl = await driveApi(`https://www.googleapis.com/drive/v3/files/${dataFileId}?alt=media`);
+    const parsed = await dl.json();
+    data = { notes: parsed.notes||[], photos: parsed.photos||[] };
+  } else {
+    data = { notes:[], photos:[] };
+    await saveData();
+  }
+}
+async function saveData(){
+  const body = JSON.stringify(data,null,2);
+  if(dataFileId){
+    await driveApi(`https://www.googleapis.com/upload/drive/v3/files/${dataFileId}?uploadType=media`,
+      { method:"PATCH", headers:{"Content-Type":"application/json"}, body });
+  } else {
+    const meta = { name:"data.json", parents:[folderId], mimeType:"application/json" };
+    const b = "b"+Date.now();
+    const multi = `--${b}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(meta)}\r\n`
+                + `--${b}\r\nContent-Type: application/json\r\n\r\n${body}\r\n--${b}--`;
+    const r = await driveApi("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",
+      { method:"POST", headers:{"Content-Type":`multipart/related; boundary=${b}`}, body:multi });
+    dataFileId = (await r.json()).id;
+  }
+}
+async function uploadPhoto(file){
+  const meta = { name:file.name, parents:[folderId] };
+  const b = "p"+Date.now()+Math.random().toString(36).slice(2,6);
+  const head = `--${b}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(meta)}\r\n`
+             + `--${b}\r\nContent-Type: ${file.type||"application/octet-stream"}\r\n\r\n`;
+  const foot = `\r\n--${b}--`;
+  const bodyBlob = new Blob([head, file, foot]);
+  const r = await driveApi("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name",
+    { method:"POST", headers:{"Content-Type":`multipart/related; boundary=${b}`}, body:bodyBlob });
+  const f = await r.json();
+  data.photos.unshift({ id:f.id, name:f.name, caption:"", addedAt:Date.now() });
+  await saveData();
+}
+async function loadThumb(id){
+  if(thumbCache.has(id)) return thumbCache.get(id);
+  const r = await driveApi(`https://www.googleapis.com/drive/v3/files/${id}?alt=media`);
+  const url = URL.createObjectURL(await r.blob());
+  thumbCache.set(id,url); return url;
+}
+async function driveDelete(id){ await driveApi(`https://www.googleapis.com/drive/v3/files/${id}`,{method:"DELETE"}); }
+
+/* ---------- flow ---------- */
+async function connect(){
+  const btn=$("#connect"); btn.disabled=true; btn.textContent="Connecting…";
+  try{
+    try{ await getToken(false); }catch{ await getToken(true); }
+    await ensureFolder();
+    await loadData();
+    $("#gate").style.display="none";
+    $("#app").style.display="block";
+    $("#account").style.display="flex";
+    renderNotes(); renderPhotos();
+    toast("Connected — everything saves to your Drive");
+  }catch(e){
+    console.error(e);
+    toast(e.message || "Couldn't connect. Check setup.");
+    btn.disabled=false;
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 11v2h2.8A3 3 0 1112 8a3 3 0 012.1.9l1.5-1.5A5 5 0 1017 12c0-.3 0-.7-.1-1H12z"/></svg> Connect Google Drive';
+  }
+}
+function signOut(){
+  if(accessToken && window.google) google.accounts.oauth2.revoke(accessToken,()=>{});
+  accessToken=null; folderId=null; dataFileId=null; data={notes:[],photos:[]};
+  thumbCache.forEach(u=>URL.revokeObjectURL(u)); thumbCache.clear();
+  $("#app").style.display="none"; $("#account").style.display="none";
+  $("#gate").style.display="block";
+  const b=$("#connect"); b.disabled=false;
+  b.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 11v2h2.8A3 3 0 1112 8a3 3 0 012.1.9l1.5-1.5A5 5 0 1017 12c0-.3 0-.7-.1-1H12z"/></svg> Connect Google Drive';
+}
+
+/* ---------- notes ---------- */
+async function addNote(){
+  const title=$("#noteTitle").value.trim();
+  const bodyv=$("#noteBody").value.trim();
+  if(!title && !bodyv) return;
+  data.notes.unshift({ id:"n"+Date.now(), title, body:bodyv, at:Date.now() });
+  $("#noteTitle").value=""; $("#noteBody").value="";
+  renderNotes();
+  try{ await saveData(); }catch(e){ toast("Saved locally, but Drive sync failed"); }
+}
+async function deleteNote(id){
+  data.notes = data.notes.filter(n=>n.id!==id);
+  renderNotes(); try{ await saveData(); }catch{}
+}
+function renderNotes(){
+  const list=$("#notesList"); list.innerHTML="";
+  if(!data.notes.length){
+    const e=el("div","empty"); e.innerHTML='<div class="fig">Nothing written yet</div>The first note is always the sweetest.';
+    list.appendChild(e); return;
+  }
+  data.notes.forEach(n=>{
+    const c=el("div","note-card");
+    c.innerHTML =
+      (n.title?`<h3>${esc(n.title)}</h3>`:"")+
+      (n.body?`<div class="body">${esc(n.body)}</div>`:"")+
+      `<div class="meta"><span>${fmtDate(n.at)}</span></div>`;
+    const del=el("button","link-danger","Delete"); del.style.background="none";
+    del.onclick=()=>deleteNote(n.id);
+    c.querySelector(".meta").appendChild(del);
+    list.appendChild(c);
+  });
+}
+
+/* ---------- photos ---------- */
+async function handleFiles(files){
+  const imgs=[...files].filter(f=>f.type.startsWith("image/"));
+  if(!imgs.length) return;
+  toast(`Uploading ${imgs.length} photo${imgs.length>1?"s":""}…`);
+  for(const f of imgs){
+    try{ await uploadPhoto(f); }catch(e){ console.error(e); toast("A photo failed to upload"); }
+  }
+  renderPhotos();
+  toast("Saved to your Drive");
+}
+async function deletePhoto(id){
+  const p=data.photos.find(x=>x.id===id);
+  data.photos = data.photos.filter(x=>x.id!==id);
+  renderPhotos();
+  try{ await driveDelete(id); await saveData(); }catch{}
+  if(thumbCache.has(id)){ URL.revokeObjectURL(thumbCache.get(id)); thumbCache.delete(id); }
+}
+async function saveCaption(id,val){
+  const p=data.photos.find(x=>x.id===id); if(!p) return;
+  p.caption=val; try{ await saveData(); }catch{}
+}
+function renderPhotos(){
+  const g=$("#gallery"); g.innerHTML="";
+  if(!data.photos.length){
+    const e=el("div","empty"); e.innerHTML='<div class="fig">No photos yet</div>Add the first one above.';
+    e.style.columnSpan="all"; g.appendChild(e); return;
+  }
+  data.photos.forEach(p=>{
+    const card=el("div","photo");
+    const wrap=el("div","imgwrap"); wrap.appendChild(el("div","shimmer"));
+    const del=el("button","del"); del.innerHTML="&times;"; del.title="Remove"; del.onclick=()=>deletePhoto(p.id);
+    const cap=el("div","ph-cap");
+    const inp=el("input"); inp.value=p.caption||""; inp.placeholder="Add a caption…";
+    inp.onchange=()=>saveCaption(p.id,inp.value.trim());
+    cap.appendChild(inp);
+    card.appendChild(wrap); card.appendChild(del); card.appendChild(cap);
+    g.appendChild(card);
+    loadThumb(p.id).then(url=>{
+      wrap.innerHTML=""; const img=new Image(); img.src=url; img.alt=p.caption||"photo";
+      wrap.appendChild(img);
+    }).catch(()=>{ wrap.innerHTML='<div class="ph-cap" style="color:var(--danger)">Couldn\'t load</div>'; });
+  });
+}
+
+/* ---------- wiring ---------- */
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active"); $("#panel-"+t.dataset.tab).classList.add("active");
+});
+$("#connect").onclick=connect;
+$("#signout").onclick=signOut;
+$("#addNote").onclick=addNote;
+$("#noteBody").addEventListener("keydown",e=>{ if((e.metaKey||e.ctrlKey)&&e.key==="Enter") addNote(); });
+
+const dz=$("#dropzone"), fi=$("#fileInput");
+dz.onclick=()=>fi.click();
+fi.onchange=()=>{ handleFiles(fi.files); fi.value=""; };
+["dragover","dragenter"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add("drag");}));
+["dragleave","drop"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove("drag");}));
+dz.addEventListener("drop",e=>handleFiles(e.dataTransfer.files));
+
+initGis();
+</script>
+</body>
+</html>
