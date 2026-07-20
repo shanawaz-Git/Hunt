@@ -682,7 +682,7 @@ function renderSpotlight(up){
 }
 function renderDateStats(){
   const box=$("#dateStats");if(!box)return;
-  const first=allDates().map(d=>parseIso(d.iso)).filter(Boolean).sort((a,b)=>a-b)[0];
+  const first=allDates().map(d=>parseIso(d.iso)).filter(Boolean).sort((a,b)=>a-b)[1];
   const parts=[];
   if(first&&first<startToday()){const d=dbetween(first,startToday());
     parts.push('<span class="dstat"><b>'+d.toLocaleString()+'</b>days since it began</span>');}
