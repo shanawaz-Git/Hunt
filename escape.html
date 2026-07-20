@@ -334,6 +334,42 @@
   .sec-orn .orn-dot:nth-child(2){background:var(--bug)}
   .sec-orn .orn-dot:nth-child(3){background:var(--plum)}
 
+
+  /* ---------- DATES: spotlight + filters ---------- */
+  .date-spotlight{display:flex;gap:20px;align-items:center;
+    background:linear-gradient(135deg,var(--card),color-mix(in srgb,var(--blush) 60%,var(--card)));
+    border:1px solid var(--line);border-radius:18px;padding:22px 24px;box-shadow:var(--shadow);
+    margin-bottom:16px;position:relative;overflow:hidden}
+  .date-spotlight.today-hit{border-color:var(--gold);box-shadow:0 0 0 2px color-mix(in srgb,var(--gold) 40%,transparent),var(--lift)}
+  .date-spotlight .cd{text-align:center;min-width:96px}
+  .date-spotlight .cd-num{font-family:"Fraunces",serif;font-size:clamp(38px,9vw,58px);line-height:.85;color:var(--bug)}
+  .date-spotlight .cd-unit{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:4px}
+  .date-spotlight .cd-meta{flex:1;min-width:0}
+  .date-spotlight .cd-kick{font-family:"Caveat",cursive;font-size:18px;color:var(--plum)}
+  .date-spotlight .cd-title{font-family:"Fraunces",serif;font-size:clamp(19px,4.5vw,23px);color:var(--ink);margin:2px 0 3px;line-height:1.15}
+  .date-spotlight .cd-when{font-size:13px;color:var(--ink-soft)}
+  .recur-tag{color:var(--gold);font-size:12px}
+  .date-stats{display:flex;gap:22px;flex-wrap:wrap;margin:0 0 16px;padding-left:2px}
+  .dstat{font-size:13px;color:var(--ink-soft)}
+  .dstat b{font-family:"Fraunces",serif;color:var(--plum-deep);font-size:17px;margin-right:2px}
+  .date-filters{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 0 22px;padding-bottom:2px}
+  .date-filters::-webkit-scrollbar{display:none}
+  .dfilter{border:1px solid var(--line);background:var(--card);color:var(--ink-soft);border-radius:999px;
+    padding:7px 15px;font-family:inherit;font-size:13px;cursor:pointer;white-space:nowrap;transition:.15s}
+  .dfilter:hover{border-color:var(--plum);color:var(--ink)}
+  .dfilter.on{background:var(--plum);color:#fff;border-color:var(--plum)}
+  .cd-badge{display:inline-block;margin-left:8px;font-size:11px;padding:2px 9px;border-radius:999px;
+    background:color-mix(in srgb,var(--bug) 13%,transparent);color:var(--bug);font-weight:600;vertical-align:middle}
+  .recur-badge{display:inline-block;margin-left:8px;font-size:10.5px;padding:1px 8px;border-radius:999px;
+    background:color-mix(in srgb,var(--gold) 16%,transparent);color:var(--gold);font-weight:500;vertical-align:middle}
+  .tl.past .dot{opacity:.55}
+  .tl.past h3{color:var(--ink-soft)}
+  .note-search{width:100%;max-width:340px;border:1px solid var(--line);background:var(--card);border-radius:11px;
+    padding:9px 14px;font-family:inherit;font-size:14px;color:var(--ink);outline:none;margin-bottom:16px}
+  .note-search:focus{border-color:var(--plum)}
+  .chk-row{display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--ink-soft);cursor:pointer;user-select:none}
+  .chk-row input{width:18px;height:18px;accent-color:var(--bug);cursor:pointer}
+
   .reveal{opacity:0;transform:translateY(16px)}
   .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -399,7 +435,10 @@
 <section class="block" id="dates"><div class="wrap reveal">
   <div class="sec-orn"><span class="orn-dot"></span><span class="orn-dot"></span><span class="orn-dot"></span></div><div class="eyebrow">our story so far</div>
   <h2 class="sec">A few dates worth keeping</h2>
-  <p class="lede">In the order they happened. Not every important day is loud — some of these are quiet ones that mattered more than they looked like they would.</p>
+  <p class="lede">The days that made us, and the ones still coming. See what's next, or pick a year — it never dumps everything on you at once.</p>
+  <div id="dateSpotlight"></div>
+  <div class="date-stats" id="dateStats"></div>
+  <div class="date-filters" id="dateFilters"></div>
   <div class="timeline" id="timeline"></div>
   <button class="btn ghost add-btn edit-only" onclick="openAdd('date')">+ Add a date</button>
 </div></section>
@@ -457,6 +496,7 @@
   <p class="lede">Quick thoughts, kept together. Sign in to write; anyone with the link can read.</p>
   <div class="live-flag" id="notesFlag"><span class="d"></span><span id="notesFlagText">Read-only</span></div>
   <div id="notesComposer" class="edit-only"></div>
+  <input id="noteSearch" class="note-search" placeholder="🔍  Search notes…" style="display:none" />
   <div class="notes-grid" id="notesGrid"></div>
   <div class="show-more-wrap" id="notesMoreWrap"></div>
 </div></section>
@@ -557,7 +597,7 @@ const SEED_DATES = [
   {iso:"2025-05-26",title:"Cake Bee",desc:"Our first date — cake, conversation, and the start of something neither of us could quite name yet."},
   {iso:"2025-06-04",title:"Indulgence",desc:"A day we let ourselves have exactly what we wanted — each other's company, nothing else."},
   {iso:"2025-06-06",title:"Her Dad's Birthday",desc:"Family days matter, even the ones I'm not technically part of."},
-  {iso:"2003-01-08",title:"Ragave's Birthday",desc:"Out of every day on this list, this is the one I'd protect first.",crown:true}
+  {iso:"2003-01-08",title:"Ragave's Birthday",desc:"Out of every day on this list, this is the one I'd protect first.",crown:true,recur:true}
 ];
 const SEED_LETTERS = [
   {kick:"a new year wish",title:"My G.U.N.D.U",body:["Hello Rag-V — my G.U.N.D.U: Gorgeous, Unique, Nice-hearted, Delightful, Unstoppable. At this exact moment, when the clock and the calendar lined up to 11:11, 1/1, I want to wish for both of us to be happy, smiling, laughing — together through all of it, the good and the bad.","Even on the days we hurt each other, I want us to keep choosing to fix it. My wish for this year is to hold your hand, take care of you, make you feel at home, make you laugh like no one else can, and be your shoulder whenever you need one.","I don't know what's planned for us, but I hope it's you.","I love you, buboooo"]},
@@ -582,6 +622,7 @@ function esc(s){return (s||"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":
 let data={notes:[],photos:[],dates:[],letters:[],promises:[],gifts:[],theme:null};
 let connected=false;
 let notesShown=6;
+let notesQuery="";
 const configured=CLIENT_ID&&!CLIENT_ID.startsWith("YOUR_");
 const publicConfigured=API_KEY&&PUBLIC_DATA_FILE_ID;
 
@@ -603,21 +644,80 @@ $("#menuToggle").onclick=()=>{const m=$("#mobileMenu"),o=m.classList.toggle("ope
 $("#mobileMenu").querySelectorAll("a").forEach(a=>a.onclick=()=>{
   $("#mobileMenu").classList.remove("open");$("#menuToggle").setAttribute("aria-expanded","false");});
 
-/* ============ RENDER: DATES (chronological merge) ============ */
+/* ============ RENDER: DATES (spotlight + year filter + recurring) ============ */
+let dateFilter=null;
+function parseIso(iso){const d=new Date((iso||"")+"T00:00:00");return isNaN(d)?null:d;}
+function startToday(){const t=new Date();t.setHours(0,0,0,0);return t;}
+function dbetween(a,b){return Math.round((b-a)/864e5);}
+function allDates(){return [
+  ...SEED_DATES.map(d=>({iso:d.iso,title:d.title,desc:d.desc,crown:d.crown,recur:d.recur,seed:true})),
+  ...data.dates.map(d=>({iso:d.iso||d.date||"",title:d.title,desc:d.desc,id:d.id,recur:d.recur,crown:d.crown,seed:false}))
+];}
+function nextOcc(item){const base=parseIso(item.iso);if(!base)return null;const today=startToday();
+  if(item.recur){let o=new Date(today.getFullYear(),base.getMonth(),base.getDate());
+    if(o<today)o=new Date(today.getFullYear()+1,base.getMonth(),base.getDate());return o;}
+  return base;}
+function upcomingDates(){const today=startToday();
+  return allDates().map(d=>{const occ=nextOcc(d);return occ?Object.assign({},d,{occ:occ,days:dbetween(today,occ)}):null;})
+    .filter(x=>x&&x.days>=0).sort((a,b)=>a.occ-b.occ);}
+function dateYears(){const ys=new Set();allDates().forEach(d=>{const y=isoYear(d.iso);if(y)ys.add(y);});return [...ys].sort();}
+
 function renderDates(){
-  const tl=$("#timeline");tl.innerHTML="";
-  const merged=[
-    ...SEED_DATES.map(d=>({...d,seed:true})),
-    ...data.dates.map(d=>({iso:d.iso||d.date||"",title:d.title,desc:d.desc,id:d.id,seed:false}))
-  ].sort((a,b)=>(a.iso||"9999").localeCompare(b.iso||"9999"));
+  const up=upcomingDates();
+  if(dateFilter===null)dateFilter=up.length?"upcoming":(String(dateYears().slice(-1)[0]||"all"));
+  renderSpotlight(up);renderDateStats();renderDateFilters(up.length>0);renderTimeline(up);
+}
+function renderSpotlight(up){
+  const box=$("#dateSpotlight");if(!box)return;const n=up[0];
+  if(!n){box.className="";box.innerHTML="";return;}
+  const when=n.occ.toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
+  const num=n.days===0?"Today":n.days;
+  const unit=n.days===0?"it's here":("day"+(n.days===1?"":"s")+" away");
+  const kick=n.days===0?"today":(n.recur?"coming round again":"next up");
+  box.className="date-spotlight"+(n.days===0?" today-hit":"");
+  box.innerHTML=`<div class="cd"><div class="cd-num">${num}</div><div class="cd-unit">${esc(unit)}</div></div>`+
+    `<div class="cd-meta"><div class="cd-kick">${esc(kick)}</div>`+
+    `<div class="cd-title">${esc(n.title)}${n.crown?" ♛":""}</div>`+
+    `<div class="cd-when">${esc(when)}${n.recur?' · <span class="recur-tag">↻ every year</span>':""}</div></div>`;
+}
+function renderDateStats(){
+  const box=$("#dateStats");if(!box)return;
+  const first=allDates().map(d=>parseIso(d.iso)).filter(Boolean).sort((a,b)=>a-b)[0];
+  const parts=[];
+  if(first&&first<startToday()){const d=dbetween(first,startToday());
+    parts.push('<span class="dstat"><b>'+d.toLocaleString()+'</b>days since it began</span>');}
+  parts.push('<span class="dstat"><b>'+allDates().length+'</b>dates kept</span>');
+  box.innerHTML=parts.join("");
+}
+function renderDateFilters(hasUpcoming){
+  const box=$("#dateFilters");if(!box)return;box.innerHTML="";
+  const opts=[];if(hasUpcoming)opts.push(["upcoming","Upcoming"]);
+  dateYears().forEach(y=>opts.push([String(y),String(y)]));opts.push(["all","All"]);
+  opts.forEach(([val,lab])=>{const b=el("button","dfilter"+(String(dateFilter)===val?" on":""),lab);
+    b.onclick=()=>{dateFilter=val;renderDates();document.getElementById("dates").scrollIntoView({behavior:"smooth",block:"start"});};
+    box.appendChild(b);});
+}
+function renderTimeline(up){
+  const tl=$("#timeline");tl.innerHTML="";const today=startToday();
+  let list;
+  if(dateFilter==="upcoming")list=up.map(d=>Object.assign({},d,{showCountdown:true}));
+  else if(dateFilter==="all")list=allDates().slice().sort((a,b)=>(a.iso||"9999").localeCompare(b.iso||"9999"));
+  else list=allDates().filter(d=>String(isoYear(d.iso))===String(dateFilter)).sort((a,b)=>(a.iso||"9999").localeCompare(b.iso||"9999"));
+  if(!list.length){tl.innerHTML='<div class="empty-line">Nothing here yet.</div>';return;}
   let lastYear=null;
-  merged.forEach(d=>{
-    const item=el("div","tl"+(d.crown?" crown":""));
+  list.forEach(d=>{
+    const base=parseIso(d.iso);const past=base&&base<today&&!d.showCountdown;
+    const item=el("div","tl"+(d.crown?" crown":"")+(past?" past":""));
     const yr=isoYear(d.iso);
-    const yrBadge=(yr&&yr!==lastYear)?`<span class="yr-badge">${yr}</span>`:"";
+    const yrBadge=(!d.showCountdown&&yr&&yr!==lastYear)?`<span class="yr-badge">${yr}</span>`:"";
     lastYear=yr||lastYear;
-    item.innerHTML=`<div class="dot"></div><div class="date">${esc(fmtIso(d.iso))}${yrBadge}</div><h3>${esc(d.title)}</h3>`+(d.desc?`<p>${esc(d.desc)}</p>`:"");
-    if(!d.seed&&connected){const row=el("div");const b=el("button","del-x","Remove");
+    let badge="";
+    if(d.showCountdown){const t=d.days===0?"today":("in "+d.days+" day"+(d.days===1?"":"s"));badge=`<span class="cd-badge">${t}</span>`;}
+    const recur=d.recur?'<span class="recur-badge">↻ yearly</span>':"";
+    const dateText=d.showCountdown?d.occ.toLocaleDateString(undefined,{day:"numeric",month:"long"}):fmtIso(d.iso);
+    item.innerHTML=`<div class="dot"></div><div class="date">${esc(dateText)}${yrBadge}${badge}</div>`+
+      `<h3>${esc(d.title)}${recur}</h3>`+(d.desc?`<p>${esc(d.desc)}</p>`:"");
+    if(!d.seed&&connected&&d.id){const row=el("div");const b=el("button","del-x","Remove");
       b.onclick=()=>removeItem("dates",d.id);row.appendChild(b);item.appendChild(row);}
     tl.appendChild(item);
   });
@@ -660,22 +760,18 @@ function renderGifts(){
 }
 /* ============ today strip ============ */
 function renderToday(){
-  const strip=$("#todayStrip");strip.innerHTML="";const now=new Date();
-  const all=[...SEED_DATES.map(d=>({iso:d.iso,t:d.title})),...data.dates.map(d=>({iso:d.iso,t:d.title}))];
-  const hit=all.find(k=>{const d=new Date(k.iso+"T00:00:00");return !isNaN(d)&&d.getMonth()===now.getMonth()&&d.getDate()===now.getDate();});
-  if(hit){const c=el("div","chip-soft");c.innerHTML="<b>on this day</b> · "+esc(hit.t);strip.appendChild(c);}
-  const bday=new Date(now.getFullYear(),0,8);
-  if(bday.getTime()<new Date().setHours(0,0,0,0))bday.setFullYear(bday.getFullYear()+1);
-  const days=Math.ceil((bday.getTime()-new Date().setHours(0,0,0,0))/864e5);
-  const c2=el("div","chip-soft");
-  c2.innerHTML=days===0?"<b>♛</b> it's Ragave's birthday today":'<span class="n">'+days+"</span> day"+(days===1?"":"s")+" until Ragave's birthday";
-  strip.appendChild(c2);
+  const strip=$("#todayStrip");strip.innerHTML="";
+  const up=upcomingDates();
+  const todayHit=up.find(d=>d.days===0);
+  if(todayHit){const c=el("div","chip-soft");c.innerHTML="<b>on this day</b> · "+esc(todayHit.title);strip.appendChild(c);}
+  const next=up.find(d=>d.days>0);
+  if(next){const c2=el("div","chip-soft");
+    c2.innerHTML='<span class="n">'+next.days+"</span> day"+(next.days===1?"":"s")+" until "+esc(next.title);strip.appendChild(c2);}
 }
 
-/* ============ NOTES: grid + show more ============ */
+/* ============ NOTES: grid + search + show more ============ */
 function renderNotes(){
-  const grid=$("#notesGrid"),moreWrap=$("#notesMoreWrap"),compWrap=$("#notesComposer");
-  compWrap.innerHTML="";grid.innerHTML="";moreWrap.innerHTML="";
+  const compWrap=$("#notesComposer");compWrap.innerHTML="";
   if(connected){
     const comp=el("div","composer");
     comp.innerHTML='<input class="title" id="noteTitle" placeholder="A title…" maxlength="120"/><div class="rule"></div><textarea id="noteBody" placeholder="Write something to remember…"></textarea><div class="row"><button class="btn tiny" id="addNote">Save note</button></div>';
@@ -683,8 +779,16 @@ function renderNotes(){
     comp.querySelector("#addNote").onclick=addNote;
     comp.querySelector("#noteBody").addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key==="Enter")addNote();});
   }
-  if(!data.notes.length){grid.innerHTML='<div class="empty-line">Nothing written yet — the first note is always the sweetest.</div>';return;}
-  const slice=data.notes.slice(0,notesShown);
+  $("#noteSearch").style.display=data.notes.length>3?"block":"none";
+  renderNotesGrid();
+}
+function renderNotesGrid(){
+  const grid=$("#notesGrid"),moreWrap=$("#notesMoreWrap");grid.innerHTML="";moreWrap.innerHTML="";
+  const q=notesQuery.trim().toLowerCase();
+  let list=data.notes;
+  if(q)list=list.filter(n=>((n.title||"")+" "+(n.body||"")).toLowerCase().includes(q));
+  if(!list.length){grid.innerHTML='<div class="empty-line">'+(q?"No notes match that.":"Nothing written yet — the first note is always the sweetest.")+'</div>';return;}
+  const slice=q?list:list.slice(0,notesShown);
   slice.forEach(n=>{
     const c=el("div","note-card");
     c.innerHTML=(n.title?`<h3>${esc(n.title)}</h3>`:"")+(n.body?`<div class="ntext">${esc(n.body)}</div>`:"")+
@@ -698,9 +802,9 @@ function renderNotes(){
       c.querySelector(".meta").appendChild(del);}
     grid.appendChild(c);
   });
-  if(data.notes.length>notesShown){
-    const b=el("button","btn ghost",`Show more (${data.notes.length-notesShown})`);
-    b.onclick=()=>{notesShown+=6;renderNotes();};moreWrap.appendChild(b);
+  if(!q&&list.length>notesShown){
+    const b=el("button","btn ghost",`Show more (${list.length-notesShown})`);
+    b.onclick=()=>{notesShown+=6;renderNotesGrid();};moreWrap.appendChild(b);
   }
 }
 async function addNote(){const t=$("#noteTitle").value.trim(),bd=$("#noteBody").value.trim();if(!t&&!bd)return;
@@ -807,10 +911,12 @@ function openAdd(type,cat){
     title.textContent="Add a date worth keeping";
     const when=inp("","date"),t=inp("What is it?"),d=el("textarea");
     d.placeholder="A line about why it matters (optional)";
-    body.append(field("When (pick the real date — it slots into the timeline)",when),field("Title",t),field("A little about it",d));
+    const rec=el("input");rec.type="checkbox";
+    const recRow=el("label","chk-row");recRow.append(rec,document.createTextNode("Repeats every year (birthday / anniversary)"));
+    body.append(field("When — past or future, it sorts itself into place",when),field("Title",t),field("A little about it",d),recRow);
     modalSaveFn=()=>{if(!when.value||!t.value.trim())return toast("Pick a date and add a title");
-      data.dates.push({id:uid("d"),iso:when.value,title:t.value.trim(),desc:d.value.trim()});
-      commit(()=>{renderDates();renderToday();},"Date added to the timeline");};
+      data.dates.push({id:uid("d"),iso:when.value,title:t.value.trim(),desc:d.value.trim(),recur:rec.checked});
+      commit(()=>{renderDates();renderToday();},"Date added");};
   }else if(type==="gift"){
     title.textContent="Add a gift";
     const sel=el("select");[["given","Found their way to you"],["way","Still finding their way"],["wrapped","Still wrapped"]].forEach(([v,lab])=>{const o=el("option",null,lab);o.value=v;if(v===cat)o.selected=true;sel.appendChild(o);});
@@ -1004,6 +1110,7 @@ $("#randomLetter").onclick=()=>{
 /* ============ init ============ */
 $("#themeBtn").onclick=toggleTheme;
 $("#connectBtn").onclick=connect;
+$("#noteSearch").oninput=e=>{notesQuery=e.target.value;renderNotesGrid();};
 renderAll();
 loadPublic().then(ok=>{if(ok)renderAll();});
 initGis();
