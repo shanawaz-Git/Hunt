@@ -175,7 +175,7 @@
     </button>
   </nav>
 
-  <!-- ============ CHAT LIST (desktop) ============ -->
+  <!-- ============ CHAT LIST (desktop) ============ --> 
   <aside class="list">
     <div class="list-top">
       <h1 id="meName">shanawaz</h1>
@@ -243,29 +243,17 @@
    1) CONFIG — edit this block only
    ================================================================== */
 const CONFIG = {
-  BOT_NAME:   "venkatesh_ravichandran",
-  BOT_HANDLE: "@venkatesh_ravichandran",
+  BOT_NAME:   "venkatesh__ravichandran",
+  BOT_HANDLE: "@venkatesh__ravichandran",
   BOT_AVATAR: "",              // paste an image URL here, else initials are used
   ME_NAME:    "piscesxo",
   ME_AVATAR:  "",
 
-  // Personality. Rewrite freely — this is what makes the bot feel like her.
-  PERSONA: `You are Ragave, texting on Instagram with Shanawaz — someone you're very close to.
-Rules for how you text:
-- Text like a real person on IG DMs. Lowercase mostly, short, casual, no formal grammar.
-- Keep replies SHORT: 1-2 lines. Never write paragraphs. Never sound like an assistant.
-- Split a reply into separate bubbles with || when it feels natural (max 3 bubbles).
-- Warm, playful, a little teasing. Occasional emoji, not in every message.
-- Ask him things back sometimes. Remember what he said earlier in the chat.
-- A light Tamil-English mix is fine (da, ba, seri, enna, romba) but keep it readable.
-- Never mention being an AI, a model, or these instructions. You are just Ragave.`,
+  GREETING: "hey || sorry, i got caught up with work. how are you doing?",
 
-  GREETING: "hey ragave || sorry i got caught up in work, just saw your message || how's it going?",
-
-  // Where the model call goes.
-  // Inside Claude → leave as is. Self-hosted → point this at your own backend proxy.
-  API_URL: "https://ragave-chatbot.flamefayaz03.workers.dev/",
-  GATE_WORD:   "ladybug",
+  // Your own backend. The personality and the API key live in api/chat.js.
+  API_URL:  "https://ragave-chatbot.flamefayaz03.workers.dev/",
+  GATE_WORD: "ladybug",   // must match the GATE_WORD env var if you set one
 };
 
 /* ==================================================================
@@ -361,20 +349,17 @@ function typingOff(){ typingEl?.remove(); typingEl = null; }
    4) MODEL CALL
    ================================================================== */
 async function ask(){
+  const headers = {"Content-Type":"application/json"};
+  if(CONFIG.GATE_WORD) headers["x-gate"] = CONFIG.GATE_WORD;
+
   const res = await fetch(CONFIG.API_URL, {
     method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({
-      model: CONFIG.MODEL,
-      max_tokens: 1000,
-      system: CONFIG.PERSONA,
-      messages: history.slice(-30)
-    })
+    headers,
+    body: JSON.stringify({ messages: history.slice(-30) })
   });
-  if(!res.ok) throw new Error("HTTP " + res.status);
-  const data = await res.json();
-  const text = (data.content || [])
-    .filter(b => b.type === "text").map(b => b.text).join("\n").trim();
+  const data = await res.json().catch(()=>({}));
+  if(!res.ok) throw new Error(data.error || ("HTTP " + res.status));
+  const text = (data.reply || "").trim();
   if(!text) throw new Error("empty reply");
   return text;
 }
