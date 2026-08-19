@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For You ♥</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Nunito:wght@400;600;800&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --blush:#FFE7EF;
+  --milk:#FFF7FA;
+  --rose:#FF7BA9;
+  --berry:#D6376F;
+  --plum:#43172B;
+  --gold:#FFD37A;
+  --ink:rgba(67,23,43,.62);
+
+  --shadow-sm:0 4px 14px rgba(214,55,111,.14);
+  --shadow-md:0 14px 34px rgba(214,55,111,.18);
+  --shadow-lg:0 28px 70px rgba(214,55,111,.22);
+
+  --display:'Fraunces',Georgia,serif;
+  --body:'Nunito',"Segoe UI",system-ui,sans-serif;
+  --hand:'Caveat','Bradley Hand',cursive;
+
+  --r-lg:32px;
+  --r-md:22px;
+  --r-pill:999px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--body);
+  color:var(--plum);
+  background:
+    radial-gradient(1100px 620px at 12% -8%, #FFD9E6 0%, transparent 62%),
+    radial-gradient(900px 560px at 92% 8%, #FFE6D4 0%, transparent 58%),
+    radial-gradient(1000px 800px at 50% 108%, #FFC9DE 0%, transparent 60%),
+    var(--blush);
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+:focus-visible{outline:3px solid var(--berry);outline-offset:3px;border-radius:8px}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* ============================================================
+   AMBIENT HEARTS
+   ============================================================ */
+#sky{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.float{position:absolute;bottom:-40px;font-size:18px;opacity:0;animation:rise linear forwards;will-change:transform,opacity}
+@keyframes rise{
+  0%{opacity:0;transform:translateY(0) rotate(0deg) scale(.6)}
+  12%{opacity:.85}
+  100%{opacity:0;transform:translateY(-108vh) rotate(var(--spin,40deg)) scale(1.1)}
+}
+
+/* ============================================================
+   GATE
+   ============================================================ */
+#gate{
+  position:fixed;inset:0;z-index:60;display:grid;place-items:center;
+  background:linear-gradient(170deg,#FFF0F5,#FFD6E5 70%,#FFC6DC);
+  transition:opacity .7s ease,visibility .7s;
+}
+#gate.gone{opacity:0;visibility:hidden}
+.gate-inner{text-align:center;padding:24px;max-width:440px}
+.gate-eyebrow{font-family:var(--hand);font-size:1.5rem;color:var(--berry);margin:0 0 6px}
+.gate-title{font-family:var(--display);font-weight:900;font-size:clamp(2.1rem,8vw,3.2rem);line-height:1.05;margin:0 0 14px;letter-spacing:-.02em}
+.gate-note{font-size:.98rem;color:var(--ink);margin:0 0 30px;line-height:1.6}
+.gate-btn{
+  background:linear-gradient(140deg,var(--rose),var(--berry));
+  color:#fff;font-weight:800;font-size:1.05rem;letter-spacing:.02em;
+  padding:18px 40px;border-radius:var(--r-pill);box-shadow:var(--shadow-md);
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;
+  animation:pulse 2.4s ease-in-out infinite;
+}
+.gate-btn:hover{transform:translateY(-3px) scale(1.04);box-shadow:var(--shadow-lg)}
+@keyframes pulse{0%,100%{box-shadow:var(--shadow-md)}50%{box-shadow:0 18px 46px rgba(214,55,111,.34)}}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.wrap{position:relative;z-index:2;max-width:940px;margin:0 auto;padding:0 22px 90px}
+section{padding:74px 0}
+.eyebrow{
+  font-family:var(--body);font-weight:800;font-size:.72rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--berry);opacity:.75;margin:0 0 12px;text-align:center;
+}
+h2{font-family:var(--display);font-weight:900;font-size:clamp(1.7rem,4.6vw,2.5rem);text-align:center;margin:0 0 40px;letter-spacing:-.02em}
+
+/* ============================================================
+   HERO + PLAYER (signature)
+   ============================================================ */
+.hero{padding-top:64px;text-align:center}
+.hero h1{
+  font-family:var(--display);font-weight:900;
+  font-size:clamp(2.4rem,9vw,4.4rem);line-height:.98;margin:0 0 10px;letter-spacing:-.035em;
+}
+.hero h1 em{font-style:italic;color:var(--berry)}
+.hero-sub{font-family:var(--hand);font-size:clamp(1.2rem,3.4vw,1.6rem);color:var(--ink);margin:0 0 44px}
+
+.vinyl-stage{display:grid;place-items:center;margin-bottom:26px}
+.vinyl{
+  width:min(272px,66vw);aspect-ratio:1;border:none;padding:0;border-radius:50%;
+  filter:drop-shadow(0 22px 44px rgba(214,55,111,.3));
+  animation:spin 9s linear infinite;animation-play-state:paused;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.vinyl.spinning{animation-play-state:running}
+.vinyl:hover{transform:scale(1.035)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vinyl svg{width:100%;height:100%;display:block}
+
+.player{
+  display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;
+  background:rgba(255,255,255,.72);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.9);
+  padding:14px 20px;border-radius:var(--r-pill);box-shadow:var(--shadow-sm);
+}
+.track{font-weight:800;font-size:.92rem;display:flex;align-items:center;gap:9px}
+.eq{display:inline-flex;gap:2.5px;align-items:flex-end;height:15px}
+.eq i{width:3px;background:var(--berry);border-radius:2px;height:4px;animation:bounce .9s ease-in-out infinite;animation-play-state:paused}
+.eq.on i{animation-play-state:running}
+.eq i:nth-child(2){animation-delay:.15s}.eq i:nth-child(3){animation-delay:.3s}.eq i:nth-child(4){animation-delay:.45s}
+@keyframes bounce{0%,100%{height:4px}50%{height:15px}}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;width:112px;height:6px;border-radius:99px;
+  background:linear-gradient(90deg,var(--rose),#FFD1E1);outline:none;
+}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:#fff;border:3px solid var(--berry);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:17px;height:17px;border-radius:50%;background:#fff;border:3px solid var(--berry);cursor:pointer}
+.mini{
+  font-size:.78rem;font-weight:700;color:var(--berry);
+  border:1.5px dashed rgba(214,55,111,.45);padding:7px 14px;border-radius:var(--r-pill);
+  transition:background .2s;
+}
+.mini:hover{background:rgba(255,255,255,.9)}
+#audio-hint{font-size:.8rem;color:var(--ink);margin:14px 0 0;min-height:1.2em}
+
+/* ============================================================
+   COUNTER
+   ============================================================ */
+.counter{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:620px;margin:0 auto;
+}
+.unit{
+  background:var(--milk);border-radius:var(--r-md);padding:22px 8px;text-align:center;
+  box-shadow:var(--shadow-sm);border:1px solid rgba(255,255,255,.9);
+}
+.unit b{display:block;font-family:var(--display);font-weight:900;font-size:clamp(1.5rem,5.4vw,2.3rem);color:var(--berry);line-height:1;font-variant-numeric:tabular-nums}
+.unit span{display:block;margin-top:7px;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--ink)}
+
+/* ============================================================
+   REASON CARDS
+   ============================================================ */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}
+.card{perspective:1100px;border:none;padding:0;background:none;aspect-ratio:1/1.06}
+.card-in{
+  display:block;position:relative;width:100%;height:100%;
+  transition:transform .62s cubic-bezier(.4,.2,.2,1);
+  transform-style:preserve-3d;-webkit-transform-style:preserve-3d;
+}
+.card.flipped .card-in{transform:rotateY(180deg)}
+.face{
+  display:grid;position:absolute;inset:0;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:var(--r-md);
+  place-items:center;padding:20px;text-align:center;box-shadow:var(--shadow-sm);
+}
+.face.front{background:linear-gradient(150deg,#fff,#FFEAF1);border:1px solid rgba(255,255,255,.9)}
+.face.front .num{font-family:var(--display);font-weight:900;font-size:2.2rem;color:var(--rose);opacity:.55}
+.face.front .tap{position:absolute;bottom:16px;left:0;right:0;font-family:var(--hand);font-size:1.05rem;color:var(--ink)}
+.face.back{
+  background:linear-gradient(150deg,var(--rose),var(--berry));color:#fff;transform:rotateY(180deg);
+  font-weight:600;font-size:.98rem;line-height:1.5;
+}
+.card{transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.card:hover{transform:translateY(-5px)}
+.card.flipped:hover{transform:translateY(-5px)}
+
+/* ============================================================
+   ASK
+   ============================================================ */
+.ask{
+  position:relative;background:var(--milk);border-radius:var(--r-lg);padding:52px 26px;
+  text-align:center;box-shadow:var(--shadow-md);border:1px solid rgba(255,255,255,.9);overflow:hidden;
+}
+.ask h3{font-family:var(--display);font-weight:900;font-size:clamp(1.5rem,5vw,2.1rem);margin:0 0 30px}
+.btn-row{display:flex;gap:16px;justify-content:center;align-items:center;min-height:62px;flex-wrap:wrap}
+.yes{background:linear-gradient(140deg,var(--rose),var(--berry));color:#fff;font-weight:800;padding:16px 40px;border-radius:var(--r-pill);box-shadow:var(--shadow-sm);font-size:1rem;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.yes:hover{transform:scale(1.07)}
+.no{background:#fff;color:var(--ink);font-weight:700;padding:16px 34px;border-radius:var(--r-pill);border:2px solid rgba(214,55,111,.2);font-size:1rem;transition:transform .28s cubic-bezier(.34,1.56,.64,1),opacity .3s}
+.answer{font-family:var(--hand);font-size:clamp(1.4rem,5vw,2rem);color:var(--berry);margin:26px 0 0;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s}
+.answer.show{opacity:1;transform:none}
+
+/* ============================================================
+   TAP COUNTER + FOOTER
+   ============================================================ */
+.tally{text-align:center;font-size:.9rem;color:var(--ink);font-weight:600}
+.tally b{color:var(--berry);font-weight:800}
+footer{text-align:center;padding:30px 0 0}
+footer p{font-family:var(--hand);font-size:1.5rem;color:var(--berry);margin:0}
+
+/* burst hearts on click */
+.pop{position:fixed;pointer-events:none;z-index:50;font-size:20px;animation:pop .9s ease-out forwards}
+@keyframes pop{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(.4)}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.2)}
+}
+
+@media (max-width:560px){
+  section{padding:56px 0}
+  .counter{grid-template-columns:repeat(2,1fr)}
+  .player{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+}
+</style>
+</head>
+<body>
+
+<div id="sky" aria-hidden="true"></div>
+
+<!-- GATE -->
+<div id="gate">
+  <div class="gate-inner">
+    <p class="gate-eyebrow">before you scroll…</p>
+    <h1 class="gate-title">Turn the sound on.</h1>
+    <p class="gate-note">There's a song here that made me think of you. Press play and it'll follow you all the way down.</p>
+    <button class="gate-btn" id="start">Play our song ♥</button>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="vinyl-stage">
+      <button class="vinyl" id="vinyl" aria-label="Play or pause the song">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FF9EC0"/><stop offset="100%" stop-color="#D6376F"/>
+            </linearGradient>
+            <clipPath id="hclip">
+              <path d="M100 178 C 42 138, 12 106, 12 72 C 12 42, 36 24, 62 24 C 80 24, 93 33, 100 46 C 107 33, 120 24, 138 24 C 164 24, 188 42, 188 72 C 188 106, 158 138, 100 178 Z"/>
+            </clipPath>
+          </defs>
+          <g clip-path="url(#hclip)">
+            <rect x="0" y="0" width="200" height="200" fill="url(#g1)"/>
+            <g fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.4">
+              <circle cx="100" cy="100" r="26"/><circle cx="100" cy="100" r="38"/>
+              <circle cx="100" cy="100" r="50"/><circle cx="100" cy="100" r="62"/>
+              <circle cx="100" cy="100" r="74"/><circle cx="100" cy="100" r="86"/>
+            </g>
+          </g>
+          <circle cx="100" cy="100" r="19" fill="#FFF7FA"/>
+          <circle cx="100" cy="100" r="4.5" fill="#D6376F"/>
+          <path d="M100 178 C 42 138, 12 106, 12 72 C 12 42, 36 24, 62 24 C 80 24, 93 33, 100 46 C 107 33, 120 24, 138 24 C 164 24, 188 42, 188 72 C 188 106, 158 138, 100 178 Z"
+                fill="none" stroke="rgba(255,255,255,.55)" stroke-width="3"/>
+        </svg>
+      </button>
+    </div>
+
+    <h1>Hey <em id="name-you">you</em>,</h1>
+    <p class="hero-sub">this whole little page is about you.</p>
+
+    <div class="player">
+      <span class="track">
+        <span class="eq" id="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span id="track-name">Perfect — on repeat</span>
+      </span>
+      <button class="mini" id="toggle">Pause</button>
+      <input type="range" id="vol" min="0" max="100" value="70" aria-label="Volume">
+      <button class="mini" id="pickbtn">Use my own song</button>
+      <input type="file" id="pick" accept="audio/*" hidden>
+    </div>
+    <p id="audio-hint"></p>
+
+    <audio id="song" loop preload="auto">
+      <source src="Perfect.mp3" type="audio/mpeg">
+      <source src="Perfect.m4a" type="audio/mp4">
+      <source src="Perfect.ogg" type="audio/ogg">
+    </audio>
+  </section>
+
+  <!-- COUNTER -->
+  <section>
+    <p class="eyebrow">still counting</p>
+    <h2>How long you've been my favourite</h2>
+    <div class="counter">
+      <div class="unit"><b id="d">0</b><span>days</span></div>
+      <div class="unit"><b id="h">0</b><span>hours</span></div>
+      <div class="unit"><b id="m">0</b><span>minutes</span></div>
+      <div class="unit"><b id="s">0</b><span>seconds</span></div>
+    </div>
+  </section>
+
+  <!-- REASONS -->
+  <section>
+    <p class="eyebrow">tap to open</p>
+    <h2>Reasons, in no particular order</h2>
+    <div class="grid" id="reasons"></div>
+  </section>
+
+  <!-- ASK -->
+  <section>
+    <div class="ask">
+      <h3>So… will you be mine?</h3>
+      <div class="btn-row">
+        <button class="yes" id="yes">Yes ♥</button>
+        <button class="no" id="no">No</button>
+      </div>
+      <p class="answer" id="answer">I was hoping you'd say that.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <p class="tally">Hearts you've made appear: <b id="taps">0</b> - tap anywhere for more.</p>
+  </section>
+
+  <footer><p>made with far too much love ♥</p></footer>
+</main>
+
+<script>
+/* ============================================================
+   ✏️  EDIT THIS BLOCK — everything personal lives here
+   ============================================================ */
+const CONFIG = {
+  theirName: "Ragave",                       // e.g. "Aisha"
+  since: "2025-03-23T15:30:00",           // the date it all started
+  songLabel: "Perfect — on repeat",       // shown in the player
+  reasons: [
+    "You laugh before the punchline. Every single time.",
+    "The way you say my name.",
+    "You make ordinary Tuesdays feel like an occasion.",
+    "You remember the small things I forget I said.",
+    "Your terrible taste in snacks. I've grown to love it.",
+    "You never make me feel like too much."
+  ],
+  yesMessage: "I was hoping you'd say that."
+};
+/* ========================================================== */
+
+const $ = s => document.querySelector(s);
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---- personal text ---- */
+$('#name-you').textContent = CONFIG.theirName;
+$('#track-name').textContent = CONFIG.songLabel;
+$('#answer').textContent = CONFIG.yesMessage;
+
+/* ---- reason cards ---- */
+const grid = $('#reasons');
+CONFIG.reasons.forEach((text, i) => {
+  const b = document.createElement('button');
+  b.className = 'card';
+  b.setAttribute('aria-label', 'Reveal reason ' + (i + 1));
+  b.innerHTML = `<span class="card-in">
+      <span class="face front"><span class="num">${String(i+1).padStart(2,'0')}</span><span class="tap">tap me</span></span>
+      <span class="face back">${text}</span>
+    </span>`;
+  b.addEventListener('click', () => b.classList.toggle('flipped'));
+  grid.appendChild(b);
+});
+
+/* ---- music ---- */
+const song = $('#song'), vinyl = $('#vinyl'), eq = $('#eq'), toggle = $('#toggle'), hint = $('#audio-hint');
+song.volume = 0.7;
+let ready = true;
+
+song.addEventListener('error', () => {
+  ready = false;
+  hint.textContent = 'No song file found. Drop a file named perfect.mp3 beside this page, or use "Use my own song".';
+});
+
+function paint(playing){
+  vinyl.classList.toggle('spinning', playing);
+  eq.classList.toggle('on', playing);
+  toggle.textContent = playing ? 'Pause' : 'Play';
+}
+function play(){
+  song.play().then(() => { paint(true); hint.textContent = ''; })
+             .catch(() => { paint(false); if(ready) hint.textContent = 'Tap the heart to start the song.'; });
+}
+function flip(){ song.paused ? play() : (song.pause(), paint(false)); }
+
+vinyl.addEventListener('click', flip);
+toggle.addEventListener('click', flip);
+$('#vol').addEventListener('input', e => song.volume = e.target.value / 100);
+$('#pickbtn').addEventListener('click', () => $('#pick').click());
+$('#pick').addEventListener('change', e => {
+  const f = e.target.files[0]; if(!f) return;
+  song.src = URL.createObjectURL(f);
+  ready = true;
+  $('#track-name').textContent = f.name.replace(/\.[^.]+$/, '');
+  play();
+});
+
+/* ---- gate ---- */
+$('#start').addEventListener('click', () => {
+  $('#gate').classList.add('gone');
+  play();
+  if(!reduced) for(let i = 0; i < 14; i++) setTimeout(rise, i * 90);
+});
+
+/* ---- time together ---- */
+const start = new Date(CONFIG.since);
+function tick(){
+  let ms = Date.now() - start.getTime(); if(ms < 0) ms = 0;
+  const s = Math.floor(ms / 1000);
+  $('#d').textContent = Math.floor(s / 86400).toLocaleString();
+  $('#h').textContent = Math.floor(s / 3600) % 24;
+  $('#m').textContent = Math.floor(s / 60) % 60;
+  $('#s').textContent = s % 60;
+}
+tick(); setInterval(tick, 1000);
+
+/* ---- ambient hearts ---- */
+const glyphs = ['♥','♡','💗','🌸','✿'];
+function rise(){
+  const el = document.createElement('span');
+  el.className = 'float';
+  el.textContent = glyphs[Math.random() * glyphs.length | 0];
+  el.style.left = Math.random() * 100 + 'vw';
+  el.style.fontSize = (13 + Math.random() * 20) + 'px';
+  el.style.animationDuration = (9 + Math.random() * 8) + 's';
+  el.style.setProperty('--spin', (Math.random() * 120 - 60) + 'deg');
+  $('#sky').appendChild(el);
+  setTimeout(() => el.remove(), 18000);
+}
+if(!reduced) setInterval(rise, 900);
+
+/* ---- tap to burst ---- */
+let taps = 0;
+document.addEventListener('click', e => {
+  if(e.target.closest('button, input, a')) return;
+  taps++; $('#taps').textContent = taps;
+  if(reduced) return;
+  for(let i = 0; i < 6; i++){
+    const p = document.createElement('span');
+    p.className = 'pop';
+    p.textContent = '♥';
+    p.style.left = e.clientX + 'px';
+    p.style.top = e.clientY + 'px';
+    p.style.color = ['#FF7BA9','#D6376F','#FFB3CD','#FFD37A'][i % 4];
+    p.style.setProperty('--dx', (Math.random() * 150 - 75) + 'px');
+    p.style.setProperty('--dy', (-40 - Math.random() * 110) + 'px');
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 900);
+  }
+});
+
+/* ---- the ask ---- */
+const no = $('#no');
+let dodges = 0;
+function dodge(){
+  dodges++;
+  if(dodges > 5){ no.style.opacity = '0'; no.style.pointerEvents = 'none'; return; }
+  const x = (Math.random() * 200 - 100) | 0;
+  const y = (Math.random() * 90 - 45) | 0;
+  no.style.transform = `translate(${x}px, ${y}px) scale(${1 - dodges * 0.12})`;
+}
+no.addEventListener('mouseenter', dodge);
+no.addEventListener('click', e => { e.preventDefault(); dodge(); });
+no.addEventListener('touchstart', e => { e.preventDefault(); dodge(); }, {passive:false});
+
+$('#yes').addEventListener('click', () => {
+  $('#answer').classList.add('show');
+  no.style.opacity = '0'; no.style.pointerEvents = 'none';
+  if(reduced) return;
+  for(let i = 0; i < 40; i++){
+    setTimeout(() => {
+      const p = document.createElement('span');
+      p.className = 'pop';
+      p.textContent = ['♥','💖','✨','🌸'][i % 4];
+      p.style.left = (Math.random() * innerWidth) + 'px';
+      p.style.top = (innerHeight * 0.65) + 'px';
+      p.style.fontSize = (16 + Math.random() * 18) + 'px';
+      p.style.setProperty('--dx', (Math.random() * 260 - 130) + 'px');
+      p.style.setProperty('--dy', (-160 - Math.random() * 260) + 'px');
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 900);
+    }, i * 40);
+  }
+});
+</script>
+</body>
+</html>
