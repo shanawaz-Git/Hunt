@@ -388,7 +388,7 @@
   <div class="row">
     <span class="navmark">Shanu <b>&amp;</b> Rag-V</span>
     <div class="navlinks">
-      <a href="#dates">Dates</a><a href="#letters">Letters</a><a href="#gundu">G.U.N.D.U</a>
+      <a href="#dates">Dates</a><a href="#letters-section">Letters</a><a href="#gundu">G.U.N.D.U</a>
       <a href="#promises">Promises</a><a href="#gifts">Gifts</a><a href="#notes">Notes</a><a href="#memories">Memories</a>
     </div>
     <div class="nav-actions">
@@ -400,7 +400,7 @@
     </div>
   </div>
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#dates">Dates</a><a href="#letters">Letters</a><a href="#gundu">G.U.N.D.U</a>
+    <a href="#dates">Dates</a><a href="#letters-section">Letters</a><a href="#gundu">G.U.N.D.U</a>
     <a href="#promises">Promises</a><a href="#gifts">Gifts</a><a href="#notes">Notes</a><a href="#memories">Memories</a><a href="#more">More</a>
   </div>
 </nav>
@@ -443,7 +443,7 @@
   <button class="btn ghost add-btn edit-only" onclick="openAdd('date')">+ Add a date</button>
 </div></section>
 
-<section class="block" id="letters"><div class="wrap reveal">
+<section class="block" id="letters-section"><div class="wrap reveal">
   <div class="sec-orn"><span class="orn-dot"></span><span class="orn-dot"></span><span class="orn-dot"></span></div><div class="eyebrow">letters between us</div>
   <h2 class="sec">Things we've written to each other</h2>
   <p class="lede">Tap one open. They're meant to be read slowly.</p>
@@ -1069,7 +1069,7 @@ toTopBtn.onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
 const MOODS={
   happy:{target:"#memories",line:"Good. Go look at the two of you."},
   heavy:{target:"#promises",line:"Slowly, then. These are the things you told me — they hold you too."},
-  missing:{target:"#letters",line:"She's in every one of these. Take your time."},
+  missing:{target:"#letters-section",line:"She's in every one of these. Take your time."},
   celebrating:{target:"#dates",line:"Then add today to the list — some dates deserve to be kept."}
 };
 document.querySelectorAll(".mood").forEach(b=>b.onclick=()=>{

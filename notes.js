@@ -30,6 +30,15 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
+  // Note fields come from the server, so escape them before building HTML.
+  function esc(value) {
+    return String(value ?? "").replace(
+      /[&<>"']/g,
+      (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]
+    );
+  }
+
   function displayNotes(notes, first) {
     notesTableBody.innerHTML = ""; // Clear any existing rows
 
@@ -55,24 +64,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (note.state == "active") {
         row.innerHTML = `
-                <td>${note.name}</td>
-                <td>${note.cat}</td>
-                <td>${note.content}</td>
+                <td>${esc(note.name)}</td>
+                <td>${esc(note.cat)}</td>
+                <td>${esc(note.content)}</td>
                 <td style="background-color: yellow; font-weight: bold">Pending</td>
-                <td style="${clr}">${note.eta}</td>
-                <td><button class="complete-btn" data-id="${note._id}">Complete</button></td>
+                <td style="${clr}">${esc(note.eta)}</td>
+                <td><button class="complete-btn" data-id="${esc(note._id)}">Complete</button></td>
                 <td></td>
             `;
       } else {
         if (!first)
           row.innerHTML = `
-                <td>${note.name}</td>
-                <td>${note.cat}</td>
-                <td>${note.content}</td>
-                <td>${note.state}</td>
-                <td>${note.eta}</td>
-                <td><button class="incomplete-btn" data-id="${note._id}">Revert</button></td>
-                <td><button class="deleteNote" data-id="${note._id}">🗑️</button></td>
+                <td>${esc(note.name)}</td>
+                <td>${esc(note.cat)}</td>
+                <td>${esc(note.content)}</td>
+                <td>${esc(note.state)}</td>
+                <td>${esc(note.eta)}</td>
+                <td><button class="incomplete-btn" data-id="${esc(note._id)}">Revert</button></td>
+                <td><button class="deleteNote" data-id="${esc(note._id)}">🗑️</button></td>
             `;
       }
       notesTableBody.appendChild(row);
