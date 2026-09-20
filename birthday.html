@@ -260,8 +260,8 @@
 <script>
 /* ============================================================
    EDIT ME
-   BIRTHDAY  — the day itself (month is 1–12).
-   DOORS     — everything that unlocks. `at` = how many days before
+   BIRTHDAY  - the day itself (month is 1–12).
+   DOORS     - everything that unlocks. `at` = how many days before
                the birthday it opens (at:0 = the day itself, at:999 =
                open from the start). Change the words freely.
 
@@ -275,17 +275,17 @@ const DOORS = [
   { id:"start", at:999, hint:"A note", title:"Before we begin", type:"note",
     paras:[
       "Hi, Rag-V.",
-      "I wanted the days before your birthday to feel like something, not just a wait. So I've left a few small things here — one every so often. Some are words, some are pictures, and one is a song.",
+      "I wanted the days before your birthday to feel like something, not just a wait. So I've left a few small things here - one every so often. Some are words, some are pictures, and one is a song.",
       "You don't have to do anything with them. Open them when you feel like it, in whatever mood the day is in. They'll keep."],
     sign:"— Shanu" },
 
   { id:"mar26", at:100, hint:"A note", title:"The 26th of March", type:"note",
     paras:[
       "March 26, 2025. It looked like an ordinary day, and that's the part I keep coming back to.",
-      "Neither of us knew yet what it would turn into. I only know that somewhere between then and now, ordinary days started to feel worth remembering — and that's because of you."] },
+      "Neither of us knew yet what it would turn into. I only know that somewhere between then and now, ordinary days started to feel worth remembering - and that's because of you."] },
 
   { id:"photo1", at:75, hint:"A photo", title:"One I'm glad we have", type:"photo",
-    src:"p1.jpeg", caption:"💗 Our first memory", alt:"A photo of the two of us — our first memory" },
+    src:"p1.jpeg", caption:"💗 Our first memory", alt:"A photo of the two of us - our first memory" },
 
   { id:"told", at:50, hint:"A small list", title:"Things you told me", type:"list",
     intro:"I haven't forgotten any of them. A few I think about more than you'd guess:",
@@ -296,7 +296,7 @@ const DOORS = [
     src:"Perfect.mp3", songTitle:"Perfect", line:"For the days when words are too much. Headphones, if you can." },
 
   { id:"cafe", at:21, hint:"A photo", title:"Café days", type:"photo",
-    src:"p5.jpeg", caption:"☕ Café moments", alt:"A photo of the two of us — café moments",
+    src:"p5.jpeg", caption:"☕ Café moments", alt:"A photo of the two of us - café moments",
     paras:["Cake Bee, May 26. Cake, conversation, and the start of something neither of us could quite name yet."] },
 
   { id:"gundu", at:14, hint:"A little something to tap", title:"Five letters", type:"gundu",
@@ -305,7 +305,7 @@ const DOORS = [
 
   { id:"newyear", at:7, hint:"A note", title:"11:11, 1/1", type:"note",
     paras:[
-      "It's the first of January. Once, at 11:11 on this very date, I made a wish for both of us — to be happy, to stay kind to each other, and to keep fixing whatever we break.",
+      "It's the first of January. Once, at 11:11 on this very date, I made a wish for both of us - to be happy, to stay kind to each other, and to keep fixing whatever we break.",
       "I'm making it again today, a week before yours."] },
 
   { id:"tomorrow", at:1, hint:"A note", title:"One more sleep", type:"note",
@@ -315,10 +315,10 @@ const DOORS = [
 
   { id:"today", at:0, hint:"The last one", title:"Happy birthday, Ragave", type:"note", final:true,
     paras:[
-      "Today is yours — not in a loud way, just in the way that every part of it should feel like it was made with you in mind.",
+      "Today is yours - not in a loud way, just in the way that every part of it should feel like it was made with you in mind.",
       "Thank you for the ordinary days, the long conversations, the way you look out for me, and for being a place I can land. I hope this year is kind to you: gentle mornings, people who see you clearly, and more reasons to laugh than to worry.",
       "Whatever shape things take, I'm glad I know you, and I'm rooting for you. Always."],
-    sign:"Happy birthday, Rag-V 💗 — Shanu" }
+    sign:"Happy birthday, Rag-V 💗 - Shanu" }
 ];
 
 /* ---------- helpers ---------- */
@@ -330,7 +330,7 @@ const TARGET = new Date(BIRTHDAY.year, BIRTHDAY.month - 1, BIRTHDAY.day);
 const unlockAt = d => d.at >= 999 ? new Date(0) : new Date(BIRTHDAY.year, BIRTHDAY.month - 1, BIRTHDAY.day - d.at);
 const fmtDay = d => d.toLocaleDateString(undefined, { day: "numeric", month: "long" });
 
-/* "now" — real time, or a pretend date when previewing with ?date=YYYY-MM-DD */
+/* "now" - real time, or a pretend date when previewing with ?date=YYYY-MM-DD */
 let offset = 0, preview = false;
 { const q = new URLSearchParams(location.search).get("date");
   if (q) { const d = new Date(q + "T12:00:00"); if (!isNaN(d)) { offset = d - Date.now(); preview = true; } } }
@@ -351,7 +351,7 @@ $("#themeBtn").onclick = () => applyTheme(document.documentElement.getAttribute(
 applyTheme(document.documentElement.getAttribute("data-theme") || "light");
 
 /* ============================================================
-   FLOWERS — drawn once as a sprite, reused everywhere with <use>.
+   FLOWERS - drawn once as a sprite, reused everywhere with <use>.
    Colours come from --fp (petal) --fp2 (inner petal) --fc (centre) --fs (line).
    ============================================================ */
 const PALETTES = [                         /* petal, inner, centre, line */
@@ -448,7 +448,7 @@ function renderGarland(unlockedCount) {
     slots += `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><g class="sway" style="animation-delay:${(-i * .8).toFixed(1)}s">${inner}</g></g>`;
   }
   g.innerHTML = `<path d="${vine}" fill="none" stroke="var(--leaf2)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>${leaves}${slots}`;
-  g.setAttribute("aria-label", `A garland of flowers — ${unlockedCount} of ${n} in bloom`);
+  g.setAttribute("aria-label", `A garland of flowers - ${unlockedCount} of ${n} in bloom`);
 }
 
 /* ---------- ambient petals + sparkles ---------- */
@@ -627,7 +627,7 @@ function walkBug(from, to) {
 function renderStatus() {
   const t = now(), unlocked = DOORS.filter(d => t >= unlockAt(d)), fresh = unlocked.filter(d => !opened.has(d.id)).length;
   const s = $("#status"); s.innerHTML = "";
-  if (born) { s.textContent = "Everything is open now — take your time."; return; }
+  if (born) { s.textContent = "Everything is open now - take your time."; return; }
   if (fresh) { const b = el("b", null, fresh === 1 ? "1 new thing" : fresh + " new things"); s.append(b, " waiting below.  🌷"); }
   else s.textContent = "You're all caught up.";
   if (nextUnlock) s.append(" Next one opens " + fmtDay(nextUnlock) + ".");
@@ -666,7 +666,7 @@ $("#openLast").onclick = () => {
 /* tap anywhere on the hero for a shower of petals */
 $("#stage").addEventListener("click", e => { if (e.target.closest("button,a")) return; burst(e.clientX, e.clientY, 12); });
 if (preview) { const p = $("#preview"); p.hidden = false;
-  p.textContent = "Preview — pretending it's " + new Date(now()).toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" }) + ". Remove ?date=… from the address to see the real page."; }
+  p.textContent = "Preview - pretending it's " + new Date(now()).toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" }) + ". Remove ?date=… from the address to see the real page."; }
 addAmbient(matchMedia("(max-width:600px)").matches ? 9 : 16, 14);
 renderAll(); tick(); setInterval(tick, 1000);
 </script>
