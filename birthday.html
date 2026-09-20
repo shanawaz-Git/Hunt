@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="A small countdown, with something to open along the way." />
+<meta name="robots" content="noindex,nofollow" />
+<meta name="theme-color" content="#F7F1E7" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#17120F" media="(prefers-color-scheme: dark)" />
+<title>Until Your Day</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 8c7 0 12 6 12 13s-5 12-12 12S8 28 8 21 13 8 20 8z' fill='%23B23A38'/%3E%3Cpath d='M20 8v25' stroke='%232A211A' stroke-width='1.4'/%3E%3Ccircle cx='14.5' cy='19' r='1.7' fill='%232A211A'/%3E%3Ccircle cx='25.5' cy='19' r='1.7' fill='%232A211A'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet" />
+<script>
+/* set the theme before first paint (same key as the archive page, so the two agree) */
+(function(){try{var t=localStorage.getItem("lbl-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);}catch(e){}})();
+</script>
+<style>
+  :root{
+    --paper:#F7F1E7; --paper-2:#FBF6EE; --card:#FFFDF9;
+    --ink:#2A211A; --ink-soft:#6B5C50; --ink-faint:#8C7D6F;
+    --bug:#B23A38; --plum:#7A4E63; --plum-deep:#5C3A4A; --blush:#F5E5DF;
+    --gold:#C69A5B; --gold-soft:#E7D3A6;
+    --line:#EADFCD; --line-soft:#F1E8D9; --bg-a:#FBEBE4; --bg-b:#F0E7EF;
+    --shadow:0 1px 2px rgba(42,33,26,.04), 0 10px 30px rgba(42,33,26,.06);
+    --lift:0 3px 8px rgba(42,33,26,.07), 0 20px 46px rgba(122,78,99,.13);
+    --r:16px; color-scheme:light;
+  }
+  :root[data-theme="dark"]{
+    --paper:#17120F; --paper-2:#1F1813; --card:#221A15;
+    --ink:#F0E7DC; --ink-soft:#B7A99A; --ink-faint:#928373;
+    --bug:#E36159; --plum:#CE93AC; --plum-deep:#E0AFC4; --blush:#2E211E;
+    --gold:#DDB878; --gold-soft:#5C4A2C;
+    --line:#352A20; --line-soft:#2A211A; --bg-a:#2A1C1A; --bg-b:#1B1722;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    --lift:0 3px 8px rgba(0,0,0,.4), 0 20px 46px rgba(0,0,0,.5);
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;color:var(--ink);line-height:1.62;font-family:"Inter",system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    background:radial-gradient(1100px 620px at 82% -8%,var(--bg-a) 0%,transparent 58%),
+      radial-gradient(1000px 560px at -12% 108%,var(--bg-b) 0%,transparent 55%),var(--paper)}
+  :focus-visible{outline:2px solid var(--bug);outline-offset:2px}
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .skip-link{position:absolute;left:12px;top:-60px;z-index:120;background:var(--plum);color:#fff;padding:9px 14px;
+    border-radius:0 0 10px 10px;font-size:13.5px;text-decoration:none;transition:top .15s}
+  .skip-link:focus{top:0}
+
+  .icon-btn{position:fixed;top:14px;right:14px;z-index:50;width:38px;height:38px;border-radius:11px;border:1px solid var(--line);
+    background:var(--card);color:var(--ink-soft);cursor:pointer;display:grid;place-items:center;padding:0;box-shadow:var(--shadow)}
+  .icon-btn:hover{color:var(--plum-deep);border-color:var(--plum)}
+  .preview{position:relative;z-index:2;background:var(--plum);color:#fff;text-align:center;font-size:13px;padding:8px 64px 8px 14px}
+  .preview[hidden]{display:none}
+
+  /* ---------- hero ---------- */
+  .hero{text-align:center;padding:76px 20px 34px}
+  .kicker{font-family:"Caveat",cursive;font-size:24px;color:var(--bug)}
+  h1{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(38px,9vw,62px);line-height:1.05;letter-spacing:-.02em;margin:4px 0 12px}
+  .sub{color:var(--ink-soft);font-size:16.5px;max-width:46ch;margin:0 auto 26px}
+  .clock{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:460px;margin:0 auto}
+  .unit{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 4px 10px;box-shadow:var(--shadow)}
+  .num{display:block;font-family:"Fraunces",serif;font-size:clamp(28px,8vw,42px);line-height:1;color:var(--plum-deep);font-variant-numeric:tabular-nums}
+  .lab{display:block;margin-top:6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+  .status{margin:22px auto 0;color:var(--ink-soft);font-size:14.5px;max-width:44ch}
+  .status b{color:var(--bug);font-weight:600}
+  .cta{margin-top:18px;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border:none;border-radius:12px;
+    background:var(--plum);color:#fff;font:500 14.5px "Inter",sans-serif;cursor:pointer;box-shadow:var(--shadow)}
+  .cta:hover{background:var(--plum-deep)}
+  .cta[hidden],.clock[hidden]{display:none}
+  .hero.born h1{color:var(--bug)}
+
+  /* ---------- the path of doors ---------- */
+  .path{list-style:none;margin:0;padding:8px 0 0 34px;position:relative}
+  .path:before{content:"";position:absolute;left:10px;top:18px;bottom:26px;width:2px;background:linear-gradient(var(--gold-soft),var(--blush))}
+  .door{position:relative;margin:0 0 16px}
+  .node{position:absolute;left:-34px;top:19px;width:22px;height:22px;border-radius:50%;background:var(--paper);
+    border:2px solid var(--line);display:grid;place-items:center}
+  .unlocked .node{border-color:var(--bug);background:var(--bug)}
+  .latest .node{background:var(--card);box-shadow:0 0 0 5px color-mix(in srgb,var(--bug) 16%,transparent)}
+  .node svg{width:14px;height:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+  .locked .card{background:var(--paper-2);border-style:dashed;box-shadow:none}
+  .final.unlocked .card{border-color:var(--gold);box-shadow:0 0 0 2px color-mix(in srgb,var(--gold) 35%,transparent),var(--lift)}
+  .row{display:flex;align-items:center;gap:14px;width:100%;padding:16px 18px;text-align:left}
+  button.row{background:none;border:none;font:inherit;color:inherit;cursor:pointer}
+  button.row:hover .title{color:var(--plum-deep)}
+  .ico{flex:none;width:34px;height:34px;color:var(--ink-faint)}
+  .unlocked .ico{color:var(--bug)}
+  .txt{flex:1;min-width:0}
+  .hint{display:block;font-family:"Caveat",cursive;font-size:18px;color:var(--bug);line-height:1.1}
+  .locked .hint{color:var(--ink-faint)}
+  .title{display:block;font-family:"Fraunces",serif;font-size:19px;font-weight:500;color:var(--ink);transition:color .15s}
+  .locked .title{color:var(--ink-soft)}
+  .when{display:block;font-size:13px;color:var(--ink-faint);margin-top:1px}
+  .new{font-size:11px;padding:2px 9px;border-radius:999px;font-weight:600;color:var(--bug);
+    background:color-mix(in srgb,var(--bug) 14%,transparent)}
+  .chev{flex:none;color:var(--ink-faint);font-size:22px;line-height:1;transition:transform .25s}
+  [aria-expanded="true"] .chev{transform:rotate(45deg)}
+  .panel{padding:2px 20px 22px;border-top:1px solid var(--line-soft);animation:fade .35s ease both}
+  .panel[hidden]{display:none}
+  .panel p{margin:14px 0 0;color:var(--ink-soft);font-size:15.5px;line-height:1.75}
+  .sign{font-family:"Caveat",cursive;font-size:25px;color:var(--plum-deep);margin-top:16px}
+  .panel figure{margin:16px 0 0}
+  .panel img{display:block;width:100%;max-height:480px;object-fit:cover;border-radius:12px;background:var(--blush)}
+  .panel figcaption{font-family:"Caveat",cursive;font-size:21px;color:var(--plum-deep);margin-top:8px}
+  .panel ul.plain{margin:12px 0 0;padding-left:20px;color:var(--ink);font-size:15.5px;line-height:1.9}
+  .panel audio{width:100%;margin-top:16px}
+  .song-title{font-family:"Fraunces",serif;font-size:20px;margin:16px 0 0;color:var(--ink)}
+  .gbtns{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+  .gbtn{width:52px;height:56px;border-radius:12px;border:1px solid var(--line);background:var(--paper-2);color:var(--gold);
+    font:500 28px "Fraunces",serif;cursor:pointer;transition:transform .15s,background .15s,color .15s}
+  .gbtn:hover{transform:translateY(-2px);border-color:var(--plum)}
+  .gbtn.on{background:var(--plum);color:#fff;border-color:var(--plum);transform:none}
+  .gout{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:6px}
+  .gout li{color:var(--ink);font-size:16px}
+  .gout li[hidden]{display:none}
+  .gout b{font-family:"Fraunces",serif;color:var(--bug);font-size:20px;margin-right:6px}
+  .gdone{font-family:"Caveat",cursive;font-size:22px;color:var(--plum-deep);margin-top:14px}
+  .gdone[hidden]{display:none}
+
+  footer{position:relative;z-index:1;text-align:center;padding:26px 20px 56px;color:var(--ink-faint);font-size:12.5px}
+  footer a{color:var(--plum);text-decoration:none;font-size:13.5px}
+  footer a:hover{text-decoration:underline}
+
+  .petals{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+  .petal{position:absolute;top:-20px;border-radius:50% 50% 50% 0;background:var(--blush);opacity:.7;animation:drift linear infinite}
+  :root[data-theme="dark"] .petal{opacity:.3}
+  @keyframes drift{0%{transform:translateY(-8vh) rotate(0)}100%{transform:translateY(112vh) rotate(320deg)}}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+<noscript><style>.hero{padding-bottom:10px}</style></noscript>
+</head>
+<body>
+<a class="skip-link" href="#doors">Skip to the surprises</a>
+<button class="icon-btn" id="themeBtn" aria-label="Toggle day or night"></button>
+<div class="preview" id="preview" hidden></div>
+<div class="petals" id="petals" aria-hidden="true"></div>
+
+<header class="hero wrap" id="hero">
+  <div class="kicker" id="kicker">for Ragave</div>
+  <h1 id="title">Until your day</h1>
+  <p class="sub" id="sub">A few small things to open on the way to your birthday.</p>
+  <div class="clock" id="clock" role="timer" aria-label="Time until Ragave's birthday">
+    <div class="unit"><span class="num" id="cdD">0</span><span class="lab">days</span></div>
+    <div class="unit"><span class="num" id="cdH">0</span><span class="lab">hours</span></div>
+    <div class="unit"><span class="num" id="cdM">0</span><span class="lab">minutes</span></div>
+    <div class="unit"><span class="num" id="cdS">0</span><span class="lab">seconds</span></div>
+  </div>
+  <p class="sr-only" id="srDays" aria-live="polite"></p>
+  <p class="status" id="status"></p>
+  <button class="cta" id="openLast" hidden>Open the last one ↓</button>
+  <noscript><p class="status">This page needs JavaScript to count down and unlock things.</p></noscript>
+</header>
+
+<main class="wrap" id="doors">
+  <ol class="path" id="path"></ol>
+</main>
+
+<footer>
+  <a href="escape.html">← back to the archive</a>
+  <div style="margin-top:10px">Nothing here is in a hurry.</div>
+</footer>
+
+<script>
+/* ============================================================
+   EDIT ME
+   BIRTHDAY  — the day itself (month is 1–12).
+   DOORS     — everything that unlocks. `at` = how many days before
+               the birthday it opens (at:0 = the day itself, at:999 =
+               open from the start). Change the words freely.
+
+   Types:  note · photo · list · song · gundu
+
+   Preview any day without waiting:   birthday.html?date=2026-12-25
+   ============================================================ */
+const BIRTHDAY = { year: 2027, month: 1, day: 8 };
+
+const DOORS = [
+  { id:"start", at:999, hint:"A note", title:"Before we begin", type:"note",
+    paras:[
+      "Hi, Rag-V.",
+      "I wanted the days before your birthday to feel like something, not just a wait. So I've left a few small things here — one every so often. Some are words, some are pictures, and one is a song.",
+      "You don't have to do anything with them. Open them when you feel like it, in whatever mood the day is in. They'll keep."],
+    sign:"— Shanu" },
+
+  { id:"mar26", at:100, hint:"A note", title:"The 26th of March", type:"note",
+    paras:[
+      "March 26, 2025. It looked like an ordinary day, and that's the part I keep coming back to.",
+      "Neither of us knew yet what it would turn into. I only know that somewhere between then and now, ordinary days started to feel worth remembering — and that's because of you."] },
+
+  { id:"photo1", at:75, hint:"A photo", title:"One I'm glad we have", type:"photo",
+    src:"p1.jpeg", caption:"💗 Our first memory", alt:"A photo of the two of us — our first memory" },
+
+  { id:"told", at:50, hint:"A small list", title:"Things you told me", type:"list",
+    intro:"I haven't forgotten any of them. A few I think about more than you'd guess:",
+    items:["Drink plenty of water.","Don't skip dinner.","Be careful crossing the road.","Light a lamp for Murugan in my name."],
+    outro:"Proof that you look out for me too. I'm keeping every one." },
+
+  { id:"song", at:30, hint:"A song", title:"One to play slowly", type:"song",
+    src:"Perfect.mp3", songTitle:"Perfect", line:"For the days when words are too much. Headphones, if you can." },
+
+  { id:"cafe", at:21, hint:"A photo", title:"Café days", type:"photo",
+    src:"p5.jpeg", caption:"☕ Café moments", alt:"A photo of the two of us — café moments",
+    paras:["Cake Bee, May 26. Cake, conversation, and the start of something neither of us could quite name yet."] },
+
+  { id:"gundu", at:14, hint:"A little something to tap", title:"Five letters", type:"gundu",
+    intro:"Tap each one.", words:["Gorgeous","Unique","Nice-hearted","Delightful","Unstoppable"],
+    done:"No matter what shape we take, this part never changes." },
+
+  { id:"newyear", at:7, hint:"A note", title:"11:11, 1/1", type:"note",
+    paras:[
+      "It's the first of January. Once, at 11:11 on this very date, I made a wish for both of us — to be happy, to stay kind to each other, and to keep fixing whatever we break.",
+      "I'm making it again today, a week before yours."] },
+
+  { id:"tomorrow", at:1, hint:"A note", title:"One more sleep", type:"note",
+    paras:[
+      "Whatever kind of day today is, I hope it's a soft one.",
+      "Drink some water, eat dinner, and go to bed a little early. Tomorrow belongs to you."] },
+
+  { id:"today", at:0, hint:"The last one", title:"Happy birthday, Ragave", type:"note", final:true,
+    paras:[
+      "Today is yours — not in a loud way, just in the way that every part of it should feel like it was made with you in mind.",
+      "Thank you for the ordinary days, the long conversations, the way you look out for me, and for being a place I can land. I hope this year is kind to you: gentle mornings, people who see you clearly, and more reasons to laugh than to worry.",
+      "Whatever shape things take, I'm glad I know you, and I'm rooting for you. Always."],
+    sign:"Happy birthday, Rag-V 💗 — Shanu" }
+];
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const el = (t, c, txt) => { const e = document.createElement(t); if (c) e.className = c; if (txt != null) e.textContent = txt; return e; };
+const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const TARGET = new Date(BIRTHDAY.year, BIRTHDAY.month - 1, BIRTHDAY.day);
+const unlockAt = d => d.at >= 999 ? new Date(0) : new Date(BIRTHDAY.year, BIRTHDAY.month - 1, BIRTHDAY.day - d.at);
+const fmtDay = d => d.toLocaleDateString(undefined, { day: "numeric", month: "long" });
+
+/* "now" — real time, or a pretend date when previewing with ?date=YYYY-MM-DD */
+let offset = 0, preview = false;
+{ const q = new URLSearchParams(location.search).get("date");
+  if (q) { const d = new Date(q + "T12:00:00"); if (!isNaN(d)) { offset = d - Date.now(); preview = true; } } }
+const now = () => Date.now() + offset;
+
+/* what she has already opened (remembered on this device only; a preview never saves) */
+let opened = new Set();
+if (!preview) { try { opened = new Set(JSON.parse(localStorage.getItem("rag-bday-opened") || "[]")); } catch (e) {} }
+function saveOpened() { if (preview) return; try { localStorage.setItem("rag-bday-opened", JSON.stringify([...opened])); } catch (e) {} }
+
+/* ---------- theme ---------- */
+const SUN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19"/></svg>';
+const MOON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8.5 8.5 0 019.5 4a7 7 0 108.9 10.9 8.6 8.6 0 001.6-.4z"/></svg>';
+function applyTheme(t) { document.documentElement.setAttribute("data-theme", t);
+  $("#themeBtn").innerHTML = t === "dark" ? SUN : MOON; $("#themeBtn").title = t === "dark" ? "Switch to day" : "Switch to night";
+  try { localStorage.setItem("lbl-theme", t); } catch (e) {} }
+$("#themeBtn").onclick = () => applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
+applyTheme(document.documentElement.getAttribute("data-theme") || "light");
+
+/* ---------- icons ---------- */
+const BUG = '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 8c7 0 12 6 12 13s-5 12-12 12S8 28 8 21 13 8 20 8z" fill="#B23A38"/><path d="M20 8v25" stroke="#2A211A" stroke-width="1.6"/><path d="M20 8c-4 0-7.5 2.2-9.5 5.5C13 12 16 11.5 20 11.5V8z" fill="#2A211A"/><circle cx="14.5" cy="19" r="1.9" fill="#2A211A"/><circle cx="25.5" cy="19" r="1.9" fill="#2A211A"/></svg>';
+const ENVELOPE = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="M3.5 7l8.5 6.2L20.5 7"/></svg>';
+const OPEN_ENV = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6v8.5a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 18.5z"/><path d="M3.5 10.5L12 16l8.5-5.5"/></svg>';
+
+/* ---------- content builders (text goes in via textContent, never as HTML) ---------- */
+const BUILD = {
+  note(d, box) { d.paras.forEach(p => box.appendChild(el("p", null, p))); if (d.sign) box.appendChild(el("div", "sign", d.sign)); },
+  photo(d, box) {
+    const f = el("figure"), img = new Image();
+    img.src = d.src; img.alt = d.alt || d.caption; img.loading = "lazy"; img.decoding = "async";
+    f.append(img, el("figcaption", null, d.caption)); box.appendChild(f);
+    (d.paras || []).forEach(p => box.appendChild(el("p", null, p)));
+  },
+  list(d, box) {
+    box.appendChild(el("p", null, d.intro));
+    const ul = el("ul", "plain"); d.items.forEach(i => ul.appendChild(el("li", null, i))); box.appendChild(ul);
+    if (d.outro) box.appendChild(el("p", null, d.outro));
+  },
+  song(d, box) {
+    box.appendChild(el("div", "song-title", d.songTitle));
+    const a = el("audio"); a.controls = true; a.preload = "none"; a.src = d.src; box.appendChild(a);   /* only downloads when she presses play */
+    box.appendChild(el("p", null, d.line));
+  },
+  gundu(d, box) {
+    box.appendChild(el("p", null, d.intro));
+    const row = el("div", "gbtns"), out = el("ul", "gout"), done = el("div", "gdone", d.done);
+    out.setAttribute("aria-live", "polite"); done.hidden = true;
+    const lis = d.words.map((w, i) => { const li = el("li"); li.hidden = true; li.append(el("b", null, w[0]), document.createTextNode(w.slice(1))); out.appendChild(li); return li; });
+    let shown = 0;
+    d.words.forEach((w, i) => {
+      const b = el("button", "gbtn", "GUNDU"[i]); b.type = "button"; b.setAttribute("aria-label", "Reveal letter " + (i + 1));
+      b.onclick = () => { if (b.classList.contains("on")) return; b.classList.add("on"); b.setAttribute("aria-label", w);
+        lis[i].hidden = false; if (++shown === d.words.length) done.hidden = false; };
+      row.appendChild(b);
+    });
+    box.append(row, out, done);
+  }
+};
+
+/* ---------- render ---------- */
+let nextUnlock = null, born = false;
+function renderDoors() {
+  const path = $("#path"), t = now(); nextUnlock = null;
+  /* remember which panels are open, so a door unlocking mid-read doesn't snap them shut */
+  const wasOpen = new Set([...path.querySelectorAll(".panel:not([hidden])")].map(p => p.dataset.id));
+  path.innerHTML = "";
+  let latest = -1; DOORS.forEach((d, i) => { if (t >= unlockAt(d)) latest = i; });
+  DOORS.forEach((d, i) => {
+    const when = unlockAt(d), open = t >= when;
+    const li = el("li", "door " + (open ? "unlocked" : "locked") + (i === latest ? " latest" : "") + (d.final ? " final" : ""));
+    li.id = "door-" + i;
+    const node = el("span", "node"); if (i === latest) node.innerHTML = BUG; li.appendChild(node);
+    const card = el("div", "card");
+    if (open) {
+      const btn = el("button", "row"); btn.type = "button"; btn.id = "btn-" + i;
+      btn.setAttribute("aria-expanded", "false"); btn.setAttribute("aria-controls", "panel-" + i);
+      btn.insertAdjacentHTML("beforeend", OPEN_ENV);
+      const txt = el("span", "txt"); txt.append(el("span", "hint", d.hint), el("span", "title", d.title)); btn.appendChild(txt);
+      let pill = null; if (!opened.has(d.id)) { pill = el("span", "new", "new"); btn.appendChild(pill); }
+      btn.appendChild(el("span", "chev", "+")); btn.lastChild.setAttribute("aria-hidden", "true");
+      const panel = el("div", "panel"); panel.id = "panel-" + i; panel.hidden = true; panel.dataset.id = d.id;
+      panel.setAttribute("role", "region"); panel.setAttribute("aria-labelledby", btn.id);
+      btn.onclick = () => {
+        const show = panel.hidden;
+        if (show && !panel.childNodes.length) BUILD[d.type](d, panel);
+        panel.hidden = !show; btn.setAttribute("aria-expanded", show);
+        if (show && !opened.has(d.id)) { opened.add(d.id); saveOpened(); if (pill) pill.remove(); renderStatus(); }
+      };
+      card.append(btn, panel);
+      if (wasOpen.has(d.id)) btn.click();
+    } else {
+      const days = Math.ceil((when - t) / 864e5);
+      const row = el("div", "row"); row.insertAdjacentHTML("beforeend", ENVELOPE);
+      const txt = el("span", "txt"); txt.append(el("span", "hint", d.hint),
+        el("span", "title", "Sealed for now"),
+        el("span", "when", "Opens " + fmtDay(when) + " · " + (days <= 1 ? "tomorrow" : "in " + days + " days")));
+      row.appendChild(txt); card.appendChild(row);
+      li.setAttribute("aria-label", "Locked. " + d.hint + ", opens " + fmtDay(when));
+      if (!nextUnlock) nextUnlock = when;
+    }
+    li.appendChild(card); path.appendChild(li);
+  });
+}
+function renderStatus() {
+  const t = now(), unlocked = DOORS.filter(d => t >= unlockAt(d)), fresh = unlocked.filter(d => !opened.has(d.id)).length;
+  const s = $("#status"); s.innerHTML = "";
+  if (born) { s.textContent = "Everything is open now — take your time."; return; }
+  if (fresh) { const b = el("b", null, fresh === 1 ? "1 new thing" : fresh + " new things"); s.append(b, " waiting below."); }
+  else s.textContent = "You're all caught up.";
+  if (nextUnlock) s.append(" Next one opens " + fmtDay(nextUnlock) + ".");
+}
+function renderHero() {
+  born = now() >= TARGET;
+  $("#hero").classList.toggle("born", born);
+  $("#clock").hidden = born; $("#openLast").hidden = !born;
+  if (born) { $("#kicker").textContent = "today is yours"; $("#title").textContent = "Happy birthday, Ragave";
+    $("#sub").textContent = "There's one last thing waiting for you."; startPetals(); }
+}
+function renderAll() { renderHero(); renderDoors(); renderStatus(); }
+
+/* ---------- clock ---------- */
+let lastDay = null;
+function tick() {
+  const t = now();
+  if (nextUnlock && t >= nextUnlock || (!born && t >= TARGET)) { renderAll(); return; }
+  if (born) return;
+  const diff = TARGET - t, s = Math.floor(diff / 1000);
+  const d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60), sec = s % 60;
+  $("#cdD").textContent = d; $("#cdH").textContent = h; $("#cdM").textContent = String(m).padStart(2, "0"); $("#cdS").textContent = String(sec).padStart(2, "0");
+  if (d !== lastDay) { lastDay = d; $("#srDays").textContent = d + (d === 1 ? " day" : " days") + " until Ragave's birthday."; }
+}
+
+/* ---------- petals (birthday only, and never with reduced motion) ---------- */
+let petalsOn = false;
+function startPetals() {
+  if (petalsOn || reduceMotion()) return; petalsOn = true;
+  const box = $("#petals");
+  for (let i = 0; i < 16; i++) {
+    const p = el("div", "petal"), s = 7 + Math.random() * 9;
+    p.style.width = p.style.height = s + "px"; p.style.left = Math.random() * 100 + "%";
+    p.style.animationDuration = (12 + Math.random() * 14) + "s"; p.style.animationDelay = (-Math.random() * 20) + "s";
+    box.appendChild(p);
+  }
+}
+
+/* ---------- go ---------- */
+$("#openLast").onclick = () => {
+  const i = DOORS.length - 1, li = $("#door-" + i);
+  li.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "center" });
+  const b = $("#btn-" + i); if (b && b.getAttribute("aria-expanded") === "false") b.click(); if (b) b.focus({ preventScroll: true });
+};
+if (preview) { const p = $("#preview"); p.hidden = false;
+  p.textContent = "Preview — pretending it's " + new Date(now()).toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" }) + ". Remove ?date=… from the address to see the real page."; }
+renderAll(); tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>

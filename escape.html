@@ -4,6 +4,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="A small private archive of moments, letters, and gifts." />
+<meta name="robots" content="noindex,nofollow" />
+<meta name="theme-color" content="#F7F1E7" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#17120F" media="(prefers-color-scheme: dark)" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 8c7 0 12 6 12 13s-5 12-12 12S8 28 8 21 13 8 20 8z' fill='%23B23A38'/%3E%3Cpath d='M20 8v25' stroke='%232A211A' stroke-width='1.4'/%3E%3Ccircle cx='14.5' cy='19' r='1.7' fill='%232A211A'/%3E%3Ccircle cx='25.5' cy='19' r='1.7' fill='%232A211A'/%3E%3C/svg%3E" />
+<script>
+/* set the theme before first paint so dark mode doesn't flash light */
+(function(){try{var t=localStorage.getItem("lbl-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t);}catch(e){}})();
+</script>
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
 <title>Where the Lady Bug Lands</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -279,7 +288,6 @@
     border-radius:10px;padding:10px 12px;font-family:inherit;font-size:14px;color:var(--ink);outline:none}
   .field textarea{min-height:100px;resize:vertical;line-height:1.6}
   .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--plum)}
-  .field input[type="date"]{color-scheme:light dark}
   .modal-f{display:flex;justify-content:flex-end;gap:10px;padding:12px 20px 16px}
 
   /* ---------- LIGHTBOX ---------- */
@@ -379,12 +387,29 @@
   @keyframes wob{0%,100%{transform:rotate(0)}50%{transform:rotate(-7deg)}}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
     .reveal{opacity:1;transform:none}html{scroll-behavior:auto}}
+
+  /* ---------- ENHANCEMENTS: a11y, focus, scroll ---------- */
+  :root{color-scheme:light}
+  :root[data-theme="dark"]{color-scheme:dark}
+  section[id]{scroll-margin-top:64px}   /* keep anchors clear of the sticky nav */
+  main:focus{outline:none}
+  body.no-scroll{overflow:hidden}
+  .skip-link{position:absolute;left:12px;top:-60px;z-index:120;background:var(--plum);color:#fff;padding:9px 14px;
+    border-radius:0 0 10px 10px;font-size:13.5px;transition:top .15s}
+  .skip-link:focus{top:0}
+  :focus-visible{outline:2px solid var(--bug);outline-offset:2px}
+  .car-track:focus-visible,.imgwrap:focus-visible{outline-offset:-3px}
+  .navlinks a.active,.mobile-menu a.active{color:var(--plum-deep);font-weight:500;
+    background:color-mix(in srgb,var(--plum) 14%,transparent)}
+  .note-card button.more{background:none;border:none;padding:0;font-family:inherit;text-align:left;align-self:flex-start}
+  .chip button.cx{background:none;border:none;padding:0;font:inherit;color:inherit;line-height:1}
 </style>
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
 <div id="progress"></div>
-<nav class="top">
+<nav class="top" aria-label="Sections">
   <div class="row">
     <span class="navmark">Shanu <b>&amp;</b> Rag-V</span>
     <div class="navlinks">
@@ -405,6 +430,7 @@
   </div>
 </nav>
 
+<main id="main" tabindex="-1">
 <header class="hero">
   <div class="wrap">
     <svg class="ladybug" id="bugLand" viewBox="0 0 40 40" aria-hidden="true">
@@ -419,13 +445,13 @@
     <div class="kicker">a small, private archive</div>
     <h1>Where the Lady Bug Lands</h1>
     <p>Some places you visit when you're happy. Some you visit when you're not. This one's built to hold both — the dates, the letters, the little gifts, the faces. Whichever kind of day this is, you can land here for a while.</p>
-    <div class="moods" id="moods">
+    <div class="moods" id="moods" role="group" aria-label="How are you feeling today?">
       <button class="mood" data-mood="happy"><span class="m-ico">🌞</span>feeling happy</button>
       <button class="mood" data-mood="heavy"><span class="m-ico">🌧</span>a heavy day</button>
       <button class="mood" data-mood="missing"><span class="m-ico">🌙</span>missing her</button>
       <button class="mood" data-mood="celebrating"><span class="m-ico">🎉</span>celebrating</button>
     </div>
-    <div class="mood-line" id="moodLine"></div>
+    <div class="mood-line" id="moodLine" aria-live="polite"></div>
     <div class="today" id="todayStrip"></div>
     <div class="viewer-note" id="viewerNote"></div>
     <div class="scrollcue">scroll gently ↓</div>
@@ -496,7 +522,7 @@
   <p class="lede">Quick thoughts, kept together. Sign in to write; anyone with the link can read.</p>
   <div class="live-flag" id="notesFlag"><span class="d"></span><span id="notesFlagText">Read-only</span></div>
   <div id="notesComposer" class="edit-only"></div>
-  <input id="noteSearch" class="note-search" placeholder="🔍  Search notes…" style="display:none" />
+  <input id="noteSearch" class="note-search" type="search" aria-label="Search notes" placeholder="🔍  Search notes…" style="display:none" />
   <div class="notes-grid" id="notesGrid"></div>
   <div class="show-more-wrap" id="notesMoreWrap"></div>
 </div></section>
@@ -509,7 +535,7 @@
   <div id="photoDrop" class="edit-only"></div>
   <div class="carousel" id="carousel">
     <button class="car-nav prev" id="carPrev" aria-label="Previous">‹</button>
-    <div class="car-track" id="carTrack"></div>
+    <div class="car-track" id="carTrack" tabindex="0" role="region" aria-label="Photo film strip — use the arrow keys to browse"></div>
     <button class="car-nav next" id="carNext" aria-label="Next">›</button>
     <div class="car-dots" id="carDots"></div>
     <div class="film-count" id="filmCount"></div>
@@ -533,6 +559,8 @@
   <div class="sign">— Shanu, for Gaga</div>
 </section>
 
+</main>
+
 <footer>
   <div class="footlinks">
     <a href="https://hunt-olive.vercel.app/bridgerton.html">🎻 Society Papers</a>
@@ -543,13 +571,13 @@
   Backed by your Google Drive · Made with love & care
 </footer>
 
-<div class="modal-back" id="modal"><div class="modal">
+<div class="modal-back" id="modal"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal-h"><span id="modalTitle">Add</span><button id="modalX" aria-label="Close">&times;</button></div>
   <div class="modal-body" id="modalBody"></div>
   <div class="modal-f"><button class="btn ghost" id="modalCancel">Cancel</button><button class="btn" id="modalSave">Save</button></div>
 </div></div>
 
-<div id="lightbox">
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
   <button id="lbClose" aria-label="Close">&times;</button>
   <button class="lb-nav prev" id="lbPrev" aria-label="Previous">‹</button>
   <img id="lbImg" alt="" />
@@ -565,7 +593,7 @@
     <circle cx="13" cy="26" r="1.5" fill="#2A211A"/><circle cx="27" cy="26" r="1.5" fill="#2A211A"/>
   </svg>
 </button>
-<div id="toast"></div>
+<div id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
@@ -617,7 +645,9 @@ function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");cl
 function fmtTs(ts){return new Date(ts).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"});}
 function fmtIso(iso){const d=new Date(iso+"T00:00:00");return isNaN(d)?iso:d.toLocaleDateString(undefined,{day:"numeric",month:"long"});}
 function isoYear(iso){const d=new Date(iso+"T00:00:00");return isNaN(d)?"":d.getFullYear();}
-function esc(s){return (s||"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+const smooth=()=>matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth";
+const syncFail=()=>toast("Saved on screen, but Drive sync hiccupped");
 
 let data={notes:[],photos:[],dates:[],letters:[],promises:[],gifts:[],theme:null};
 let connected=false;
@@ -664,7 +694,8 @@ function dateYears(){const ys=new Set();allDates().forEach(d=>{const y=isoYear(d
 
 function renderDates(){
   const up=upcomingDates();
-  if(dateFilter===null)dateFilter=up.length?"upcoming":(String(dateYears().slice(-1)[0]||"all"));
+  /* fall back to a year if "Upcoming" has emptied out (e.g. the last future date was removed) */
+  if(dateFilter===null||(dateFilter==="upcoming"&&!up.length))dateFilter=up.length?"upcoming":(String(dateYears().slice(-1)[0]||"all"));
   renderSpotlight(up);renderDateStats();renderDateFilters(up.length>0);renderTimeline(up);
 }
 function renderSpotlight(up){
@@ -682,7 +713,8 @@ function renderSpotlight(up){
 }
 function renderDateStats(){
   const box=$("#dateStats");if(!box)return;
-  const first=allDates().map(d=>parseIso(d.iso)).filter(Boolean).sort((a,b)=>a-b)[1];
+  /* earliest one-off date = "when it began"; yearly dates (birthdays) are excluded so adding one can't shift this */
+  const first=allDates().filter(d=>!d.recur).map(d=>parseIso(d.iso)).filter(Boolean).sort((a,b)=>a-b)[0];
   const parts=[];
   if(first&&first<startToday()){const d=dbetween(first,startToday());
     parts.push('<span class="dstat"><b>'+d.toLocaleString()+'</b>days since it began</span>');}
@@ -694,7 +726,7 @@ function renderDateFilters(hasUpcoming){
   const opts=[];if(hasUpcoming)opts.push(["upcoming","Upcoming"]);
   dateYears().forEach(y=>opts.push([String(y),String(y)]));opts.push(["all","All"]);
   opts.forEach(([val,lab])=>{const b=el("button","dfilter"+(String(dateFilter)===val?" on":""),lab);
-    b.onclick=()=>{dateFilter=val;renderDates();document.getElementById("dates").scrollIntoView({behavior:"smooth",block:"start"});};
+    b.onclick=()=>{dateFilter=val;renderDates();document.getElementById("dates").scrollIntoView({behavior:smooth(),block:"start"});};
     box.appendChild(b);});
 }
 function renderTimeline(up){
@@ -728,7 +760,7 @@ function renderLetters(){
   const add=(l,removable)=>{
     const det=el("details","letter");
     const bodyHtml=(l.body||[]).map(p=>`<p>${esc(p)}</p>`).join("");
-    det.innerHTML=`<summary><span class="lmeta"><span class="lkick">${esc(l.kick||"")}</span><span class="ltitle">${esc(l.title||"")}</span></span><span class="plus">+</span></summary><div class="body">${bodyHtml}</div>`;
+    det.innerHTML=`<summary><span class="lmeta"><span class="lkick">${esc(l.kick||"")}</span><span class="ltitle">${esc(l.title||"")}</span></span><span class="plus" aria-hidden="true">+</span></summary><div class="body">${bodyHtml}</div>`;
     if(removable&&connected){const row=el("div");row.style.marginTop="14px";
       const b=el("button","del-x","Remove this letter");b.onclick=()=>removeItem("letters",l.id);
       row.appendChild(b);det.querySelector(".body").appendChild(row);}
@@ -743,7 +775,7 @@ function renderPromises(){
   const dot='<svg class="b" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="var(--bug)"/><path d="M6 1v10" stroke="var(--ink)" stroke-width=".7"/></svg>';
   SEED_PROMISES.forEach(p=>{const r=el("div","promise");r.innerHTML=dot+"<span>"+p+"</span>";pl.appendChild(r);});
   data.promises.forEach(p=>{const r=el("div","promise");r.innerHTML=dot+"<span>"+esc(p.text)+"</span>";
-    if(connected){const x=el("button","del-x","✕");x.onclick=()=>removeItem("promises",p.id);r.appendChild(x);}
+    if(connected){const x=el("button","del-x","✕");x.setAttribute("aria-label","Remove reminder");x.onclick=()=>removeItem("promises",p.id);r.appendChild(x);}
     pl.appendChild(r);});
 }
 /* ============ RENDER: GIFTS ============ */
@@ -754,7 +786,8 @@ function renderGifts(){
     SEED_GIFTS[cat].forEach(g=>{const chip=el("span","chip");chip.innerHTML=esc(g);c.appendChild(chip);});
     data.gifts.filter(g=>g.cat===cat).forEach(g=>{
       const chip=el("span","chip");chip.innerHTML=esc(g.text);
-      if(connected){const x=el("span","cx","×");x.onclick=()=>removeItem("gifts",g.id);chip.appendChild(x);}
+      if(connected){const x=el("button","cx","×");x.type="button";x.setAttribute("aria-label","Remove "+g.text);
+        x.onclick=()=>removeItem("gifts",g.id);chip.appendChild(x);}
       c.appendChild(chip);});
   });
 }
@@ -794,8 +827,9 @@ function renderNotesGrid(){
     c.innerHTML=(n.title?`<h3>${esc(n.title)}</h3>`:"")+(n.body?`<div class="ntext">${esc(n.body)}</div>`:"")+
       `<div class="meta"><span>${fmtTs(n.at)}</span></div>`;
     if((n.body||"").length>220||(n.body||"").split("\n").length>5){
-      const more=el("div","more","Read more");
-      more.onclick=()=>{const ex=c.classList.toggle("expanded");more.textContent=ex?"Show less":"Read more";};
+      const more=el("button","more","Read more");more.type="button";more.setAttribute("aria-expanded","false");
+      more.onclick=()=>{const ex=c.classList.toggle("expanded");more.textContent=ex?"Show less":"Read more";
+        more.setAttribute("aria-expanded",ex);};
       c.insertBefore(more,c.querySelector(".meta"));
     }
     if(connected){const del=el("button","del-x","Delete");del.onclick=()=>deleteNote(n.id);
@@ -810,13 +844,14 @@ function renderNotesGrid(){
 async function addNote(){const t=$("#noteTitle").value.trim(),bd=$("#noteBody").value.trim();if(!t&&!bd)return;
   data.notes.unshift({id:"n"+Date.now(),title:t,body:bd,at:Date.now()});renderNotes();
   try{await saveData();}catch{toast("Saved, but Drive sync hiccupped");}}
-async function deleteNote(id){data.notes=data.notes.filter(n=>n.id!==id);renderNotes();try{await saveData();}catch{}}
+async function deleteNote(id){data.notes=data.notes.filter(n=>n.id!==id);renderNotes();try{await saveData();}catch{syncFail();}}
 
 /* ============ MEMORIES: carousel ============ */
 let currentSlide=0;
-function photoSrc(p){
+function photoSrc(p,w){
   if(connected)return null; // owner loads authorized blob
-  return "https://lh3.googleusercontent.com/d/"+p.id; // public image host for shared files
+  /* public image host for shared files; "=wN" asks for a resized copy instead of the full-size original */
+  return "https://lh3.googleusercontent.com/d/"+p.id+(w?"=w"+w:"");
 }
 function renderPhotos(){
   const drop=$("#photoDrop"),track=$("#carTrack"),dots=$("#carDots"),count=$("#filmCount");
@@ -836,19 +871,27 @@ function renderPhotos(){
     const wrap=el("div","imgwrap");wrap.appendChild(el("div","shimmer"));
     const cap=el("div","ph-cap");
     if(connected){
-      const inp=el("input");inp.value=p.caption||"";inp.placeholder="Add a caption…";
+      const inp=el("input");inp.value=p.caption||"";inp.placeholder="Add a caption…";inp.setAttribute("aria-label","Photo caption");
       inp.onchange=()=>saveCaption(p.id,inp.value.trim());cap.appendChild(inp);
-      const del=el("button","del");del.innerHTML="&times;";del.onclick=e=>{e.stopPropagation();deletePhoto(p.id);};
+      const del=el("button","del");del.innerHTML="&times;";del.setAttribute("aria-label","Delete photo");del.onclick=e=>{e.stopPropagation();deletePhoto(p.id);};
       card.appendChild(del);
     }else{
       const ro=el("div","cap-ro",p.caption||"");cap.appendChild(ro);
     }
     card.appendChild(wrap);card.appendChild(cap);track.appendChild(card);
     const showImg=url=>{wrap.innerHTML="";const img=new Image();img.src=url;img.alt=p.caption||"our photo";
-      img.loading="lazy";wrap.appendChild(img);wrap.onclick=()=>openLightbox(i);p._url=url;};
+      img.loading="lazy";wrap.appendChild(img);wrap.onclick=()=>openLightbox(i);
+      wrap.tabIndex=0;wrap.setAttribute("role","button");
+      wrap.setAttribute("aria-label","Open photo "+(i+1)+(p.caption?": "+p.caption:""));
+      wrap.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openLightbox(i);}};
+      if(connected)p._url=url;};
     if(connected){loadThumb(p.id).then(showImg).catch(()=>{wrap.innerHTML='<div class="ph-cap">Couldn\'t load</div>';});}
-    else{const src=photoSrc(p);const img=new Image();img.onload=()=>showImg(src);
-      img.onerror=()=>{wrap.innerHTML='<div class="ph-cap">Sign in to view</div>';};img.src=src;}
+    else{/* try a resized copy first; if that fails, fall back to the original */
+      let fullSize=false;const probe=new Image();
+      probe.onload=()=>showImg(probe.src);
+      probe.onerror=()=>{if(fullSize){wrap.innerHTML='<div class="ph-cap">Sign in to view</div>';return;}
+        fullSize=true;probe.src=photoSrc(p);};
+      probe.src=photoSrc(p,800);}
     const dot=el("button","cdot"+(i===0?" on":""));dot.setAttribute("aria-label","Photo "+(i+1));
     dot.onclick=()=>scrollToSlide(i);dots.appendChild(dot);
   });
@@ -856,7 +899,7 @@ function renderPhotos(){
   track.onscroll=()=>{clearTimeout(track._t);track._t=setTimeout(updateDots,80);};
 }
 function slideWidth(){const it=$("#carTrack").querySelector(".car-item");return it?it.offsetWidth+14:300;}
-function scrollToSlide(i){$("#carTrack").scrollTo({left:i*slideWidth(),behavior:"smooth"});}
+function scrollToSlide(i){$("#carTrack").scrollTo({left:i*slideWidth(),behavior:smooth()});}
 function updateDots(){
   const track=$("#carTrack");const i=Math.round(track.scrollLeft/slideWidth());
   currentSlide=Math.max(0,Math.min(i,data.photos.length-1));
@@ -864,34 +907,60 @@ function updateDots(){
 }
 $("#carPrev").onclick=()=>scrollToSlide(Math.max(0,currentSlide-1));
 $("#carNext").onclick=()=>scrollToSlide(Math.min(data.photos.length-1,currentSlide+1));
+$("#carTrack").addEventListener("keydown",e=>{
+  if(e.target!==e.currentTarget)return; // leave arrow keys alone inside caption inputs
+  if(e.key==="ArrowLeft"){e.preventDefault();scrollToSlide(Math.max(0,currentSlide-1));}
+  else if(e.key==="ArrowRight"){e.preventDefault();scrollToSlide(Math.min(data.photos.length-1,currentSlide+1));}
+});
 
 async function handleFiles(files){const imgs=[...files].filter(f=>f.type.startsWith("image/"));if(!imgs.length)return;
   toast(`Uploading ${imgs.length} photo${imgs.length>1?"s":""}…`);
   for(const f of imgs){try{await uploadPhoto(f);}catch(e){console.error(e);toast("A photo failed to upload");}}
   renderPhotos();toast("Saved to your Drive");}
 async function deletePhoto(id){data.photos=data.photos.filter(x=>x.id!==id);renderPhotos();
-  try{await driveDelete(id);await saveData();}catch{}
+  /* save the list first so the photo can't reappear after a reload if deleting the file fails */
+  try{await saveData();}catch{syncFail();}
+  try{await driveDelete(id);}catch(e){console.warn("Couldn't delete photo file",e);}
   if(thumbCache.has(id)){URL.revokeObjectURL(thumbCache.get(id));thumbCache.delete(id);}}
-async function saveCaption(id,val){const p=data.photos.find(x=>x.id===id);if(!p)return;p.caption=val;try{await saveData();}catch{}}
+async function saveCaption(id,val){const p=data.photos.find(x=>x.id===id);if(!p)return;p.caption=val;try{await saveData();}catch{syncFail();}}
 
 /* ============ LIGHTBOX with prev/next ============ */
-let lbIndex=0;
-function openLightbox(i){lbIndex=i;showLb();$("#lightbox").classList.add("show");}
+let lbIndex=0,lbReturnFocus=null,modalReturnFocus=null;
+/* stop the page scrolling behind an open dialog */
+function syncScrollLock(){document.body.classList.toggle("no-scroll",
+  $("#lightbox").classList.contains("show")||$("#modal").classList.contains("show"));}
+/* keep Tab / Shift+Tab inside an open dialog */
+function trapTab(e,box){
+  const f=[...box.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')]
+    .filter(x=>!x.disabled&&x.getClientRects().length);
+  if(!f.length)return;const first=f[0],last=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+}
+function openLightbox(i){lbIndex=i;lbReturnFocus=document.activeElement;showLb();
+  $("#lightbox").classList.add("show");syncScrollLock();$("#lbClose").focus();}
+function closeLightbox(){$("#lightbox").classList.remove("show");syncScrollLock();
+  if(lbReturnFocus&&lbReturnFocus.focus)lbReturnFocus.focus();lbReturnFocus=null;}
 function showLb(){
   const p=data.photos[lbIndex];if(!p)return;
-  const url=p._url||photoSrc(p);
-  $("#lbImg").src=url||"";$("#lbCap").textContent=p.caption||"";
+  const url=connected?p._url:photoSrc(p,1600); // owner sees the loaded blob; visitors get a screen-sized copy
+  $("#lbImg").src=url||"";$("#lbImg").alt=p.caption||"our photo";$("#lbCap").textContent=p.caption||"";
 }
-function lbStep(d){lbIndex=(lbIndex+d+data.photos.length)%data.photos.length;showLb();}
+function lbStep(d){if(!data.photos.length)return;lbIndex=(lbIndex+d+data.photos.length)%data.photos.length;showLb();}
 $("#lbPrev").onclick=e=>{e.stopPropagation();lbStep(-1);};
 $("#lbNext").onclick=e=>{e.stopPropagation();lbStep(1);};
-$("#lbClose").onclick=()=>$("#lightbox").classList.remove("show");
-$("#lightbox").onclick=e=>{if(e.target===$("#lightbox"))$("#lightbox").classList.remove("show");};
+$("#lbClose").onclick=closeLightbox;
+$("#lightbox").onclick=e=>{if(e.target===$("#lightbox"))closeLightbox();};
 document.addEventListener("keydown",e=>{
   if($("#lightbox").classList.contains("show")){
-    if(e.key==="Escape")$("#lightbox").classList.remove("show");
-    if(e.key==="ArrowLeft")lbStep(-1);if(e.key==="ArrowRight")lbStep(1);
-  }else if(e.key==="Escape")closeModal();
+    if(e.key==="Escape")closeLightbox();
+    else if(e.key==="ArrowLeft")lbStep(-1);
+    else if(e.key==="ArrowRight")lbStep(1);
+    else if(e.key==="Tab")trapTab(e,$("#lightbox"));
+  }else if($("#modal").classList.contains("show")){
+    if(e.key==="Escape")closeModal();
+    else if(e.key==="Tab")trapTab(e,$(".modal"));
+  }
 });
 /* swipe in lightbox */
 let touchX=null;
@@ -902,7 +971,9 @@ $("#lightbox").addEventListener("touchend",e=>{
 
 /* ============ ADD MODAL ============ */
 let modalSaveFn=null;
-function field(label,elm){const f=el("div","field");f.appendChild(el("label",null,label));f.appendChild(elm);return f;}
+let fieldSeq=0;
+function field(label,elm){const f=el("div","field");const id="fld"+(++fieldSeq);elm.id=id;
+  const l=el("label",null,label);l.htmlFor=id;f.appendChild(l);f.appendChild(elm);return f;}
 function inp(ph,type){const e=el("input");e.placeholder=ph||"";if(type)e.type=type;return e;}
 function openAdd(type,cat){
   if(!connected){toast("Sign in with Edit to add anything");return;}
@@ -941,17 +1012,23 @@ function openAdd(type,cat){
       data.letters.push({id:uid("l"),kick:k.value.trim(),title:t.value.trim(),body:b.value.trim()});
       commit(renderLetters,"Letter added");};
   }
-  $("#modal").classList.add("show");
+  modalReturnFocus=document.activeElement;
+  $("#modal").classList.add("show");syncScrollLock();
+  const firstField=body.querySelector("input:not([type=checkbox]),textarea,select");if(firstField)firstField.focus();
 }
 async function commit(renderFn,msg){renderFn();closeModal();
   try{await saveData();toast(msg);}catch(e){console.error(e);toast("Saved on screen, but Drive sync hiccupped");}}
 async function removeItem(key,id){data[key]=data[key].filter(x=>x.id!==id);
   ({dates:()=>{renderDates();renderToday();},letters:renderLetters,promises:renderPromises,gifts:renderGifts})[key]();
-  try{await saveData();}catch{}}
-function closeModal(){$("#modal").classList.remove("show");modalSaveFn=null;}
+  try{await saveData();}catch{syncFail();}}
+function closeModal(){$("#modal").classList.remove("show");modalSaveFn=null;syncScrollLock();
+  if(modalReturnFocus&&modalReturnFocus.focus)modalReturnFocus.focus();modalReturnFocus=null;}
 $("#modalX").onclick=closeModal;$("#modalCancel").onclick=closeModal;
 $("#modal").onclick=e=>{if(e.target===$("#modal"))closeModal();};
 $("#modalSave").onclick=()=>{if(modalSaveFn)modalSaveFn();};
+/* Enter saves from a single-line field (textareas keep Enter for new lines) */
+$("#modalBody").addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&e.target.tagName==="INPUT"&&e.target.type!=="checkbox"&&modalSaveFn){e.preventDefault();modalSaveFn();}});
 
 /* ============ DRIVE (owner, read-write) ============ */
 let tokenClient=null,accessToken=null,folderId=null,dataFileId=null;
@@ -984,7 +1061,17 @@ async function loadDataOwner(){
   }else{await saveData();}
 }
 function hydrate(p){data={notes:p.notes||[],photos:p.photos||[],dates:p.dates||[],letters:p.letters||[],promises:p.promises||[],gifts:p.gifts||[],theme:p.theme||null};}
-async function saveData(){
+/* Saves run one at a time and each writes the latest state, so quick edits can't race
+   each other or create duplicate data.json files. Warn before leaving mid-save. */
+let savePending=0,saveChain=Promise.resolve();
+function saveData(){
+  savePending++;
+  const job=saveChain.then(writeData).finally(()=>{savePending--;});
+  saveChain=job.catch(()=>{});
+  return job;
+}
+window.addEventListener("beforeunload",e=>{if(savePending>0){e.preventDefault();e.returnValue="";}});
+async function writeData(){
   const body=JSON.stringify(data,null,2);
   if(dataFileId){await driveApi(`https://www.googleapis.com/upload/drive/v3/files/${dataFileId}?uploadType=media`,{method:"PATCH",headers:{"Content-Type":"application/json"},body});}
   else{const meta={name:"data.json",parents:[folderId],mimeType:"application/json"},b="b"+Date.now();
@@ -1018,7 +1105,7 @@ async function connect(){
     if(data.theme)applyTheme(data.theme);
     /* keep everything publicly readable for the no-login view */
     await makePublic(dataFileId);
-    for(const p of data.photos)makePublic(p.id);
+    (async()=>{for(const p of data.photos)await makePublic(p.id);})(); // one at a time, in the background
     renderAll();
     /* help the owner finish public setup */
     if(!publicConfigured){
@@ -1056,14 +1143,28 @@ window.addEventListener("load",()=>{if(matchMedia("(prefers-reduced-motion: redu
 
 /* ============ FINAL POLISH ============ */
 /* scroll progress + back-to-top */
-const toTopBtn=$("#toTop");
-window.addEventListener("scroll",()=>{
-  const h=document.documentElement;
-  const pct=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
-  $("#progress").style.width=pct+"%";
-  toTopBtn.classList.toggle("show",h.scrollTop>600);
-},{passive:true});
-toTopBtn.onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
+const toTopBtn=$("#toTop"),progressBar=$("#progress");
+let scrollTick=false;
+function onScrollFrame(){scrollTick=false;
+  const h=document.documentElement,max=h.scrollHeight-h.clientHeight;
+  progressBar.style.width=(max>0?h.scrollTop/max*100:0)+"%";
+  toTopBtn.classList.toggle("show",h.scrollTop>600);}
+window.addEventListener("scroll",()=>{if(!scrollTick){scrollTick=true;requestAnimationFrame(onScrollFrame);}},{passive:true});
+toTopBtn.onclick=()=>window.scrollTo({top:0,behavior:smooth()});
+
+/* highlight the nav link for the section currently in view */
+(function(){
+  if(!("IntersectionObserver" in window))return;
+  const links=[...document.querySelectorAll(".navlinks a,.mobile-menu a")];
+  const spy=new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const id=e.target.id?"#"+e.target.id:null; // the hero has no id, so reaching it clears the highlight
+    links.forEach(a=>{const on=!!id&&a.getAttribute("href")===id;a.classList.toggle("active",on);
+      if(on)a.setAttribute("aria-current","true");else a.removeAttribute("aria-current");});
+  }),{rootMargin:"-45% 0px -50% 0px"});
+  new Set(links.map(a=>document.querySelector(a.getAttribute("href")))).forEach(s=>s&&spy.observe(s));
+  spy.observe(document.querySelector(".hero"));
+})();
 
 /* mood landing */
 const MOODS={
@@ -1077,7 +1178,7 @@ document.querySelectorAll(".mood").forEach(b=>b.onclick=()=>{
   const line=$("#moodLine");line.textContent=m.line;line.classList.add("show");
   setTimeout(()=>{
     const sec=document.querySelector(m.target);
-    sec.scrollIntoView({behavior:"smooth"});
+    sec.scrollIntoView({behavior:smooth()});
     const card=sec.querySelector(".wrap");card.classList.remove("hl-flash");void card.offsetWidth;card.classList.add("hl-flash");
   },650);
 });
@@ -1088,7 +1189,7 @@ $("#randomLetter").onclick=()=>{
   if(!all.length)return;
   all.forEach(d=>d.open=false);
   const pick=all[Math.floor(Math.random()*all.length)];
-  pick.open=true;pick.scrollIntoView({behavior:"smooth",block:"center"});
+  pick.open=true;pick.scrollIntoView({behavior:smooth(),block:"center"});
   pick.classList.remove("hl-flash");void pick.offsetWidth;pick.classList.add("hl-flash");
 };
 
