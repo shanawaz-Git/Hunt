@@ -1,0 +1,552 @@
+<title>Fuzzy Garden</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gluten:wght@500;700;800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: soft blush studio wall — left-aligned hero with a fuzzy bouquet, technique strip, filterable craft grid, step-by-step sheet in a dialog */
+:root{
+  --bg:#fbf3f7;
+  --card:#ffffff;
+  --ink:#2e1f33;
+  --muted:#76627c;
+  --line:#ecdbe8;
+  --accent:#d42f78;
+  --accent-ink:#ffffff;
+  --leaf:#2f8a50;
+  --amber:#b8650c;
+  --flower-bg:#fde5ef;
+  --toy-bg:#e2f2e7;
+  --aes-bg:#ebe2fb;
+  --soft:#f6e9f1;
+  --display:"Gluten","Comic Sans MS","Chalkboard SE",cursive;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1b1320;--card:#251a2b;--ink:#f7eaf3;--muted:#bba4c0;--line:#3b2b42;
+    --accent:#ff6fa9;--accent-ink:#2a0f1d;--leaf:#6fd394;--amber:#f2a64a;
+    --flower-bg:#3a2131;--toy-bg:#1d3226;--aes-bg:#2b2342;--soft:#2e2134;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1b1320;--card:#251a2b;--ink:#f7eaf3;--muted:#bba4c0;--line:#3b2b42;
+  --accent:#ff6fa9;--accent-ink:#2a0f1d;--leaf:#6fd394;--amber:#f2a64a;
+  --flower-bg:#3a2131;--toy-bg:#1d3226;--aes-bg:#2b2342;--soft:#2e2134;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1140px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.05}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:center;padding-block:40px 24px}
+.hero-text{display:flex;flex-direction:column;gap:18px;min-width:0}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.hero h1{font-size:clamp(3.4rem,11vw,7rem);font-weight:800;letter-spacing:-.01em}
+.hero h1 span{color:var(--accent)}
+.lead{font-size:1.15rem;color:var(--muted);max-width:52ch}
+.facts{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:.92rem;font-weight:600}
+.facts b{font-family:var(--display);font-size:1.5rem;color:var(--ink);margin-right:4px;font-weight:700}
+.hero-art{max-width:100%;aspect-ratio:1;background:var(--flower-bg);border-radius:46% 54% 50% 50% / 52% 46% 54% 48%;display:grid;place-items:center;padding:8%}
+.hero-art svg{width:100%;height:100%}
+
+/* Section heads */
+.section{padding-block:28px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.section-head h2{font-size:clamp(1.8rem,4.5vw,2.6rem)}
+.section-head p{color:var(--muted);max-width:46ch}
+
+/* Techniques */
+.tech{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.tech div{background:var(--card);padding:18px 20px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.tech h3{font-size:1.25rem;color:var(--accent)}
+.tech p{color:var(--muted);font-size:.95rem}
+.stemnote{margin-top:14px;font-size:.9rem;color:var(--muted)}
+.stemnote strong{color:var(--ink)}
+
+/* Filters */
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:20px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--card);padding:8px 16px;border-radius:999px;font-weight:600;cursor:pointer;font-size:.95rem}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip .n{font-variant-numeric:tabular-nums;opacity:.6;margin-left:4px}
+.search{position:relative;flex:1 1 220px;max-width:320px}
+.search input{width:100%;padding:10px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit}
+.search input::placeholder{color:var(--muted)}
+
+/* Grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.card{display:flex;flex-direction:column;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:0;cursor:pointer;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 24px -14px rgba(120,30,80,.45)}
+.card:hover .art svg{transform:rotate(-4deg) scale(1.04)}
+.art{aspect-ratio:4/3;max-width:100%;display:grid;place-items:center;position:relative}
+.art svg{width:62%;height:82%;transition:transform .3s ease}
+.art[data-cat="Flowers"]{background:var(--flower-bg)}
+.art[data-cat="Toys"]{background:var(--toy-bg)}
+.art[data-cat="Aesthetic"]{background:var(--aes-bg)}
+.done-tag{position:absolute;top:10px;right:10px;background:var(--leaf);color:var(--card);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px}
+.card h3{font-size:1.4rem}
+.meta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.85rem;color:var(--muted);align-items:center}
+.lvl{font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1.5px solid currentColor}
+.lvl.Easy{color:var(--leaf)}
+.lvl.Medium{color:var(--amber)}
+.swatches{display:flex;gap:4px}
+.sw{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line)}
+.empty{grid-column:1/-1;padding:40px;text-align:center;color:var(--muted);border:1.5px dashed var(--line);border-radius:20px}
+
+/* Dialog */
+dialog{border:none;padding:0;border-radius:24px;background:var(--card);color:var(--ink);width:min(780px,calc(100% - 24px));max-height:92vh;max-height:92dvh}
+dialog::backdrop{background:rgba(30,12,28,.55)}
+.sheet{display:flex;flex-direction:column}
+.sheet-top{display:grid;grid-template-columns:200px 1fr;gap:20px;padding:22px;align-items:center}
+.sheet-top .art{border-radius:18px;aspect-ratio:1}
+.sheet-top .art svg{width:80%;height:80%}
+.sheet-title{display:flex;flex-direction:column;gap:10px;min-width:0}
+.sheet-title h2{font-size:clamp(2rem,6vw,2.8rem)}
+.sheet-title p{color:var(--muted)}
+.close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);cursor:pointer;font-size:1.3rem;line-height:1}
+.sheet-body{padding:0 22px 22px;display:grid;grid-template-columns:200px 1fr;gap:20px}
+.side{display:flex;flex-direction:column;gap:16px;min-width:0}
+.box h4,.steps-head h4{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.stemlist,.extras{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:.95rem}
+.stemlist li{display:flex;align-items:center;gap:8px}
+.stemlist .q{font-weight:700;font-variant-numeric:tabular-nums;min-width:2ch}
+.extras li::before{content:"+ ";color:var(--accent);font-weight:700}
+.steps-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.progress{font-size:.85rem;font-weight:700;color:var(--leaf);font-variant-numeric:tabular-nums}
+.bar{height:6px;background:var(--soft);border-radius:999px;overflow:hidden;margin-bottom:12px}
+.bar i{display:block;height:100%;background:var(--leaf);width:0;transition:width .3s}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;counter-reset:s}
+.steps li{counter-increment:s}
+.steps label{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:10px 12px;border-radius:14px;cursor:pointer;align-items:start}
+.steps label:hover{background:var(--soft)}
+.steps input{position:absolute;opacity:0;pointer-events:none}
+.num{width:34px;height:34px;border-radius:50%;border:2px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:1.05rem}
+.num::before{content:counter(s)}
+.steps input:checked + .num{background:var(--leaf);border-color:var(--leaf);color:var(--card)}
+.steps input:checked + .num::before{content:"✓"}
+.steps input:checked ~ span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+.steps input:focus-visible + .num{outline:3px solid var(--accent);outline-offset:2px}
+.tip{margin-top:14px;background:var(--soft);border-radius:14px;padding:14px 16px;font-size:.95rem}
+.tip b{font-family:var(--display);color:var(--accent);font-size:1.1rem;margin-right:6px}
+.sheet-nav{display:flex;justify-content:space-between;gap:10px;padding:14px 22px;border-top:1px solid var(--line);flex-wrap:wrap}
+.btn{border:1.5px solid var(--line);background:var(--card);padding:9px 16px;border-radius:999px;font-weight:600;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+footer{padding-block:36px 48px;color:var(--muted);font-size:.9rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:28px}
+footer .sig{font-family:var(--display);font-size:1.3rem;color:var(--accent)}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr}
+  .hero-art{max-width:320px;justify-self:center;width:100%}
+  .tech{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:600px){
+  .tech{grid-template-columns:1fr}
+  .sheet-top,.sheet-body{grid-template-columns:1fr}
+  .sheet-top .art{max-width:180px}
+  .search{max-width:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important}
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="fuzz" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="4" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.8" xChannelSelector="R" yChannelSelector="G" result="fz"/>
+      <feDropShadow in="fz" dx="0" dy="1" stdDeviation="0.7" flood-color="#3a1030" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-text">
+      <span class="eyebrow">Pipe cleaner crafts, step by step</span>
+      <h1>Fuzzy <span>Garden</span></h1>
+      <p class="lead">Flowers, little toys and aesthetic bits made from fuzzy chenille stems. Every project lists exactly which stems you need, then walks through each twist, loop and coil. Tick steps off as you go.</p>
+      <div class="facts" id="facts"></div>
+    </div>
+    <div class="hero-art" id="heroArt"></div>
+  </header>
+
+  <section class="section" aria-labelledby="techH">
+    <div class="section-head">
+      <h2 id="techH">Six moves behind every project</h2>
+      <p>Learn these once. Every flower, toy and charm below is just a mix of them.</p>
+    </div>
+    <div class="tech" id="tech"></div>
+    <p class="stemnote"><strong>Stem size used here:</strong> standard chenille stems, 30 cm long and 6 mm thick. Bump stems and 12 mm stems are fluffier but don't coil as tightly.</p>
+  </section>
+
+  <section class="section" aria-labelledby="galH">
+    <div class="section-head">
+      <h2 id="galH">Projects</h2>
+    </div>
+    <div class="controls">
+      <div class="chips" id="chips" role="group" aria-label="Filter by collection"></div>
+      <label class="search">
+        <input type="search" id="q" placeholder="Search tulip, bunny, bow…" aria-label="Search projects">
+      </label>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <footer>
+    <span class="sig">Made for Ragave</span>
+    <span>Fold every cut end back. Small parts are not for kids under 3.</span>
+  </footer>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlgTitle">
+  <div class="sheet" id="sheet"></div>
+</dialog>
+
+<script>
+/* ---------- colours of real chenille stems ---------- */
+const C={pink:'#f27aa9',hotpink:'#e8418a',red:'#e2364b',yellow:'#f6c531',orange:'#f39a3d',green:'#45a862',
+  white:'#fffdfb',brown:'#9a6438',beige:'#e9caa0',purple:'#8f63d2',lilac:'#c5a2ef',black:'#2b2230',blue:'#6aa8e8'};
+const NAMES={pink:'Pink',hotpink:'Hot pink',red:'Red',yellow:'Yellow',orange:'Orange',green:'Green',white:'White',
+  brown:'Brown',beige:'Beige',purple:'Purple',lilac:'Lilac',black:'Black',blue:'Blue'};
+
+/* ---------- tiny SVG drawing kit ---------- */
+const S=(d,c,w=6)=>`<path d="${d}" stroke="${c}" stroke-width="${w}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+const Ci=(x,y,r,c,w=6,fill='none')=>`<circle cx="${x}" cy="${y}" r="${r}" stroke="${c}" stroke-width="${w}" fill="${fill}"/>`;
+const Dot=(x,y,r,c)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`;
+const E=(x,y,rx,ry,rot,c,w=5)=>`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" transform="rotate(${rot} ${x} ${y})" stroke="${c}" stroke-width="${w}" fill="none"/>`;
+function ring(n,cx,cy,dist,rx,ry,c,w=5,off=0){let o='';for(let i=0;i<n;i++){const a=off+i*360/n,r=a*Math.PI/180;o+=E(cx+dist*Math.cos(r),cy+dist*Math.sin(r),rx,ry,a+90,c,w)}return o}
+function pointed(n,cx,cy,len,wd,c,w=4.5,off=0){let o='';for(let i=0;i<n;i++){const a=off+i*360/n;o+=`<path d="M${cx} ${cy} Q${cx-wd} ${cy-len*.55} ${cx} ${cy-len} Q${cx+wd} ${cy-len*.55} ${cx} ${cy}" transform="rotate(${a} ${cx} ${cy})" stroke="${c}" stroke-width="${w}" fill="none" stroke-linejoin="round"/>`}return o}
+function star(cx,cy,ro,ri,c,w=6){let p=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?ri:ro;p.push(`${(cx+r*Math.cos(a)).toFixed(1)} ${(cy+r*Math.sin(a)).toFixed(1)}`)}return S('M'+p.join(' L')+'Z',c,w)}
+function q(t,a,b,c){return[(1-t)**2*a[0]+2*(1-t)*t*b[0]+t*t*c[0],(1-t)**2*a[1]+2*(1-t)*t*b[1]+t*t*c[1]]}
+const eyes=(x1,x2,y)=>Dot(x1,y,2.2,C.black)+Dot(x2,y,2.2,C.black);
+const svg=inner=>`<svg viewBox="0 0 100 100" aria-hidden="true"><g filter="url(#fuzz)">${inner}</g></svg>`;
+
+/* ---------- illustrations ---------- */
+const ART={
+  tulip:()=>S('M50 94 L50 54',C.green)+S('M50 82 Q33 72 35 54',C.green,5)+S('M50 86 Q66 76 65 60',C.green,5)
+    +S('M50 56 Q34 52 36 24 Q45 33 50 27 Q55 33 64 24 Q66 52 50 56Z',C.pink)+S('M50 54 Q43 40 50 22 Q57 40 50 54',C.hotpink,4.5),
+  rose:()=>S('M50 94 L50 50',C.green)+S('M50 76 Q34 70 32 58 Q44 58 50 70',C.green,4.5)+S('M50 82 Q64 74 68 64 Q56 64 50 76',C.green,4.5)
+    +S('M50 34 A2.5 2.5 0 0 1 55 34 A5 5 0 0 1 45 34 A7.5 7.5 0 0 1 60 34 A10 10 0 0 1 40 34 A12.5 12.5 0 0 1 65 34 A15 15 0 0 1 35 34',C.red,5),
+  daisy:()=>S('M50 94 L50 52',C.green)+S('M50 78 Q36 72 34 62',C.green,5)+ring(8,50,36,13,5,9,C.white,4.5)+Ci(50,36,4.5,C.yellow,5,C.yellow),
+  sunflower:()=>S('M50 94 L50 56',C.green)+S('M50 74 Q30 70 28 58 Q42 56 50 68',C.green,5)+S('M50 80 Q70 76 72 64 Q58 62 50 74',C.green,5)
+    +pointed(12,50,36,23,6,C.yellow,4.5)+Ci(50,36,8,C.brown,5,C.brown),
+  lavender:()=>{let o=S('M50 94 L38 26',C.green,4)+S('M50 94 L50 20',C.green,4)+S('M50 94 L62 26',C.green,4);
+    [[38,26],[50,20],[62,26]].forEach(([tx,ty])=>{for(let i=0;i<5;i++){const t=i*.075,x=tx+(50-tx)*t,y=ty+(94-ty)*t;o+=E(x,y+2,3.4,4.4,0,i%2?C.lilac:C.purple,3.6)}});
+    return o+S('M44 70 Q50 74 56 70',C.lilac,3.5)},
+  lily:()=>{const a=[28,94],b=[30,36],c=[76,30];let o=S(`M${a} Q${b} ${c}`,C.green,4.5)+S('M30 94 Q12 62 22 40 Q34 60 30 94',C.green,4.5);
+    [.5,.64,.78,.92].forEach((t,i)=>{const [x,y]=q(t,a,b,c),s=5.5-i*.6,by=y+9;o+=S(`M${x} ${y} L${x} ${by-3}`,C.green,2.5)+S(`M${x-s} ${by+s*.8} Q${x-s} ${by-3} ${x} ${by-3} Q${x+s} ${by-3} ${x+s} ${by+s*.8}`,C.white,4)});return o},
+  bouquet:()=>S('M50 92 L36 42',C.green,4)+S('M50 92 L50 34',C.green,4)+S('M50 92 L64 44',C.green,4)+S('M50 92 L26 58',C.green,4)+S('M50 92 L74 60',C.green,4)
+    +ring(6,50,28,8,3.5,6,C.white,3.5)+Ci(50,28,3,C.yellow,3,C.yellow)
+    +S('M34 38 A2 2 0 0 1 38 38 A4 4 0 0 1 30 38 A6 6 0 0 1 42 38 A8 8 0 0 1 26 38',C.red,3.8)
+    +pointed(8,66,40,10,3,C.yellow,3.5)+Ci(66,40,3.5,C.brown,3,C.brown)
+    +E(25,56,3,5,0,C.purple,3)+E(75,58,3,5,0,C.lilac,3)
+    +S('M50 72 C40 62 34 70 38 74 C42 78 48 74 50 72 C52 74 58 78 62 74 C66 70 60 62 50 72Z',C.pink,3.8)+S('M50 72 L44 84 M50 72 L56 84',C.pink,3.5),
+  bunny:()=>E(43,18,4.5,12,-10,C.white,5)+E(57,18,4.5,12,10,C.white,5)+S('M43 12 L43.6 24 M57 12 L56.4 24',C.pink,2.5)
+    +Ci(50,42,12,C.white,5.5)+Ci(50,72,16,C.white,5.5)+Dot(50,46,2,C.pink)+eyes(45,55,40)+Ci(67,80,4,C.white,4,C.white),
+  bear:()=>Ci(38,24,5,C.brown,5)+Ci(62,24,5,C.brown,5)+Ci(50,36,13,C.brown,6)+Ci(50,41,5,C.beige,4,C.beige)+Dot(50,39,1.8,C.black)+eyes(45,55,32)
+    +Ci(50,70,15,C.brown,6)+S('M37 60 Q26 64 26 74',C.brown,5.5)+S('M63 60 Q74 64 74 74',C.brown,5.5)+S('M42 84 L40 92',C.brown,6)+S('M58 84 L60 92',C.brown,6),
+  octopus:()=>{let o=S('M30 52 Q30 20 50 20 Q70 20 70 52Z',C.purple,6);
+    [32,40,48,56,64].forEach((x,i)=>{const d=i%2?6:-6;o+=S(`M${x+2} 52 Q${x+2+d} 66 ${x+2} 76 Q${x-2} 84 ${x+5} 86`,i%2?C.lilac:C.purple,4.5)});return o+eyes(43,57,38)+S('M45 45 Q50 48 55 45',C.black,2)},
+  caterpillar:()=>{let o='';for(let i=0;i<6;i++){const x=16+i*11,y=64+Math.sin(i*1.2)*6;o+=Ci(x,y,7,i%2?'#7cc98f':C.green,5)}
+    return o+Ci(84,50,9,C.pink,5,C.pink)+eyes(81,88,48)+S('M80 42 Q76 30 72 30',C.black,2.5)+S('M88 42 Q92 30 96 30',C.black,2.5)},
+  snail:()=>S('M14 78 L74 78 Q84 78 84 66',C.yellow,6)+S('M46 58 A3 3 0 0 1 52 58 A6 6 0 0 1 40 58 A9 9 0 0 1 58 58 A12 12 0 0 1 34 58 A15 15 0 0 1 64 58 A16 16 0 0 1 32 66',C.orange,5)
+    +S('M82 66 L78 50 M86 66 L90 50',C.yellow,3)+Dot(78,49,3,C.black)+Dot(90,49,3,C.black),
+  heart:()=>S('M50 82 C20 62 20 32 37 30 C45 29 50 36 50 41 C50 36 55 29 63 30 C80 32 80 62 50 82Z',C.red,7)+S('M50 30 L50 18',C.red,4)+Ci(50,14,4,'#b9a3bd',3),
+  butterfly:()=>E(35,38,12,15,-35,C.pink,5)+E(65,38,12,15,35,C.pink,5)+E(38,64,8,10,30,C.purple,5)+E(62,64,8,10,-30,C.purple,5)
+    +S('M50 32 L50 76',C.black,6)+S('M50 32 Q44 20 38 20 Q35 20 36 24',C.black,2.5)+S('M50 32 Q56 20 62 20 Q65 20 64 24',C.black,2.5),
+  bow:()=>S('M50 50 C30 28 14 40 18 52 C22 64 40 60 50 50Z',C.hotpink,5.5)+S('M50 50 C70 28 86 40 82 52 C78 64 60 60 50 50Z',C.hotpink,5.5)
+    +S('M47 52 L36 80 L42 76 M53 52 L64 80 L58 76',C.hotpink,5)+Ci(50,50,5,C.pink,4,C.pink),
+  mushroom:()=>S('M20 56 Q20 22 50 22 Q80 22 80 56Z',C.red,6)+S('M40 57 Q38 72 42 86 L58 86 Q62 72 60 57',C.white,5.5)
+    +Ci(38,38,3.5,C.white,2.5,C.white)+Ci(58,32,4,C.white,2.5,C.white)+Ci(66,46,3,C.white,2.5,C.white)+Ci(48,48,2.5,C.white,2,C.white),
+  strawberry:()=>S('M28 42 Q50 32 72 42 Q74 62 50 86 Q26 62 28 42Z',C.red,6)+pointed(6,50,38,12,4,C.green,4)+S('M50 38 L50 22',C.green,4)
+    +[[40,52],[52,50],[62,54],[46,64],[58,64],[52,76]].map(([x,y])=>Dot(x,y,1.8,C.yellow)).join(''),
+  star:()=>star(50,52,34,15,C.yellow,6.5)+S('M50 18 L50 6',C.white,2),
+  ring:()=>E(50,64,22,16,0,C.lilac,6)+ring(5,50,34,8,3.5,6,C.pink,4)+Ci(50,34,3.5,C.yellow,3,C.yellow)
+};
+
+/* ---------- techniques ---------- */
+const TECH=[
+  ['Twist lock','Cross two ends and turn them three full twists. Two twists slip, three hold.'],
+  ['Pencil coil','Wrap the stem tightly around a pencil, each turn touching the last, then slide it off. Makes springs, bodies and rose ribbons.'],
+  ['Flat spiral','Bend a tiny hook at one end and wind the stem around it flat, like a snail shell. Used for flower centres, shells and caps.'],
+  ['Loop petal','Bend a loop the size of the petal you want and twist the base once. Pinch the tip for a pointed petal, leave it round for a soft one.'],
+  ['Fluff & shape','When a piece is done, brush the fibres backwards with a fingertip or an old toothbrush. It hides twists and makes it look fuller.'],
+  ['Safe ends','Cut with wire cutters or old scissors, never fabric scissors. Fold every cut end back on itself so no wire tip pokes out.']
+];
+
+/* ---------- projects ---------- */
+const CRAFTS=[
+ {id:'tulip',cat:'Flowers',name:'Tulip',level:'Easy',time:'10 min',stems:[['pink',3],['green',2]],extras:[],
+  steps:['Fold a pink stem in half and twist the two ends together. You now have one long closed loop.',
+   'Squash the loop flat and pinch the folded end into a soft point. This is one petal, about 6–7 cm tall.',
+   'Repeat with the other two pink stems so you have three matching petals.',
+   'Stand the three petals around the top of a green stem, points up, twisted ends facing down.',
+   'Wrap the petal tails tightly around the green stem 3–4 times to lock them on.',
+   'Cup each petal inward so the tops lean toward each other. That curve is what makes it read as a tulip.',
+   'Fold the second green stem into a long loop, pinch the tip into a leaf, and twist it onto the stem halfway down.'],
+  tip:'For a fuller tulip, make five petals and set two of them slightly lower and turned outward.'},
+ {id:'rose',cat:'Flowers',name:'Spiral rose',level:'Medium',time:'15 min',stems:[['red',2],['green',2]],extras:['A pencil'],
+  steps:['Twist the two red stems together end to end to make one 60 cm stem.',
+   'Coil the whole length tightly around a pencil. Keep every turn touching.',
+   'Slide the coil off and stretch it gently to about one and a half times its length. Leave the last 3 cm straight.',
+   'Bend a small hook at the top of a green stem.',
+   'Hook the straight red end onto it, then wind the coil around the hook in a tight spiral, starting from the centre.',
+   'As you go round, let each layer sit a little lower and wider than the last. This opens the bloom.',
+   'Tuck the final coil end under the flower and twist it onto the green stem.',
+   'Make two loop leaves from the second green stem, twist them on below the flower, and fluff the petals.'],
+  tip:'For a closed rosebud, skip the stretching. Wind the coil tight and stop after three rounds.'},
+ {id:'daisy',cat:'Flowers',name:'Daisy',level:'Easy',time:'10 min',stems:[['white',1],['yellow','½'],['green',1]],extras:[],
+  steps:['Start 3 cm from one end of the white stem. Bend a loop about 2 cm long and twist its base once.',
+   'Make the next loop right beside it and twist. Keep every loop the same size.',
+   'Carry on until you have 8 loops. One stem makes about 8.',
+   'Bring the first and last loops together and twist the tails to close the petals into a ring.',
+   'Wind the half yellow stem into a tight flat spiral for the centre.',
+   'Press the yellow spiral into the middle of the petal ring.',
+   'Push the green stem through the centre from the back, hook it over the yellow spiral, and twist it tight underneath.',
+   'Spread the petals evenly and fluff them.'],
+  tip:'Same steps with lilac or pale pink petals gives you a cosmos.'},
+ {id:'sunflower',cat:'Flowers',name:'Sunflower',level:'Medium',time:'20 min',stems:[['yellow',2],['brown',1],['green',2]],extras:[],
+  steps:['Join the two yellow stems end to end with a twist lock.',
+   'Bend a 3 cm loop, twist the base, then pinch the tip into a point. That is one pointed petal.',
+   'Repeat along the stem until you have 12 petals.',
+   'Close the petals into a ring and twist the tails together.',
+   'Coil the brown stem into a tight flat spiral about 3 cm across. This is the seed head.',
+   'Place the brown spiral in the centre and fix it with a green stem, the same way as the daisy.',
+   'Add a large loop leaf on each side of the stem from the second green stem.',
+   'Tilt the flower head slightly forward. Real sunflowers droop a little.'],
+  tip:'A brown bump stem makes a much more textured seed head.'},
+ {id:'lavender',cat:'Flowers',name:'Lavender sprig',level:'Easy',time:'8 min each',stems:[['purple',2],['green',1]],extras:['Thin ribbon (for a bunch)'],
+  steps:['Leave the bottom 20 cm of the green stem bare. You will cover only the top 10 cm.',
+   'Starting at the very tip, wrap a purple stem tightly down the green stem, each turn touching.',
+   'When it runs out, wrap the second purple stem back up over the first layer. Keep the top slightly thinner than the bottom.',
+   'Pinch the purple section every 1.5 cm to form little bud clusters.',
+   'Fold the very tip over and squeeze so no wire shows.',
+   'Make 3 to 5 sprigs and tie them together with ribbon.'],
+  tip:'Mix purple and lilac stems in the same sprig for a more natural look.'},
+ {id:'lily',cat:'Flowers',name:'Lily of the valley',level:'Medium',time:'15 min',stems:[['white',2],['green',2]],extras:['A pencil','Wire cutters'],
+  steps:['Cut each white stem into 4 equal pieces, about 7.5 cm each. You need 5 or 6 pieces.',
+   'Wrap one piece tightly around the pencil tip, slide it off, and flare the bottom turn outward. That is one bell.',
+   'Repeat to make 5 or 6 bells, making a couple of them slightly smaller.',
+   'Bend the top 10 cm of a green stem into a gentle arch.',
+   'Cut 2 cm pieces of green, twist one through the top of each bell, and hang the bells along the arch with the smallest at the tip.',
+   'Fold the second green stem into one long, wide leaf loop and twist it onto the base.'],
+  tip:'This one looks best standing in a small glass bottle.'},
+ {id:'bouquet',cat:'Flowers',name:'Mini bouquet',level:'Easy',time:'15 min',stems:[['green',2]],extras:['5 or 7 finished flowers','Kraft paper or tissue','Ribbon','Tape'],
+  steps:['Pick an odd number of finished flowers. Five or seven look natural.',
+   'Put the biggest flower in the middle and arrange the rest around it, slightly lower.',
+   'Fill gaps with loop leaves made from spare green stems.',
+   'Twist one green stem around all the stems just under the heads to hold the shape.',
+   'Trim all stems to the same length with wire cutters and fold the cut ends up.',
+   'Fold a sheet of paper into a cone, set the bouquet inside, and tape the back.',
+   'Tie a ribbon bow around the wrap.'],
+  tip:'Stick to two or three flower colours plus green. More than that starts to look busy.'},
+
+ {id:'bunny',cat:'Toys',name:'Bunny',level:'Easy',time:'12 min',stems:[['white',2],['pink','¼']],extras:['Two 5 mm googly eyes','Small white pom-pom','Craft glue'],
+  steps:['Wrap one white stem around two fingers 3 times. Slide it off and squeeze it into a ball for the head. Leave a 12 cm tail.',
+   'With that tail, make two tall loops about 5 cm long for ears. Twist each at the base and tuck the leftover end into the head.',
+   'Wrap the second white stem around three fingers 4 times for the body and squeeze it into an egg shape.',
+   'Push a 2 cm offcut through both head and body and twist to join them.',
+   'Coil a tiny piece of pink into a dot for the nose.',
+   'Glue on the eyes, the nose, and the pom-pom tail at the back.',
+   'Pinch the ears thin and bend one forward a little for character.'],
+  tip:'Run a short pink piece inside each ear loop for extra cuteness.'},
+ {id:'bear',cat:'Toys',name:'Teddy bear',level:'Medium',time:'20 min',stems:[['brown',3],['beige','¼']],extras:['Two googly eyes','Black bead or marker','A pencil','Craft glue'],
+  steps:['Wrap one brown stem around two fingers 3 times for the head. Squeeze it round and leave a tail.',
+   'Use the tail to make two small round loops on top for ears. Twist each and tuck the end in.',
+   'Wrap the second brown stem around three fingers for the body.',
+   'Cut the third brown stem into 4 equal pieces. Coil each one around a pencil to make arms and legs.',
+   'Twist two coils onto the top of the body for arms and two at the bottom for legs.',
+   'Join head to body with a short offcut pushed through both and twisted.',
+   'Coil the beige piece into a small flat spiral for the muzzle and glue it on.',
+   'Add the eyes and a bead or dot for the nose.'],
+  tip:'Tie a thin ribbon round the neck. It hides the head join completely.'},
+ {id:'octopus',cat:'Toys',name:'Octopus',level:'Easy',time:'8 min',stems:[['purple',2],['lilac',2]],extras:['2.5 cm pom-pom','Two googly eyes','A pencil','Craft glue'],
+  steps:['Hold all 4 stems together side by side.',
+   'Put the pom-pom at the middle of the bundle and fold the stems down over it.',
+   'Twist the stems together just under the pom-pom to trap it. That makes the head.',
+   'Spread the 8 ends out evenly as legs.',
+   'Wrap the end of each leg around a pencil 2 or 3 times and slide it off to curl it.',
+   'Glue on the eyes.'],
+  tip:'Use four different colours for a rainbow octopus.'},
+ {id:'caterpillar',cat:'Toys',name:'Caterpillar',level:'Easy',time:'5 min',stems:[['green',1],['black','¼']],extras:['2 cm pom-pom','Two googly eyes','A pencil','Craft glue'],
+  steps:['Wrap the green stem tightly around a pencil from one end to the other.',
+   'Slide the coil off and bend it gently into a wiggly S shape.',
+   'Glue the pom-pom to one end for the head.',
+   'Fold the black piece into a V, curl both tips, and glue it on top as antennae.',
+   'Glue on the eyes.'],
+  tip:'Twist a green and a yellow stem together before coiling and you get stripes.'},
+ {id:'snail',cat:'Toys',name:'Snail',level:'Easy',time:'8 min',stems:[['orange',1],['yellow','½']],extras:['Two googly eyes','Craft glue'],
+  steps:['Bend a tiny hook at one end of the orange stem and wind a flat spiral about 4 cm across for the shell. Leave 4 cm straight.',
+   'Fold the yellow piece into a long, flat loop about 7 cm long for the body.',
+   'Bend the front 2 cm of the body upward for the head.',
+   'Twist the orange tail around the middle of the body so the shell stands upright.',
+   'Cut a 4 cm yellow offcut, fold it into a V, and twist it on top of the head as eye stalks.',
+   'Glue an eye to the tip of each stalk.'],
+  tip:'Twist two colours together before you spiral for a striped shell.'},
+
+ {id:'heart',cat:'Aesthetic',name:'Heart keychain',level:'Easy',time:'3 min',stems:[['red',1]],extras:['Keyring (optional)'],
+  steps:['Fold the stem in half to find the middle and bend a small dip there. This is the top of the heart.',
+   'Curve both halves outward and down into two round humps.',
+   'Bring both ends together to a point at the bottom.',
+   'Twist the ends together twice. Trim and tuck any extra.',
+   'Shape both sides until they match.',
+   'For a keychain, twist a short offcut into a loop at the top dip and thread on a keyring.'],
+  tip:'Make a second heart in pink and wrap it around the red one for a double heart.'},
+ {id:'butterfly',cat:'Aesthetic',name:'Butterfly clip',level:'Easy',time:'6 min',stems:[['pink',1],['purple',1],['black','½']],extras:['Hair clip or bobby pin','Craft glue'],
+  steps:['Fold the pink stem in half. Make one big round loop on each side of the middle for the top wings and twist at the centre.',
+   'Do the same with the purple stem, but make the loops smaller for the bottom wings.',
+   'Stack the small wings under the big ones and twist the centres together.',
+   'Wrap the black piece tightly around the centre 3 or 4 times to make the body.',
+   'Leave the two black ends pointing up and curl their tips as antennae.',
+   'Pinch each wing gently into a teardrop, then glue the butterfly onto a clip.'],
+  tip:'A dab of glue under the body stops it spinning on the clip.'},
+ {id:'bow',cat:'Aesthetic',name:'Bow',level:'Easy',time:'4 min',stems:[['hotpink',1],['pink','¼']],extras:[],
+  steps:['Find the middle of the hot pink stem.',
+   'Make a loop on the left about 4 cm wide and bring the stem back to the middle.',
+   'Make a matching loop on the right.',
+   'Let the two remaining ends hang down as tails and cross them at the middle.',
+   'Wrap the short pink piece around the centre twice to make the knot.',
+   'Trim the tails to the same length and cut them at an angle.'],
+  tip:'Bump stems make the puffiest bows. Glue one to a hair tie.'},
+ {id:'mushroom',cat:'Aesthetic',name:'Mushroom',level:'Medium',time:'12 min',stems:[['red',1],['white','1¼']],extras:['Wire cutters'],
+  steps:['Bend a hook in the red stem and wind a flat spiral about 4 cm across. Leave a 5 cm tail.',
+   'Push the centre of the spiral up from underneath to make a dome. This is the cap.',
+   'Wrap the white stem around one finger 4 or 5 times to make a short tube for the stalk.',
+   'Push the red tail down through the tube and twist it underneath to fix the cap on.',
+   'Cut the white quarter into 1 cm bits, curl each into a dot, and press them into the cap.'],
+  tip:'A brown cap with cream dots gives a woodland look.'},
+ {id:'strawberry',cat:'Aesthetic',name:'Strawberry charm',level:'Medium',time:'10 min',stems:[['red',2],['green','½'],['yellow','¼']],extras:['Keyring or bag clip (optional)'],
+  steps:['Twist the two red stems together end to end.',
+   'Wrap around two fingers loosely, then keep winding around the bundle to build a ball.',
+   'Squeeze the ball into a cone: wide at the top, narrow at the bottom.',
+   'Make 5 tiny pointed loops along the green piece and close them into a star.',
+   'Set the green star on the wide end and twist its tail down into the berry.',
+   'Cut the yellow piece into tiny bits and poke them in as seeds.'],
+  tip:'Make three and hang them from one ring for a bag charm.'},
+ {id:'star',cat:'Aesthetic',name:'Star',level:'Easy',time:'4 min',stems:[['yellow',1]],extras:['String (for a garland)'],
+  steps:['Bend the stem into a zigzag of 10 equal segments, each 3 cm long.',
+   'Bend every other corner inward. Those become the inner points.',
+   'Bring the two ends together to close the shape. You now have 5 outer points.',
+   'Twist the ends, trim, and tuck.',
+   'Pinch each outer point sharp.'],
+  tip:'Make five, thread them on string, and you have a wall garland.'},
+ {id:'ring',cat:'Aesthetic',name:'Flower ring',level:'Easy',time:'6 min',stems:[['lilac','½'],['pink','½'],['yellow','¼']],extras:[],
+  steps:['Wrap the lilac piece twice around your finger to size the band. Slide it off and twist the ends together on top.',
+   'Make 5 small round loop petals along the pink piece and close them into a ring.',
+   'Coil the yellow piece into a tiny flat spiral for the centre.',
+   'Lay the petals on top of the band, the yellow centre in the middle.',
+   'Push the lilac tails up through the flower, hook them over the centre, and twist them flat underneath.'],
+  tip:'Size the band on the finger it will be worn on. Chenille squashes a little over time.'}
+];
+
+/* ---------- storage (per viewer) ---------- */
+const KEY='fuzzy-garden-progress';
+let progress={};
+try{progress=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){progress={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(progress))}catch(e){}}
+const isDone=c=>(progress[c.id]||[]).filter(Boolean).length===c.steps.length;
+
+/* ---------- render: hero, techniques ---------- */
+document.getElementById('heroArt').innerHTML=svg(ART.bouquet());
+const cats=['All','Flowers','Toys','Aesthetic'];
+document.getElementById('facts').innerHTML=
+  `<span><b>${CRAFTS.length}</b>projects</span><span><b>3</b>collections</span><span><b>${TECH.length}</b>core moves</span>`;
+document.getElementById('tech').innerHTML=TECH.map(([h,p])=>`<div><h3>${h}</h3><p>${p}</p></div>`).join('');
+
+/* ---------- filters + grid ---------- */
+let cat='All',query='';
+const chips=document.getElementById('chips');
+function renderChips(){
+  chips.innerHTML=cats.map(c=>{const n=c==='All'?CRAFTS.length:CRAFTS.filter(x=>x.cat===c).length;
+    return `<button class="chip" type="button" aria-pressed="${c===cat}" data-c="${c}">${c}<span class="n">${n}</span></button>`}).join('');
+}
+chips.addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;cat=b.dataset.c;renderChips();renderGrid()});
+document.getElementById('q').addEventListener('input',e=>{query=e.target.value.trim().toLowerCase();renderGrid()});
+
+const totalStems=c=>{let t=0;c.stems.forEach(([,n])=>{t+=typeof n==='number'?n:({'½':.5,'¼':.25,'1¼':1.25}[n]||0)});return t%1?t.toFixed(2).replace(/0$/,''):t};
+function visible(){return CRAFTS.filter(c=>(cat==='All'||c.cat===cat)&&(!query||(c.name+' '+c.cat+' '+c.stems.map(s=>NAMES[s[0]]).join(' ')).toLowerCase().includes(query)))}
+function renderGrid(){
+  const list=visible(),g=document.getElementById('grid');
+  if(!list.length){g.innerHTML=`<div class="empty">No project matches “${query.replace(/[<>&"]/g,'')}”. Try a colour like pink, or a word like flower.</div>`;return}
+  g.innerHTML=list.map(c=>`<button class="card" type="button" data-id="${c.id}" aria-label="Open ${c.name} instructions">
+    <div class="art" data-cat="${c.cat}">${svg(ART[c.id]())}${isDone(c)?'<span class="done-tag">Made it</span>':''}</div>
+    <div class="card-body">
+      <h3>${c.name}</h3>
+      <div class="meta"><span class="lvl ${c.level}">${c.level}</span><span>${c.time}</span><span>${totalStems(c)} stem${totalStems(c)==1?'':'s'}</span></div>
+      <div class="swatches">${c.stems.map(([k])=>`<span class="sw" style="background:${C[k]}" title="${NAMES[k]}"></span>`).join('')}</div>
+    </div></button>`).join('');
+}
+document.getElementById('grid').addEventListener('click',e=>{const b=e.target.closest('.card');if(b)openCraft(b.dataset.id)});
+
+/* ---------- detail sheet ---------- */
+const dlg=document.getElementById('dlg'),sheet=document.getElementById('sheet');
+let current=null;
+function openCraft(id){
+  const i=CRAFTS.findIndex(c=>c.id===id);if(i<0)return;
+  const c=CRAFTS[i];current=i;
+  const p=progress[c.id]||[];
+  const prev=CRAFTS[(i-1+CRAFTS.length)%CRAFTS.length],next=CRAFTS[(i+1)%CRAFTS.length];
+  sheet.innerHTML=`
+    <button class="close" type="button" aria-label="Close" data-act="close">×</button>
+    <div class="sheet-top">
+      <div class="art" data-cat="${c.cat}">${svg(ART[c.id]())}</div>
+      <div class="sheet-title">
+        <span class="eyebrow">${c.cat}</span>
+        <h2 id="dlgTitle">${c.name}</h2>
+        <div class="meta"><span class="lvl ${c.level}">${c.level}</span><span>${c.time}</span><span>${c.steps.length} steps</span></div>
+      </div>
+    </div>
+    <div class="sheet-body">
+      <div class="side">
+        <div class="box"><h4>Stems</h4><ul class="stemlist">${c.stems.map(([k,n])=>`<li><span class="sw" style="background:${C[k]}"></span><span class="q">${n}</span>${NAMES[k]}</li>`).join('')}</ul></div>
+        ${c.extras.length?`<div class="box"><h4>Also need</h4><ul class="extras">${c.extras.map(x=>`<li>${x}</li>`).join('')}</ul></div>`:''}
+      </div>
+      <div>
+        <div class="steps-head"><h4>Steps</h4><span class="progress" id="prog"></span></div>
+        <div class="bar"><i id="barFill"></i></div>
+        <ol class="steps">${c.steps.map((s,k)=>`<li><label for="s-${c.id}-${k}"><input type="checkbox" id="s-${c.id}-${k}" data-k="${k}" ${p[k]?'checked':''}><span class="num" aria-hidden="true"></span><span>${s}</span></label></li>`).join('')}</ol>
+        <p class="tip"><b>Tip</b>${c.tip}</p>
+      </div>
+    </div>
+    <div class="sheet-nav">
+      <button class="btn" type="button" data-go="${prev.id}">← ${prev.name}</button>
+      <button class="btn" type="button" data-act="reset">Clear ticks</button>
+      <button class="btn primary" type="button" data-go="${next.id}">${next.name} →</button>
+    </div>`;
+  updateProg();
+  if(!dlg.open)dlg.showModal();
+  sheet.parentElement.scrollTop=0;
+  try{history.replaceState(null,'','#'+c.id)}catch(e){}
+}
+function updateProg(){
+  const c=CRAFTS[current],n=(progress[c.id]||[]).filter(Boolean).length;
+  document.getElementById('prog').textContent=n===c.steps.length?'Done! 🌷':`${n} of ${c.steps.length}`;
+  document.getElementById('barFill').style.width=(n/c.steps.length*100)+'%';
+}
+sheet.addEventListener('change',e=>{
+  if(!e.target.matches('input[type=checkbox]'))return;
+  const c=CRAFTS[current];const arr=progress[c.id]||[];arr[+e.target.dataset.k]=e.target.checked;progress[c.id]=arr;save();updateProg();
+});
+sheet.addEventListener('click',e=>{
+  const go=e.target.closest('[data-go]');if(go){openCraft(go.dataset.go);return}
+  const act=e.target.closest('[data-act]');if(!act)return;
+  if(act.dataset.act==='close')dlg.close();
+  if(act.dataset.act==='reset'){delete progress[CRAFTS[current].id];save();openCraft(CRAFTS[current].id)}
+});
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+dlg.addEventListener('close',()=>{renderGrid();try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}});
+
+/* ---------- boot ---------- */
+renderChips();renderGrid();
+const h=location.hash.slice(1);if(h&&CRAFTS.some(c=>c.id===h))openCraft(h);
+</script>
