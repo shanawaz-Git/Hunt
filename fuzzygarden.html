@@ -1,5 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Pipe cleaner craft guide: flowers, toys and aesthetic projects with step-by-step instructions.">
 <title>Fuzzy Garden</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gluten:wght@500;700;800&family=Figtree:wght@400;500;600;700&display=swap">
@@ -19,7 +24,7 @@
   --toy-bg:#e2f2e7;
   --aes-bg:#ebe2fb;
   --soft:#f6e9f1;
-  --display:"Gluten","Comic Sans MS","Chalkboard SE",cursive;
+  --display:"Gluten","Chalkboard SE","Comic Sans MS","Trebuchet MS",system-ui,sans-serif;
   --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 @media (prefers-color-scheme: dark){
@@ -157,8 +162,15 @@ footer .sig{font-family:var(--display);font-size:1.3rem;color:var(--accent)}
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important}
 }
-</style>
 
+/* base reset (standalone) */
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <filter id="fuzz" x="-15%" y="-15%" width="130%" height="130%">
@@ -236,7 +248,7 @@ const ART={
   tulip:()=>S('M50 94 L50 54',C.green)+S('M50 82 Q33 72 35 54',C.green,5)+S('M50 86 Q66 76 65 60',C.green,5)
     +S('M50 56 Q34 52 36 24 Q45 33 50 27 Q55 33 64 24 Q66 52 50 56Z',C.pink)+S('M50 54 Q43 40 50 22 Q57 40 50 54',C.hotpink,4.5),
   rose:()=>S('M50 94 L50 50',C.green)+S('M50 76 Q34 70 32 58 Q44 58 50 70',C.green,4.5)+S('M50 82 Q64 74 68 64 Q56 64 50 76',C.green,4.5)
-    +S('M50 34 A2.5 2.5 0 0 1 55 34 A5 5 0 0 1 45 34 A7.5 7.5 0 0 1 60 34 A10 10 0 0 1 40 34 A12.5 12.5 0 0 1 65 34 A15 15 0 0 1 35 34',C.red,5),
+    +S('M50 34 A2.5 2.5 0 0 1 55 34 A5 5 0 0 1 45 34 A7.5 7.5 0 0 1 60 34 A10 10 0 0 1 40 34 A12.5 12.5 0 0 1 65 34 A15 15 0 0 1 35 34',C.red,3.6),
   daisy:()=>S('M50 94 L50 52',C.green)+S('M50 78 Q36 72 34 62',C.green,5)+ring(8,50,36,13,5,9,C.white,4.5)+Ci(50,36,4.5,C.yellow,5,C.yellow),
   sunflower:()=>S('M50 94 L50 56',C.green)+S('M50 74 Q30 70 28 58 Q42 56 50 68',C.green,5)+S('M50 80 Q70 76 72 64 Q58 62 50 74',C.green,5)
     +pointed(12,50,36,23,6,C.yellow,4.5)+Ci(50,36,8,C.brown,5,C.brown),
@@ -550,3 +562,5 @@ dlg.addEventListener('close',()=>{renderGrid();try{history.replaceState(null,'',
 renderChips();renderGrid();
 const h=location.hash.slice(1);if(h&&CRAFTS.some(c=>c.id===h))openCraft(h);
 </script>
+</body>
+</html>
