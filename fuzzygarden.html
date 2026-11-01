@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Pipe cleaner craft guide: flowers, toys and aesthetic projects with step-by-step instructions.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fuzzy Garden</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Pipe cleaner craft guide: flowers, toys and aesthetic projects with step-by-step instructions, craft mode and a supply basket.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gluten:wght@500;700;800&family=Figtree:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: soft blush studio wall — left-aligned hero with a fuzzy bouquet, technique strip, filterable craft grid, step-by-step sheet in a dialog */
+/* Layout: soft blush studio wall — left-aligned hero with a fuzzy bouquet, technique strip, filterable craft grid, step sheet + full-screen craft mode + supply basket in dialogs */
 :root{
   --bg:#fbf3f7;
   --card:#ffffff;
@@ -24,6 +25,7 @@
   --toy-bg:#e2f2e7;
   --aes-bg:#ebe2fb;
   --soft:#f6e9f1;
+  --shadow:rgba(120,30,80,.45);
   --display:"Gluten","Chalkboard SE","Comic Sans MS","Trebuchet MS",system-ui,sans-serif;
   --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
@@ -31,26 +33,42 @@
   :root:not([data-theme="light"]){
     --bg:#1b1320;--card:#251a2b;--ink:#f7eaf3;--muted:#bba4c0;--line:#3b2b42;
     --accent:#ff6fa9;--accent-ink:#2a0f1d;--leaf:#6fd394;--amber:#f2a64a;
-    --flower-bg:#3a2131;--toy-bg:#1d3226;--aes-bg:#2b2342;--soft:#2e2134;
+    --flower-bg:#3a2131;--toy-bg:#1d3226;--aes-bg:#2b2342;--soft:#2e2134;--shadow:rgba(0,0,0,.6);
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#1b1320;--card:#251a2b;--ink:#f7eaf3;--muted:#bba4c0;--line:#3b2b42;
   --accent:#ff6fa9;--accent-ink:#2a0f1d;--leaf:#6fd394;--amber:#f2a64a;
-  --flower-bg:#3a2131;--toy-bg:#1d3226;--aes-bg:#2b2342;--soft:#2e2134;
+  --flower-bg:#3a2131;--toy-bg:#1d3226;--aes-bg:#2b2342;--soft:#2e2134;--shadow:rgba(0,0,0,.6);
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
 .wrap{max-width:1140px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 h1,h2,h3{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.05}
 p{margin:0}
-button{font:inherit;color:inherit}
+button,select,input{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-/* Hero */
-.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:center;padding-block:40px 24px}
+/* Buttons */
+.btn{border:1.5px solid var(--line);background:var(--card);padding:9px 16px;border-radius:999px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.big{padding:14px 24px;font-size:1.05rem}
+.btn svg{width:18px;height:18px}
+.icon-btn{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);display:grid;place-items:center;cursor:pointer;padding:0}
+.icon-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.heart-svg path{fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+[aria-pressed="true"] .heart-svg path{fill:currentColor}
+
+/* Top bar + hero */
+.topbar{display:flex;justify-content:flex-end;padding-top:16px}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:center;padding-block:8px 24px}
 .hero-text{display:flex;flex-direction:column;gap:18px;min-width:0}
 .eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 .hero h1{font-size:clamp(3.4rem,11vw,7rem);font-weight:800;letter-spacing:-.01em}
@@ -58,8 +76,14 @@ button{font:inherit;color:inherit}
 .lead{font-size:1.15rem;color:var(--muted);max-width:52ch}
 .facts{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:.92rem;font-weight:600}
 .facts b{font-family:var(--display);font-size:1.5rem;color:var(--ink);margin-right:4px;font-weight:700}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center}
+.meter{display:flex;flex-direction:column;gap:6px;min-width:180px;flex:0 1 240px}
+.meter span{font-size:.88rem;font-weight:600;color:var(--muted)}
+.meter-bar{height:8px;border-radius:999px;background:var(--soft);overflow:hidden}
+.meter-bar i{display:block;height:100%;width:0;background:var(--leaf);border-radius:999px;transition:width .5s ease}
 .hero-art{max-width:100%;aspect-ratio:1;background:var(--flower-bg);border-radius:46% 54% 50% 50% / 52% 46% 54% 48%;display:grid;place-items:center;padding:8%}
-.hero-art svg{width:100%;height:100%}
+.hero-art > svg{width:100%;height:100%;animation:sway 6s ease-in-out infinite;transform-origin:50% 92%}
+@keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
 
 /* Section heads */
 .section{padding-block:28px}
@@ -76,54 +100,81 @@ button{font:inherit;color:inherit}
 .stemnote strong{color:var(--ink)}
 
 /* Filters */
-.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:20px}
+.controls{display:flex;flex-direction:column;gap:12px;margin-bottom:18px}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{border:1.5px solid var(--line);background:var(--card);padding:8px 16px;border-radius:999px;font-weight:600;cursor:pointer;font-size:.95rem}
-.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip[aria-pressed="true"],.chip[aria-expanded="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .chip .n{font-variant-numeric:tabular-nums;opacity:.6;margin-left:4px}
 .search{position:relative;flex:1 1 220px;max-width:320px}
-.search input{width:100%;padding:10px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit}
+.search input{width:100%;padding:10px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
 .search input::placeholder{color:var(--muted)}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sel{position:relative;display:inline-block}
+.sel select{appearance:none;-webkit-appearance:none;font-size:.92rem;font-weight:600;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:8px 34px 8px 14px;cursor:pointer}
+.sel::after{content:"";position:absolute;right:15px;top:50%;width:7px;height:7px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.palette-box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.palette-box p{font-size:.9rem;color:var(--muted)}
+.palette{display:flex;flex-wrap:wrap;gap:8px}
+.pal{display:inline-flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);cursor:pointer;font-weight:600;font-size:.88rem}
+.pal .sw{width:22px;height:22px}
+.pal[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.pal[aria-pressed="true"]::after{content:"✓";color:var(--leaf);font-weight:800}
+.linkish{background:none;border:none;padding:0;color:var(--accent);font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.count{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:.92rem;color:var(--muted);margin-bottom:14px}
 
 /* Grid */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
-.card{display:flex;flex-direction:column;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:0;cursor:pointer;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
-.card:hover{transform:translateY(-3px);box-shadow:0 10px 24px -14px rgba(120,30,80,.45)}
-.card:hover .art svg{transform:rotate(-4deg) scale(1.04)}
+.card{position:relative;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 24px -14px var(--shadow)}
+.card:hover .art > svg{transform:rotate(-4deg) scale(1.04)}
 .art{aspect-ratio:4/3;max-width:100%;display:grid;place-items:center;position:relative}
-.art svg{width:62%;height:82%;transition:transform .3s ease}
+.art > svg{width:62%;height:82%;transition:transform .3s ease}
 .art[data-cat="Flowers"]{background:var(--flower-bg)}
 .art[data-cat="Toys"]{background:var(--toy-bg)}
 .art[data-cat="Aesthetic"]{background:var(--aes-bg)}
-.done-tag{position:absolute;top:10px;right:10px;background:var(--leaf);color:var(--card);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
-.card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px}
+.done-tag{position:absolute;top:12px;right:10px;background:var(--leaf);color:var(--card);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.fav{position:absolute;top:8px;left:8px;z-index:2;width:38px;height:38px;border-radius:50%;border:none;background:var(--card);display:grid;place-items:center;cursor:pointer;color:var(--muted);box-shadow:0 2px 8px -4px var(--shadow);padding:0}
+.fav svg{width:18px;height:18px}
+.fav[aria-pressed="true"]{color:var(--accent)}
+.card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
 .card h3{font-size:1.4rem}
+.open{all:unset;cursor:pointer}
+.open::after{content:"";position:absolute;inset:0;z-index:1;border-radius:20px}
+.open:focus-visible{outline:none}
+.open:focus-visible::after{outline:3px solid var(--accent);outline-offset:-3px}
 .meta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.85rem;color:var(--muted);align-items:center}
 .lvl{font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1.5px solid currentColor}
 .lvl.Easy{color:var(--leaf)}
 .lvl.Medium{color:var(--amber)}
+.inb{color:var(--accent);font-weight:700}
 .swatches{display:flex;gap:4px}
-.sw{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line)}
-.empty{grid-column:1/-1;padding:40px;text-align:center;color:var(--muted);border:1.5px dashed var(--line);border-radius:20px}
+.sw{display:inline-block;flex:none;width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line)}
+.mini{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--leaf);font-weight:700;font-variant-numeric:tabular-nums;margin-top:auto}
+.mini i{flex:1;height:5px;background:var(--soft);border-radius:999px;overflow:hidden;position:relative}
+.mini i b{position:absolute;inset:0 auto 0 0;background:var(--leaf);border-radius:999px}
+.empty{grid-column:1/-1;padding:40px;text-align:center;color:var(--muted);border:1.5px dashed var(--line);border-radius:20px;display:flex;flex-direction:column;gap:12px;align-items:center}
 
-/* Dialog */
+/* Dialogs */
 dialog{border:none;padding:0;border-radius:24px;background:var(--card);color:var(--ink);width:min(780px,calc(100% - 24px));max-height:92vh;max-height:92dvh}
 dialog::backdrop{background:rgba(30,12,28,.55)}
 .sheet{display:flex;flex-direction:column}
 .sheet-top{display:grid;grid-template-columns:200px 1fr;gap:20px;padding:22px;align-items:center}
 .sheet-top .art{border-radius:18px;aspect-ratio:1}
-.sheet-top .art svg{width:80%;height:80%}
+.sheet-top .art > svg{width:80%;height:80%}
 .sheet-title{display:flex;flex-direction:column;gap:10px;min-width:0}
-.sheet-title h2{font-size:clamp(2rem,6vw,2.8rem)}
-.sheet-title p{color:var(--muted)}
-.close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);cursor:pointer;font-size:1.3rem;line-height:1}
+.sheet-title h2{font-size:clamp(2rem,6vw,2.8rem);padding-right:40px}
+.sheet-title h2:focus{outline:none}
+.sheet-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);cursor:pointer;font-size:1.3rem;line-height:1;z-index:2}
 .sheet-body{padding:0 22px 22px;display:grid;grid-template-columns:200px 1fr;gap:20px}
 .side{display:flex;flex-direction:column;gap:16px;min-width:0}
-.box h4,.steps-head h4{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.box h4,.steps-head h4,.bsk h4{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
 .stemlist,.extras{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:.95rem}
 .stemlist li{display:flex;align-items:center;gap:8px}
 .stemlist .q{font-weight:700;font-variant-numeric:tabular-nums;min-width:2ch}
 .extras li::before{content:"+ ";color:var(--accent);font-weight:700}
+.extras .muted{color:var(--muted);font-size:.85rem}
 .steps-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
 .progress{font-size:.85rem;font-weight:700;color:var(--leaf);font-variant-numeric:tabular-nums}
 .bar{height:6px;background:var(--soft);border-radius:999px;overflow:hidden;margin-bottom:12px}
@@ -141,11 +192,69 @@ dialog::backdrop{background:rgba(30,12,28,.55)}
 .steps input:focus-visible + .num{outline:3px solid var(--accent);outline-offset:2px}
 .tip{margin-top:14px;background:var(--soft);border-radius:14px;padding:14px 16px;font-size:.95rem}
 .tip b{font-family:var(--display);color:var(--accent);font-size:1.1rem;margin-right:6px}
-.sheet-nav{display:flex;justify-content:space-between;gap:10px;padding:14px 22px;border-top:1px solid var(--line);flex-wrap:wrap}
-.btn{border:1.5px solid var(--line);background:var(--card);padding:9px 16px;border-radius:999px;font-weight:600;cursor:pointer}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.sheet-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 22px;border-top:1px solid var(--line);flex-wrap:wrap}
+.keyhint{font-size:.8rem;color:var(--muted)}
 
-footer{padding-block:36px 48px;color:var(--muted);font-size:.9rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:28px}
+/* Craft mode (full screen) */
+#focus{width:100vw;height:100vh;height:100dvh;max-width:100vw;max-height:100vh;max-height:100dvh;margin:0;border-radius:0;background:var(--bg)}
+.fm{height:100%;max-width:920px;margin:0 auto;display:grid;grid-template-rows:auto auto 1fr auto;gap:20px;padding-block:max(18px,env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.fm-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.fm-name{display:flex;align-items:center;gap:14px;min-width:0}
+.fm-name .art{width:64px;height:64px;border-radius:16px;flex:none}
+.fm-name .art > svg{width:82%;height:82%}
+.fm-name h2{font-size:clamp(1.5rem,4vw,2.2rem)}
+.fm .close{position:static;flex:none}
+.fm-dots{display:flex;flex-wrap:wrap;gap:2px}
+.dot{width:30px;height:30px;border:none;background:none;padding:0;display:grid;place-items:center;cursor:pointer}
+.dot::before{content:"";width:12px;height:12px;border-radius:50%;border:2px solid var(--line);transition:all .2s}
+.dot.on::before{background:var(--leaf);border-color:var(--leaf)}
+.dot.cur::before{border-color:var(--accent);width:16px;height:16px;border-width:3px}
+.fm-main{display:flex;flex-direction:column;justify-content:center;gap:18px;min-height:0;overflow:auto}
+.fm-num{display:flex;align-items:baseline;gap:10px;font-family:var(--display);color:var(--accent)}
+.fm-num b{font-size:clamp(4rem,14vw,7rem);line-height:.9;font-weight:800}
+.fm-num span{font-size:1.2rem;color:var(--muted);font-weight:500}
+.fm-done{font-family:var(--body);font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--leaf);border:1.5px solid currentColor;padding:3px 10px;border-radius:999px;align-self:center}
+.fm-text{font-size:clamp(1.35rem,3.6vw,2.1rem);font-weight:600;line-height:1.35;max-width:34ch;text-wrap:pretty}
+.fm .tip{max-width:60ch}
+.fm-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.fm-note{font-size:.85rem;color:var(--muted);text-align:center;flex:1 1 140px}
+.fm-finish{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:18px}
+.fm-finish .art{width:min(220px,60vw);aspect-ratio:1;border-radius:32px}
+.fm-finish .art > svg{width:80%;height:80%}
+.fm-finish h2{font-size:clamp(2.2rem,8vw,3.6rem)}
+.fm-finish p{color:var(--muted);max-width:40ch}
+.fm-finish .row{justify-content:center}
+
+/* Basket */
+.bsk{padding:22px;display:flex;flex-direction:column;gap:20px}
+.bsk h2{font-size:clamp(1.9rem,5vw,2.5rem);padding-right:44px}
+.bsk-lead{color:var(--muted)}
+.bitems{display:flex;flex-wrap:wrap;gap:8px}
+.bitem{display:inline-flex;align-items:center;gap:6px;padding:5px 5px 5px 14px;border-radius:999px;background:var(--soft);font-weight:600;font-size:.92rem}
+.bitem button{width:28px;height:28px;border-radius:50%;border:none;background:var(--card);cursor:pointer;display:grid;place-items:center;padding:0;font-size:1.1rem;line-height:1}
+.tot-wrap{overflow-x:auto}
+.tot{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.tot th{text-align:left;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:6px 8px;border-bottom:1.5px solid var(--line);font-weight:700}
+.tot td{padding:9px 8px;border-bottom:1px solid var(--line)}
+.tot .n{text-align:right}
+.tot tfoot td{font-weight:800;border-bottom:none}
+.colname{display:flex;align-items:center;gap:10px;font-weight:600}
+.colname .sw{width:18px;height:18px}
+.bsk-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.bstat{font-size:.9rem;color:var(--leaf);font-weight:700}
+.bsk textarea{width:100%;min-height:160px;border-radius:14px;border:1.5px solid var(--line);background:var(--soft);color:var(--ink);padding:12px;font:inherit;font-size:.9rem}
+.fab{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;display:inline-flex;align-items:center;gap:10px;padding:12px 14px 12px 18px;border-radius:999px;background:var(--ink);color:var(--bg);border:none;font-weight:700;cursor:pointer;box-shadow:0 12px 28px -12px var(--shadow)}
+.fab svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.fab .ct{background:var(--accent);color:var(--accent-ink);border-radius:999px;min-width:26px;height:26px;display:grid;place-items:center;padding:0 7px;font-variant-numeric:tabular-nums}
+.fab.bump{animation:bump .4s ease}
+@keyframes bump{40%{transform:scale(1.12)}}
+
+/* Celebration */
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:100;overflow:hidden}
+.confetti i{position:absolute;left:50%;top:45%;width:11px;height:15px;border-radius:60% 60% 60% 0;opacity:0;animation:pop 1.5s cubic-bezier(.15,.7,.3,1) forwards}
+@keyframes pop{0%{opacity:1;transform:translate(0,0) rotate(0) scale(.6)}80%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(1)}}
+
+footer{padding-block:36px 104px;color:var(--muted);font-size:.9rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:28px}
 footer .sig{font-family:var(--display);font-size:1.3rem;color:var(--accent)}
 
 @media (max-width:820px){
@@ -158,19 +267,17 @@ footer .sig{font-family:var(--display);font-size:1.3rem;color:var(--accent)}
   .sheet-top,.sheet-body{grid-template-columns:1fr}
   .sheet-top .art{max-width:180px}
   .search{max-width:none}
+  .keyhint,.fm-note{display:none}
+  .fm-name .art{display:none}
 }
 @media (prefers-reduced-motion:reduce){
-  *{transition:none!important}
+  *{transition:none!important;animation:none!important}
 }
-
-/* base reset (standalone) */
-html{-webkit-text-size-adjust:100%}
-body{margin:0;min-height:100vh}
-img{max-width:100%}
-[hidden]{display:none!important}
 </style>
 </head>
 <body>
+
+
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <filter id="fuzz" x="-15%" y="-15%" width="130%" height="130%">
@@ -182,12 +289,19 @@ img{max-width:100%}
 </svg>
 
 <div class="wrap">
+  <div class="topbar">
+    <button class="icon-btn" type="button" id="themeBtn" aria-label="Switch theme"></button>
+  </div>
   <header class="hero">
     <div class="hero-text">
       <span class="eyebrow">Pipe cleaner crafts, step by step</span>
       <h1>Fuzzy <span>Garden</span></h1>
-      <p class="lead">Flowers, little toys and aesthetic bits made from fuzzy chenille stems. Every project lists exactly which stems you need, then walks through each twist, loop and coil. Tick steps off as you go.</p>
+      <p class="lead">Flowers, little toys and aesthetic bits made from fuzzy chenille stems. Every project lists exactly which stems you need, then walks through each twist, loop and coil. Tick steps off as you go, or switch to craft mode for one big step at a time.</p>
       <div class="facts" id="facts"></div>
+      <div class="hero-actions">
+        <button class="btn primary big" type="button" id="surprise">Surprise me</button>
+        <div class="meter"><div class="meter-bar"><i id="meterFill"></i></div><span id="meterTxt"></span></div>
+      </div>
     </div>
     <div class="hero-art" id="heroArt"></div>
   </header>
@@ -204,13 +318,33 @@ img{max-width:100%}
   <section class="section" aria-labelledby="galH">
     <div class="section-head">
       <h2 id="galH">Projects</h2>
+      <p>Tap the heart to save a project. Add projects to your basket to total up every stem you need to buy.</p>
     </div>
     <div class="controls">
-      <div class="chips" id="chips" role="group" aria-label="Filter by collection"></div>
-      <label class="search">
-        <input type="search" id="q" placeholder="Search tulip, bunny, bow…" aria-label="Search projects">
-      </label>
+      <div class="row">
+        <div class="chips" id="chips" role="group" aria-label="Filter by collection"></div>
+        <label class="search">
+          <input type="search" id="q" placeholder="Search tulip, bunny, glue…" aria-label="Search projects">
+        </label>
+      </div>
+      <div class="filters">
+        <label class="sel"><span class="vh">Level</span>
+          <select id="fLevel"><option value="any">Any level</option><option value="Easy">Easy</option><option value="Medium">Medium</option></select>
+        </label>
+        <label class="sel"><span class="vh">Status</span>
+          <select id="fStatus"><option value="all">Any status</option><option value="saved">Saved</option><option value="new">Not started</option><option value="progress">In progress</option><option value="made">Made it</option></select>
+        </label>
+        <label class="sel"><span class="vh">Sort</span>
+          <select id="fSort"><option value="featured">Featured order</option><option value="time">Quickest first</option><option value="stems">Fewest stems</option><option value="az">A to Z</option></select>
+        </label>
+        <button class="chip" type="button" id="haveBtn" aria-expanded="false" aria-controls="haveBox">Colours I have</button>
+      </div>
+      <div class="palette-box" id="haveBox" hidden>
+        <p>Pick the stem colours you own. Only projects you can make with them stay in the list.</p>
+        <div class="palette" id="palette"></div>
+      </div>
     </div>
+    <div class="count" aria-live="polite"><span id="countTxt"></span><button class="linkish" type="button" id="resetF" hidden>Reset filters</button></div>
     <div class="grid" id="grid"></div>
   </section>
 
@@ -220,8 +354,21 @@ img{max-width:100%}
   </footer>
 </div>
 
+<button class="fab" type="button" id="fab" aria-label="Open supply basket">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9h14l-1.4 10.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.8z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/></svg>
+  Basket <span class="ct" id="fabCt">0</span>
+</button>
+
 <dialog id="dlg" aria-labelledby="dlgTitle">
   <div class="sheet" id="sheet"></div>
+</dialog>
+
+<dialog id="focus" aria-label="Craft mode">
+  <div class="fm" id="fm"></div>
+</dialog>
+
+<dialog id="bdlg" aria-labelledby="bskTitle">
+  <div class="bsk" id="bsk"></div>
 </dialog>
 
 <script>
@@ -236,10 +383,12 @@ const S=(d,c,w=6)=>`<path d="${d}" stroke="${c}" stroke-width="${w}" fill="none"
 const Ci=(x,y,r,c,w=6,fill='none')=>`<circle cx="${x}" cy="${y}" r="${r}" stroke="${c}" stroke-width="${w}" fill="${fill}"/>`;
 const Dot=(x,y,r,c)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`;
 const E=(x,y,rx,ry,rot,c,w=5)=>`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" transform="rotate(${rot} ${x} ${y})" stroke="${c}" stroke-width="${w}" fill="none"/>`;
+const P=(cx,cy,len,wd,rot,c,w=4.5)=>`<path d="M${cx} ${cy} Q${cx-wd} ${cy-len*.55} ${cx} ${cy-len} Q${cx+wd} ${cy-len*.55} ${cx} ${cy}" transform="rotate(${rot} ${cx} ${cy})" stroke="${c}" stroke-width="${w}" fill="none" stroke-linejoin="round"/>`;
 function ring(n,cx,cy,dist,rx,ry,c,w=5,off=0){let o='';for(let i=0;i<n;i++){const a=off+i*360/n,r=a*Math.PI/180;o+=E(cx+dist*Math.cos(r),cy+dist*Math.sin(r),rx,ry,a+90,c,w)}return o}
-function pointed(n,cx,cy,len,wd,c,w=4.5,off=0){let o='';for(let i=0;i<n;i++){const a=off+i*360/n;o+=`<path d="M${cx} ${cy} Q${cx-wd} ${cy-len*.55} ${cx} ${cy-len} Q${cx+wd} ${cy-len*.55} ${cx} ${cy}" transform="rotate(${a} ${cx} ${cy})" stroke="${c}" stroke-width="${w}" fill="none" stroke-linejoin="round"/>`}return o}
+function pointed(n,cx,cy,len,wd,c,w=4.5,off=0){let o='';for(let i=0;i<n;i++)o+=P(cx,cy,len,wd,off+i*360/n,c,w);return o}
 function star(cx,cy,ro,ri,c,w=6){let p=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?ri:ro;p.push(`${(cx+r*Math.cos(a)).toFixed(1)} ${(cy+r*Math.sin(a)).toFixed(1)}`)}return S('M'+p.join(' L')+'Z',c,w)}
 function q(t,a,b,c){return[(1-t)**2*a[0]+2*(1-t)*t*b[0]+t*t*c[0],(1-t)**2*a[1]+2*(1-t)*t*b[1]+t*t*c[1]]}
+function qd(t,a,b,c){return[2*(1-t)*(b[0]-a[0])+2*t*(c[0]-b[0]),2*(1-t)*(b[1]-a[1])+2*t*(c[1]-b[1])]}
 const eyes=(x1,x2,y)=>Dot(x1,y,2.2,C.black)+Dot(x2,y,2.2,C.black);
 const svg=inner=>`<svg viewBox="0 0 100 100" aria-hidden="true"><g filter="url(#fuzz)">${inner}</g></svg>`;
 
@@ -248,7 +397,7 @@ const ART={
   tulip:()=>S('M50 94 L50 54',C.green)+S('M50 82 Q33 72 35 54',C.green,5)+S('M50 86 Q66 76 65 60',C.green,5)
     +S('M50 56 Q34 52 36 24 Q45 33 50 27 Q55 33 64 24 Q66 52 50 56Z',C.pink)+S('M50 54 Q43 40 50 22 Q57 40 50 54',C.hotpink,4.5),
   rose:()=>S('M50 94 L50 50',C.green)+S('M50 76 Q34 70 32 58 Q44 58 50 70',C.green,4.5)+S('M50 82 Q64 74 68 64 Q56 64 50 76',C.green,4.5)
-    +S('M50 34 A2.5 2.5 0 0 1 55 34 A5 5 0 0 1 45 34 A7.5 7.5 0 0 1 60 34 A10 10 0 0 1 40 34 A12.5 12.5 0 0 1 65 34 A15 15 0 0 1 35 34',C.red,3.6),
+    +S('M50 34 A2.5 2.5 0 0 1 55 34 A5 5 0 0 1 45 34 A7.5 7.5 0 0 1 60 34 A10 10 0 0 1 40 34 A12.5 12.5 0 0 1 65 34 A15 15 0 0 1 35 34',C.red,5),
   daisy:()=>S('M50 94 L50 52',C.green)+S('M50 78 Q36 72 34 62',C.green,5)+ring(8,50,36,13,5,9,C.white,4.5)+Ci(50,36,4.5,C.yellow,5,C.yellow),
   sunflower:()=>S('M50 94 L50 56',C.green)+S('M50 74 Q30 70 28 58 Q42 56 50 68',C.green,5)+S('M50 80 Q70 76 72 64 Q58 62 50 74',C.green,5)
     +pointed(12,50,36,23,6,C.yellow,4.5)+Ci(50,36,8,C.brown,5,C.brown),
@@ -257,6 +406,13 @@ const ART={
     return o+S('M44 70 Q50 74 56 70',C.lilac,3.5)},
   lily:()=>{const a=[28,94],b=[30,36],c=[76,30];let o=S(`M${a} Q${b} ${c}`,C.green,4.5)+S('M30 94 Q12 62 22 40 Q34 60 30 94',C.green,4.5);
     [.5,.64,.78,.92].forEach((t,i)=>{const [x,y]=q(t,a,b,c),s=5.5-i*.6,by=y+9;o+=S(`M${x} ${y} L${x} ${by-3}`,C.green,2.5)+S(`M${x-s} ${by+s*.8} Q${x-s} ${by-3} ${x} ${by-3} Q${x+s} ${by-3} ${x+s} ${by+s*.8}`,C.white,4)});return o},
+  lotus:()=>E(50,80,34,8,0,C.green,5)
+    +P(50,66,24,10,-70,C.pink)+P(50,66,24,10,70,C.pink)+P(50,66,30,10,-38,C.pink)+P(50,66,30,10,38,C.pink)
+    +P(50,66,30,8,-14,C.hotpink)+P(50,66,30,8,14,C.hotpink)+P(50,66,38,8,0,C.hotpink)+Dot(50,63,3.5,C.yellow),
+  jasmine:()=>{const a=[8,26],b=[50,104],c=[92,26];let o=S(`M${a} Q${b} ${c}`,C.green,3.5);
+    for(let i=0;i<13;i++){const t=.06+i*.0733,[x,y]=q(t,a,b,c),[dx,dy]=qd(t,a,b,c),ang=Math.atan2(dy,dx),s=i%2?1:-1,
+      nx=x+Math.cos(ang+Math.PI/2)*4.5*s,ny=y+Math.sin(ang+Math.PI/2)*4.5*s;o+=E(nx.toFixed(1),ny.toFixed(1),2.6,5,(ang*180/Math.PI).toFixed(1),C.white,3.6)}
+    return o+S('M8 26 L8 18 M92 26 L92 18',C.green,3)},
   bouquet:()=>S('M50 92 L36 42',C.green,4)+S('M50 92 L50 34',C.green,4)+S('M50 92 L64 44',C.green,4)+S('M50 92 L26 58',C.green,4)+S('M50 92 L74 60',C.green,4)
     +ring(6,50,28,8,3.5,6,C.white,3.5)+Ci(50,28,3,C.yellow,3,C.yellow)
     +S('M34 38 A2 2 0 0 1 38 38 A4 4 0 0 1 30 38 A6 6 0 0 1 42 38 A8 8 0 0 1 26 38',C.red,3.8)
@@ -273,6 +429,13 @@ const ART={
     return o+Ci(84,50,9,C.pink,5,C.pink)+eyes(81,88,48)+S('M80 42 Q76 30 72 30',C.black,2.5)+S('M88 42 Q92 30 96 30',C.black,2.5)},
   snail:()=>S('M14 78 L74 78 Q84 78 84 66',C.yellow,6)+S('M46 58 A3 3 0 0 1 52 58 A6 6 0 0 1 40 58 A9 9 0 0 1 58 58 A12 12 0 0 1 34 58 A15 15 0 0 1 64 58 A16 16 0 0 1 32 66',C.orange,5)
     +S('M82 66 L78 50 M86 66 L90 50',C.yellow,3)+Dot(78,49,3,C.black)+Dot(90,49,3,C.black),
+  bee:()=>E(50,36,7,11,-20,C.white,4)+E(62,36,7,11,20,C.white,4)
+    +E(56,58,20,14,0,C.yellow,6)+S('M50 45 Q46 58 50 71',C.black,4.5)+S('M62 45 Q66 58 62 71',C.black,4.5)
+    +Ci(31,57,8,C.black,5,C.black)+Dot(28,55,2,C.white)+Dot(34,55,2,C.white)
+    +S('M28 50 Q24 40 19 39',C.black,2.5)+S('M33 49 Q34 39 39 36',C.black,2.5)+S('M76 58 L84 58',C.black,3),
+  cat:()=>S('M39 31 L37 17 L47 27',C.orange,5)+S('M61 31 L63 17 L53 27',C.orange,5)+Ci(50,40,14,C.orange,6)
+    +eyes(45,55,38)+Dot(50,44,1.8,C.pink)+S('M33 43 L42 45 M33 48 L42 47 M67 43 L58 45 M67 48 L58 47',C.beige,1.6)
+    +E(50,73,14,15,0,C.orange,6)+S('M62 82 Q80 86 79 70 Q78 60 71 63',C.orange,5),
   heart:()=>S('M50 82 C20 62 20 32 37 30 C45 29 50 36 50 41 C50 36 55 29 63 30 C80 32 80 62 50 82Z',C.red,7)+S('M50 30 L50 18',C.red,4)+Ci(50,14,4,'#b9a3bd',3),
   butterfly:()=>E(35,38,12,15,-35,C.pink,5)+E(65,38,12,15,35,C.pink,5)+E(38,64,8,10,30,C.purple,5)+E(62,64,8,10,-30,C.purple,5)
     +S('M50 32 L50 76',C.black,6)+S('M50 32 Q44 20 38 20 Q35 20 36 24',C.black,2.5)+S('M50 32 Q56 20 62 20 Q65 20 64 24',C.black,2.5),
@@ -283,7 +446,11 @@ const ART={
   strawberry:()=>S('M28 42 Q50 32 72 42 Q74 62 50 86 Q26 62 28 42Z',C.red,6)+pointed(6,50,38,12,4,C.green,4)+S('M50 38 L50 22',C.green,4)
     +[[40,52],[52,50],[62,54],[46,64],[58,64],[52,76]].map(([x,y])=>Dot(x,y,1.8,C.yellow)).join(''),
   star:()=>star(50,52,34,15,C.yellow,6.5)+S('M50 18 L50 6',C.white,2),
-  ring:()=>E(50,64,22,16,0,C.lilac,6)+ring(5,50,34,8,3.5,6,C.pink,4)+Ci(50,34,3.5,C.yellow,3,C.yellow)
+  ring:()=>E(50,64,22,16,0,C.lilac,6)+ring(5,50,34,8,3.5,6,C.pink,4)+Ci(50,34,3.5,C.yellow,3,C.yellow),
+  rainbow:()=>[['red',36],['orange',30],['yellow',24],['green',18],['blue',12]].map(([k,r])=>S(`M${50-r} 72 A${r} ${r} 0 0 1 ${50+r} 72`,C[k],5)).join('')
+    +[16,26,36,64,74,84].map((x,i)=>Ci(x,i%3===1?72:76,i%3===1?8:6.5,C.white,3,C.white)).join(''),
+  crown:()=>S('M18 72 L18 34 L26 54 L34 30 L42 54 L50 24 L58 54 L66 30 L74 54 L82 34 L82 72 Z',C.yellow,6)+S('M18 64 L82 64',C.yellow,4)
+    +[[18,30],[34,26],[50,20],[66,26],[82,30]].map(([x,y])=>Ci(x,y,3.5,C.pink,3,C.pink)).join('')
 };
 
 /* ---------- techniques ---------- */
@@ -353,6 +520,25 @@ const CRAFTS=[
    'Cut 2 cm pieces of green, twist one through the top of each bell, and hang the bells along the arch with the smallest at the tip.',
    'Fold the second green stem into one long, wide leaf loop and twist it onto the base.'],
   tip:'This one looks best standing in a small glass bottle.'},
+ {id:'lotus',cat:'Flowers',name:'Lotus',level:'Medium',time:'20 min',stems:[['pink',2],['hotpink',1],['yellow','¼'],['green',1]],extras:['Wire cutters'],
+  steps:['Cut each pink stem in half to get 4 pieces of 15 cm. These are the outer petals.',
+   'Fold each piece into a loop, twist the base once, and pinch the tip into a point.',
+   'Cut the hot pink stem into 3 equal pieces and make 3 smaller pointed petals the same way.',
+   'Coil the yellow piece into a tiny flat spiral for the centre.',
+   'Twist the 3 hot pink petals around the yellow centre so they stand upright and cup inward.',
+   'Add the 4 pink petals in a ring around them, tilted outward a little more than the inner ones.',
+   'Wind the green stem into a wide flat spiral about 6 cm across. This is the lily pad.',
+   'Push the flower tails through the middle of the pad and fold them flat underneath.'],
+  tip:'Float it on a mirror tile rather than real water. Wet chenille goes limp and the wire can rust.'},
+ {id:'jasmine',cat:'Flowers',name:'Jasmine string',level:'Medium',time:'25 min',stems:[['white',3],['green',2]],extras:['Wire cutters'],
+  steps:['Cut each white stem into 6 pieces, 5 cm each. You get 18 bud pieces.',
+   'Fold one piece in half and twist the two ends together twice. Pinch the folded end into a slim point. That is one bud.',
+   'Make all 18 buds. Keep them about the same size.',
+   'Join the two green stems end to end with a twist lock to make one 60 cm string.',
+   'Starting 3 cm from one end, twist a bud onto the green stem by its tail, pointing outward.',
+   'Add the next bud 2 cm along, pointing the opposite way. Keep alternating sides all the way down.',
+   'Leave 3 cm bare at the far end, then bend both bare ends into small hooks so the string can close into a loop or hang.'],
+  tip:'Push a few buds closer together near the middle. A real malli string bunches up where it is tied.'},
  {id:'bouquet',cat:'Flowers',name:'Mini bouquet',level:'Easy',time:'15 min',stems:[['green',2]],extras:['5 or 7 finished flowers','Kraft paper or tissue','Ribbon','Tape'],
   steps:['Pick an odd number of finished flowers. Five or seven look natural.',
    'Put the biggest flower in the middle and arrange the rest around it, slightly lower.',
@@ -405,6 +591,25 @@ const CRAFTS=[
    'Cut a 4 cm yellow offcut, fold it into a V, and twist it on top of the head as eye stalks.',
    'Glue an eye to the tip of each stalk.'],
   tip:'Twist two colours together before you spiral for a striped shell.'},
+ {id:'bee',cat:'Toys',name:'Bumblebee',level:'Easy',time:'10 min',stems:[['yellow',1],['black',1],['white','½']],extras:['Two googly eyes','Craft glue','Wire cutters'],
+  steps:['Wrap the yellow stem around two fingers 4 times. Slide it off and squeeze it into an oval for the body.',
+   'Cut the black stem into two 9 cm pieces, one 8 cm piece and two 2 cm pieces.',
+   'Wrap each 9 cm piece around the body as a stripe, a finger-width apart.',
+   'Coil the 8 cm piece into a small ball and twist it onto one end for the head.',
+   'Bend the white piece into two round loops side by side and twist at the middle. These are the wings.',
+   'Twist the wings onto the top of the body, just behind the head.',
+   'Push the two 2 cm pieces into the head as antennae and glue on the eyes.'],
+  tip:'Glue a loop of thread to its back and hang it from a plant pot so it looks like it is flying.'},
+ {id:'cat',cat:'Toys',name:'Kitten',level:'Medium',time:'15 min',stems:[['orange',3],['black','¼']],extras:['Two googly eyes','A pencil','Craft glue'],
+  steps:['Wrap one orange stem around two fingers 3 times for the head. Squeeze it round and leave a 10 cm tail.',
+   'Use the tail to make two small pointed loops on top for ears. Twist each and tuck the end in.',
+   'Wrap the second orange stem around three fingers 4 times and squeeze it into a pear shape for the body.',
+   'Join head to body with a short offcut pushed through both and twisted.',
+   'Coil the third orange stem loosely around a pencil, slide it off and stretch it a little.',
+   'Twist one end of the coil onto the back of the body as the tail and curl the tip up.',
+   'Cut the black piece into 4 short bits and glue two on each side of the face as whiskers.',
+   'Glue on the eyes.'],
+  tip:'Wrap a thin brown stem around the orange one before coiling the tail and you get tabby stripes.'},
 
  {id:'heart',cat:'Aesthetic',name:'Heart keychain',level:'Easy',time:'3 min',stems:[['red',1]],extras:['Keyring (optional)'],
   steps:['Fold the stem in half to find the middle and bend a small dip there. This is the top of the heart.',
@@ -458,69 +663,183 @@ const CRAFTS=[
    'Coil the yellow piece into a tiny flat spiral for the centre.',
    'Lay the petals on top of the band, the yellow centre in the middle.',
    'Push the lilac tails up through the flower, hook them over the centre, and twist them flat underneath.'],
-  tip:'Size the band on the finger it will be worn on. Chenille squashes a little over time.'}
+  tip:'Size the band on the finger it will be worn on. Chenille squashes a little over time.'},
+ {id:'rainbow',cat:'Aesthetic',name:'Cloud rainbow',level:'Easy',time:'10 min',stems:[['red',1],['orange',1],['yellow',1],['green',1],['blue',1],['white',1]],extras:['Wire cutters'],
+  steps:['Leave the red stem full length. Trim orange to 26 cm, yellow to 22 cm, green to 18 cm and blue to 14 cm.',
+   'Bend each stem into an even arch.',
+   'Nest the arches inside each other, red on the outside and blue on the inside, with all the feet level.',
+   'Cut the white stem in half. Wrap one half tightly around all the feet on the left side to bind them.',
+   'Keep winding the rest of that white piece into a puffy ball around the bound feet. That is the cloud.',
+   'Repeat on the right side with the other half.',
+   'Fluff both clouds well so no colour shows through.'],
+  tip:'Glue a small magnet to the back of one cloud for a fridge rainbow.'},
+ {id:'crown',cat:'Aesthetic',name:'Tiny crown',level:'Easy',time:'8 min',stems:[['yellow',2],['pink','½']],extras:['Hair clip (optional)'],
+  steps:['Bend one yellow stem into a zigzag with 5 points, each about 3 cm tall.',
+   'Lay the second yellow stem straight along the bottom of the zigzag and wrap the zigzag ends around it.',
+   'Wind the straight stem up and down through each valley of the zigzag to lock the points in place.',
+   'Cut the pink piece into 5 bits, 3 cm each, and coil each into a tiny ball.',
+   'Twist one pink ball onto the tip of every point.',
+   'Curve the crown into a ring and twist the ends together, or leave it flat and glue it to a clip.'],
+  tip:'Sized as a ring, it sits perfectly on the teddy bear or the bunny.'}
 ];
 
 /* ---------- storage (per viewer) ---------- */
-const KEY='fuzzy-garden-progress';
-let progress={};
-try{progress=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){progress={}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(progress))}catch(e){}}
-const isDone=c=>(progress[c.id]||[]).filter(Boolean).length===c.steps.length;
+const store={
+  get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+const K={prog:'fuzzy-garden-progress',fav:'fuzzy-garden-favs',bsk:'fuzzy-garden-basket',have:'fuzzy-garden-have',theme:'fuzzy-garden-theme'};
+const byId=id=>CRAFTS.find(c=>c.id===id);
+const asArr=v=>Array.isArray(v)?v:[];
+let progress=store.get(K.prog,{});if(!progress||typeof progress!=='object')progress={};
+let favs=new Set(asArr(store.get(K.fav,[])).filter(byId));
+let basket=asArr(store.get(K.bsk,[])).filter(byId);
+let have=new Set(asArr(store.get(K.have,[])).filter(k=>C[k]));
+const saveProg=()=>store.set(K.prog,progress);
+const saveFavs=()=>store.set(K.fav,[...favs]);
+const saveBasket=()=>store.set(K.bsk,basket);
+const saveHave=()=>store.set(K.have,[...have]);
 
-/* ---------- render: hero, techniques ---------- */
+/* ---------- helpers ---------- */
+const FR={'½':.5,'¼':.25,'¾':.75,'1¼':1.25,'1½':1.5};
+const num=n=>typeof n==='number'?n:(FR[n]!=null?FR[n]:(parseFloat(n)||0));
+function fmtQ(x){const w=Math.floor(x+1e-9),f=Math.round((x-w)*4);if(f===4)return String(w+1);return ((w?w:'')+['','¼','½','¾'][f])||'0'}
+const stemSum=c=>c.stems.reduce((t,[,n])=>t+num(n),0);
+const minutes=c=>parseInt(c.time,10)||0;
+const doneN=c=>(progress[c.id]||[]).slice(0,c.steps.length).filter(Boolean).length;
+const stat=c=>{const n=doneN(c);return n===0?'new':n===c.steps.length?'made':'progress'};
+const HEART='<svg class="heart-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.4A4.1 4.1 0 0 1 12 7.6a4.1 4.1 0 0 1 7.5 2.5c0 5.8-7.5 10.4-7.5 10.4z"/></svg>';
+const MOON='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>';
+const SUN='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+
+/* ---------- theme ---------- */
+const root=document.documentElement,themeBtn=document.getElementById('themeBtn');
+const savedTheme=store.get(K.theme,null);
+if(savedTheme==='dark'||savedTheme==='light')root.dataset.theme=savedTheme;
+const isDark=()=>root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+function paintTheme(){const d=isDark();themeBtn.innerHTML=d?SUN:MOON;themeBtn.setAttribute('aria-label',d?'Switch to light theme':'Switch to dark theme')}
+themeBtn.addEventListener('click',()=>{const t=isDark()?'light':'dark';root.dataset.theme=t;store.set(K.theme,t);paintTheme()});
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',paintTheme)}catch(e){}
+paintTheme();
+
+/* ---------- hero ---------- */
 document.getElementById('heroArt').innerHTML=svg(ART.bouquet());
 const cats=['All','Flowers','Toys','Aesthetic'];
 document.getElementById('facts').innerHTML=
-  `<span><b>${CRAFTS.length}</b>projects</span><span><b>3</b>collections</span><span><b>${TECH.length}</b>core moves</span>`;
+  `<span><b>${CRAFTS.length}</b>projects</span><span><b>${cats.length-1}</b>collections</span><span><b>${TECH.length}</b>core moves</span>`;
 document.getElementById('tech').innerHTML=TECH.map(([h,p])=>`<div><h3>${h}</h3><p>${p}</p></div>`).join('');
+function renderHeroStats(){
+  const made=CRAFTS.filter(c=>stat(c)==='made').length;
+  document.getElementById('meterFill').style.width=(made/CRAFTS.length*100)+'%';
+  document.getElementById('meterTxt').textContent=made===CRAFTS.length?`All ${made} made. The whole garden!`:made?`You've made ${made} of ${CRAFTS.length}`:`0 of ${CRAFTS.length} made so far`;
+}
+document.getElementById('surprise').addEventListener('click',()=>{
+  const pool=CRAFTS.filter(c=>stat(c)!=='made');const list=pool.length?pool:CRAFTS;
+  openCraft(list[Math.floor(Math.random()*list.length)].id);
+});
 
-/* ---------- filters + grid ---------- */
-let cat='All',query='';
-const chips=document.getElementById('chips');
+/* ---------- filters ---------- */
+let cat='All',query='',level='any',status='all',sort='featured';
+const chips=document.getElementById('chips'),qIn=document.getElementById('q'),fLevel=document.getElementById('fLevel'),
+  fStatus=document.getElementById('fStatus'),fSort=document.getElementById('fSort'),haveBtn=document.getElementById('haveBtn'),
+  haveBox=document.getElementById('haveBox'),palette=document.getElementById('palette'),resetF=document.getElementById('resetF');
 function renderChips(){
   chips.innerHTML=cats.map(c=>{const n=c==='All'?CRAFTS.length:CRAFTS.filter(x=>x.cat===c).length;
     return `<button class="chip" type="button" aria-pressed="${c===cat}" data-c="${c}">${c}<span class="n">${n}</span></button>`}).join('');
 }
-chips.addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;cat=b.dataset.c;renderChips();renderGrid()});
-document.getElementById('q').addEventListener('input',e=>{query=e.target.value.trim().toLowerCase();renderGrid()});
-
-const totalStems=c=>{let t=0;c.stems.forEach(([,n])=>{t+=typeof n==='number'?n:({'½':.5,'¼':.25,'1¼':1.25}[n]||0)});return t%1?t.toFixed(2).replace(/0$/,''):t};
-function visible(){return CRAFTS.filter(c=>(cat==='All'||c.cat===cat)&&(!query||(c.name+' '+c.cat+' '+c.stems.map(s=>NAMES[s[0]]).join(' ')).toLowerCase().includes(query)))}
-function renderGrid(){
-  const list=visible(),g=document.getElementById('grid');
-  if(!list.length){g.innerHTML=`<div class="empty">No project matches “${query.replace(/[<>&"]/g,'')}”. Try a colour like pink, or a word like flower.</div>`;return}
-  g.innerHTML=list.map(c=>`<button class="card" type="button" data-id="${c.id}" aria-label="Open ${c.name} instructions">
-    <div class="art" data-cat="${c.cat}">${svg(ART[c.id]())}${isDone(c)?'<span class="done-tag">Made it</span>':''}</div>
-    <div class="card-body">
-      <h3>${c.name}</h3>
-      <div class="meta"><span class="lvl ${c.level}">${c.level}</span><span>${c.time}</span><span>${totalStems(c)} stem${totalStems(c)==1?'':'s'}</span></div>
-      <div class="swatches">${c.stems.map(([k])=>`<span class="sw" style="background:${C[k]}" title="${NAMES[k]}"></span>`).join('')}</div>
-    </div></button>`).join('');
+function renderPalette(){
+  const used=Object.keys(C).filter(k=>CRAFTS.some(c=>c.stems.some(([s])=>s===k)));
+  palette.innerHTML=used.map(k=>`<button class="pal" type="button" data-k="${k}" aria-pressed="${have.has(k)}"><span class="sw" style="background:${C[k]}"></span>${NAMES[k]}</button>`).join('')
+    +(have.size?'<button class="linkish" type="button" data-k="clear">Clear colours</button>':'');
+  haveBtn.textContent=have.size?`Colours I have (${have.size})`:'Colours I have';
 }
-document.getElementById('grid').addEventListener('click',e=>{const b=e.target.closest('.card');if(b)openCraft(b.dataset.id)});
+chips.addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;cat=b.dataset.c;renderChips();renderGrid()});
+qIn.addEventListener('input',e=>{query=e.target.value.trim().toLowerCase();renderGrid()});
+fLevel.addEventListener('change',e=>{level=e.target.value;renderGrid()});
+fStatus.addEventListener('change',e=>{status=e.target.value;renderGrid()});
+fSort.addEventListener('change',e=>{sort=e.target.value;renderGrid()});
+haveBtn.addEventListener('click',()=>{const open=haveBox.hidden;haveBox.hidden=!open;haveBtn.setAttribute('aria-expanded',String(open))});
+palette.addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(!b)return;const k=b.dataset.k;
+  if(k==='clear')have.clear();else have.has(k)?have.delete(k):have.add(k);saveHave();renderPalette();renderGrid()});
+function resetFilters(){cat='All';query='';level='any';status='all';sort='featured';have.clear();saveHave();
+  qIn.value='';fLevel.value='any';fStatus.value='all';fSort.value='featured';renderChips();renderPalette();renderGrid()}
+resetF.addEventListener('click',resetFilters);
+
+const hay=c=>(c.name+' '+c.cat+' '+c.level+' '+c.stems.map(s=>NAMES[s[0]]).join(' ')+' '+c.extras.join(' ')).toLowerCase();
+function visible(){
+  const list=CRAFTS.filter(c=>(cat==='All'||c.cat===cat)
+    &&(level==='any'||c.level===level)
+    &&(status==='all'||(status==='saved'?favs.has(c.id):stat(c)===status))
+    &&(!have.size||c.stems.every(([k])=>have.has(k)))
+    &&(!query||hay(c).includes(query)));
+  if(sort==='time')list.sort((a,b)=>minutes(a)-minutes(b));
+  else if(sort==='stems')list.sort((a,b)=>stemSum(a)-stemSum(b));
+  else if(sort==='az')list.sort((a,b)=>a.name.localeCompare(b.name));
+  return list;
+}
+const filtersOn=()=>cat!=='All'||query||level!=='any'||status!=='all'||have.size>0;
+
+/* ---------- grid ---------- */
+const grid=document.getElementById('grid');
+function renderGrid(){
+  const list=visible();
+  document.getElementById('countTxt').textContent=`${list.length} of ${CRAFTS.length} projects`;
+  resetF.hidden=!filtersOn();
+  if(!list.length){
+    const why=query?`No project matches “${query.replace(/[<>&"]/g,'')}”.`:have.size?'Nothing can be made with only those colours yet.':'No project fits these filters.';
+    grid.innerHTML=`<div class="empty"><span>${why} Try a colour like pink, or a word like flower.</span><button class="btn" type="button" data-reset>Reset filters</button></div>`;return}
+  grid.innerHTML=list.map(c=>{
+    const st=stat(c),n=doneN(c),sum=stemSum(c);
+    return `<article class="card">
+    <div class="art" data-cat="${c.cat}">${svg(ART[c.id]())}
+      <button class="fav" type="button" data-fav="${c.id}" aria-pressed="${favs.has(c.id)}" aria-label="Save ${c.name}">${HEART}</button>
+      ${st==='made'?'<span class="done-tag">Made it</span>':''}
+    </div>
+    <div class="card-body">
+      <h3><button class="open" type="button" data-id="${c.id}">${c.name}</button></h3>
+      <div class="meta"><span class="lvl ${c.level}">${c.level}</span><span>${c.time}</span><span>${fmtQ(sum)} stem${sum===1?'':'s'}</span>${basket.includes(c.id)?'<span class="inb">In basket</span>':''}</div>
+      <div class="swatches">${c.stems.map(([k])=>`<span class="sw" style="background:${C[k]}" title="${NAMES[k]}"></span>`).join('')}</div>
+      ${st==='progress'?`<div class="mini"><i><b style="width:${n/c.steps.length*100}%"></b></i>${n}/${c.steps.length} steps</div>`:''}
+    </div></article>`}).join('');
+}
+grid.addEventListener('click',e=>{
+  if(e.target.closest('[data-reset]')){resetFilters();return}
+  const f=e.target.closest('[data-fav]');if(f){toggleFav(f.dataset.fav);renderGrid();grid.querySelector(`[data-fav="${f.dataset.fav}"]`)?.focus();return}
+  const o=e.target.closest('.open');if(o)openCraft(o.dataset.id);
+});
+function toggleFav(id){favs.has(id)?favs.delete(id):favs.add(id);saveFavs()}
+function toggleBasket(id){basket=basket.includes(id)?basket.filter(x=>x!==id):[...basket,id];saveBasket();updateFab(true)}
+const fab=document.getElementById('fab'),fabCt=document.getElementById('fabCt');
+function updateFab(bump){fabCt.textContent=basket.length;if(bump){fab.classList.remove('bump');void fab.offsetWidth;fab.classList.add('bump')}}
 
 /* ---------- detail sheet ---------- */
 const dlg=document.getElementById('dlg'),sheet=document.getElementById('sheet');
-let current=null;
-function openCraft(id){
+let current=0;
+function openCraft(id,opts={}){
   const i=CRAFTS.findIndex(c=>c.id===id);if(i<0)return;
   const c=CRAFTS[i];current=i;
-  const p=progress[c.id]||[];
+  const p=progress[c.id]||[],n=doneN(c),len=c.steps.length;
   const prev=CRAFTS[(i-1+CRAFTS.length)%CRAFTS.length],next=CRAFTS[(i+1)%CRAFTS.length];
+  const inB=basket.includes(c.id),fv=favs.has(c.id);
+  const keep=opts.keep?dlg.scrollTop:0;
   sheet.innerHTML=`
     <button class="close" type="button" aria-label="Close" data-act="close">×</button>
     <div class="sheet-top">
       <div class="art" data-cat="${c.cat}">${svg(ART[c.id]())}</div>
       <div class="sheet-title">
         <span class="eyebrow">${c.cat}</span>
-        <h2 id="dlgTitle">${c.name}</h2>
-        <div class="meta"><span class="lvl ${c.level}">${c.level}</span><span>${c.time}</span><span>${c.steps.length} steps</span></div>
+        <h2 id="dlgTitle" tabindex="-1">${c.name}</h2>
+        <div class="meta"><span class="lvl ${c.level}">${c.level}</span><span>${c.time}</span><span>${len} steps</span><span>${fmtQ(stemSum(c))} stems</span></div>
+        <div class="sheet-actions">
+          <button class="btn primary" type="button" data-act="focus">${n===len?'Make it again':n?'Continue in craft mode':'Start craft mode'}</button>
+          <button class="btn" type="button" data-act="basket" aria-pressed="${inB}">${inB?'In basket ✓':'Add to basket'}</button>
+          <button class="btn" type="button" data-act="fav" aria-pressed="${fv}" aria-label="${fv?'Saved':'Save'} ${c.name}">${HEART}${fv?'Saved':'Save'}</button>
+        </div>
       </div>
     </div>
     <div class="sheet-body">
       <div class="side">
-        <div class="box"><h4>Stems</h4><ul class="stemlist">${c.stems.map(([k,n])=>`<li><span class="sw" style="background:${C[k]}"></span><span class="q">${n}</span>${NAMES[k]}</li>`).join('')}</ul></div>
+        <div class="box"><h4>Stems</h4><ul class="stemlist">${c.stems.map(([k,q])=>`<li><span class="sw" style="background:${C[k]}"></span><span class="q">${q}</span>${NAMES[k]}</li>`).join('')}</ul></div>
         ${c.extras.length?`<div class="box"><h4>Also need</h4><ul class="extras">${c.extras.map(x=>`<li>${x}</li>`).join('')}</ul></div>`:''}
       </div>
       <div>
@@ -532,35 +851,213 @@ function openCraft(id){
     </div>
     <div class="sheet-nav">
       <button class="btn" type="button" data-go="${prev.id}">← ${prev.name}</button>
+      <span class="keyhint">← → keys flip projects</span>
       <button class="btn" type="button" data-act="reset">Clear ticks</button>
       <button class="btn primary" type="button" data-go="${next.id}">${next.name} →</button>
     </div>`;
   updateProg();
   if(!dlg.open)dlg.showModal();
-  sheet.parentElement.scrollTop=0;
+  dlg.scrollTop=keep;
+  if(opts.focusTitle)document.getElementById('dlgTitle').focus();
   try{history.replaceState(null,'','#'+c.id)}catch(e){}
 }
 function updateProg(){
-  const c=CRAFTS[current],n=(progress[c.id]||[]).filter(Boolean).length;
+  const c=CRAFTS[current],n=doneN(c);
   document.getElementById('prog').textContent=n===c.steps.length?'Done! 🌷':`${n} of ${c.steps.length}`;
   document.getElementById('barFill').style.width=(n/c.steps.length*100)+'%';
 }
 sheet.addEventListener('change',e=>{
   if(!e.target.matches('input[type=checkbox]'))return;
-  const c=CRAFTS[current];const arr=progress[c.id]||[];arr[+e.target.dataset.k]=e.target.checked;progress[c.id]=arr;save();updateProg();
+  const c=CRAFTS[current],was=stat(c)==='made';
+  const arr=progress[c.id]||[];arr[+e.target.dataset.k]=e.target.checked;progress[c.id]=arr;saveProg();updateProg();
+  if(!was&&stat(c)==='made')celebrate();
 });
 sheet.addEventListener('click',e=>{
   const go=e.target.closest('[data-go]');if(go){openCraft(go.dataset.go);return}
   const act=e.target.closest('[data-act]');if(!act)return;
-  if(act.dataset.act==='close')dlg.close();
-  if(act.dataset.act==='reset'){delete progress[CRAFTS[current].id];save();openCraft(CRAFTS[current].id)}
+  const c=CRAFTS[current],a=act.dataset.act;
+  if(a==='close')dlg.close();
+  if(a==='reset'){delete progress[c.id];saveProg();openCraft(c.id,{keep:true})}
+  if(a==='focus')openFocus();
+  if(a==='basket'){toggleBasket(c.id);openCraft(c.id,{keep:true});sheet.querySelector('[data-act="basket"]').focus()}
+  if(a==='fav'){toggleFav(c.id);openCraft(c.id,{keep:true});sheet.querySelector('[data-act="fav"]').focus()}
 });
 dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
-dlg.addEventListener('close',()=>{renderGrid();try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}});
+dlg.addEventListener('close',()=>{renderGrid();renderHeroStats();try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}});
+
+/* ---------- craft mode ---------- */
+const fdlg=document.getElementById('focus'),fm=document.getElementById('fm');
+let fIdx=0,fFinished=false,wake=null,wakeOn=false;
+function openFocus(){
+  const c=CRAFTS[current],p=progress[c.id]||[],len=c.steps.length;
+  let i=0;while(i<len&&p[i])i++;
+  fIdx=i>=len?0:i;fFinished=false;
+  renderFocus();fdlg.showModal();requestWake();
+}
+function renderFocus(){
+  const c=CRAFTS[current],p=progress[c.id]||[],len=c.steps.length,done=!!p[fIdx],last=fIdx===len-1;
+  fm.innerHTML=`
+    <div class="fm-top">
+      <div class="fm-name"><div class="art" data-cat="${c.cat}">${svg(ART[c.id]())}</div><div><span class="eyebrow">Craft mode</span><h2>${c.name}</h2></div></div>
+      <button class="close" type="button" data-f="close" aria-label="Exit craft mode">×</button>
+    </div>
+    <div class="fm-dots" role="group" aria-label="Jump to step">${c.steps.map((s,k)=>`<button class="dot${p[k]?' on':''}${k===fIdx?' cur':''}" type="button" data-f="go" data-k="${k}" aria-label="Step ${k+1}${p[k]?', done':''}"${k===fIdx?' aria-current="step"':''}></button>`).join('')}</div>
+    <div class="fm-main" aria-live="polite">
+      <div class="fm-num"><b>${fIdx+1}</b><span>of ${len}</span>${done?'<span class="fm-done">Done</span>':''}</div>
+      <p class="fm-text">${c.steps[fIdx]}</p>
+      ${last?`<p class="tip"><b>Tip</b>${c.tip}</p>`:''}
+      ${done?'<div><button class="linkish" type="button" data-f="undo">Untick this step</button></div>':''}
+    </div>
+    <div class="fm-nav">
+      <button class="btn big" type="button" data-f="back" ${fIdx===0?'disabled':''}>← Back</button>
+      <span class="fm-note" id="wakeNote"></span>
+      <button class="btn primary big" type="button" data-f="next">${last?'Done, finish ✓':'Done, next →'}</button>
+    </div>`;
+  paintWake();
+  fm.querySelector('[data-f="next"]').focus({preventScroll:true});
+}
+function renderFinish(){
+  fFinished=true;
+  const c=CRAFTS[current],next=CRAFTS[(current+1)%CRAFTS.length];
+  fm.innerHTML=`
+    <div class="fm-top"><span class="eyebrow">Craft mode</span><button class="close" type="button" data-f="close" aria-label="Exit craft mode">×</button></div>
+    <div></div>
+    <div class="fm-finish">
+      <div class="art" data-cat="${c.cat}">${svg(ART[c.id]())}</div>
+      <h2>You made a ${c.name.toLowerCase()}!</h2>
+      <p>Give it a final fluff with your fingertip so no twists show.</p>
+      <div class="row"><button class="btn big" type="button" data-f="close">Back to project</button><button class="btn primary big" type="button" data-f="nextcraft" data-id="${next.id}">Try the ${next.name.toLowerCase()} →</button></div>
+    </div>
+    <div></div>`;
+  fm.querySelector('[data-f="nextcraft"]').focus({preventScroll:true});
+}
+function focusNext(){
+  if(fFinished)return;
+  const c=CRAFTS[current],len=c.steps.length,was=stat(c)==='made';
+  const arr=progress[c.id]||[];arr[fIdx]=true;progress[c.id]=arr;saveProg();
+  if(stat(c)==='made'){if(!was)celebrate();renderFinish();return}
+  let k=fIdx+1;while(k<len&&arr[k])k++;
+  if(k>=len){k=0;while(k<len&&arr[k])k++}
+  fIdx=k;renderFocus();
+}
+function focusBack(){if(fFinished||fIdx===0)return;fIdx--;renderFocus()}
+fm.addEventListener('click',e=>{
+  const b=e.target.closest('[data-f]');if(!b)return;const f=b.dataset.f,c=CRAFTS[current];
+  if(f==='close')fdlg.close();
+  if(f==='next')focusNext();
+  if(f==='back')focusBack();
+  if(f==='go'){fIdx=+b.dataset.k;renderFocus()}
+  if(f==='undo'){const arr=progress[c.id]||[];arr[fIdx]=false;progress[c.id]=arr;saveProg();renderFocus()}
+  if(f==='nextcraft'){const id=b.dataset.id;fdlg.close();openCraft(id)}
+});
+fdlg.addEventListener('close',()=>{releaseWake();fFinished=false;if(dlg.open)openCraft(CRAFTS[current].id,{keep:true})});
+async function requestWake(){
+  if(!('wakeLock' in navigator))return;
+  try{wake=await navigator.wakeLock.request('screen');wakeOn=true;
+    wake.addEventListener('release',()=>{wake=null;wakeOn=false;paintWake()});paintWake()}catch(e){wakeOn=false;paintWake()}
+}
+function releaseWake(){try{if(wake)wake.release()}catch(e){}wake=null;wakeOn=false}
+function paintWake(){const el=document.getElementById('wakeNote');if(el)el.textContent=(wakeOn?'Screen stays on · ':'')+'← → keys move between steps'}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&fdlg.open&&!wake)requestWake()});
+
+/* ---------- supply basket ---------- */
+const bdlg=document.getElementById('bdlg'),bsk=document.getElementById('bsk');
+let clearArm=false;
+function basketTotals(){
+  const items=basket.map(byId).filter(Boolean),t={},ex={};
+  items.forEach(c=>{c.stems.forEach(([k,n])=>{t[k]=(t[k]||0)+num(n)});c.extras.forEach(x=>{ex[x]=(ex[x]||0)+1})});
+  const rows=Object.keys(C).filter(k=>t[k]).map(k=>[k,t[k]]);
+  return {items,rows,ex};
+}
+function renderBasket(){
+  clearArm=false;
+  const {items,rows,ex}=basketTotals();
+  const head=`<button class="close" type="button" data-b="close" aria-label="Close basket">×</button>
+    <div><span class="eyebrow">Supply basket</span><h2 id="bskTitle">What to buy</h2></div>`;
+  if(!items.length){bsk.innerHTML=head+`<p class="bsk-lead">Your basket is empty. Open any project and tap <strong>Add to basket</strong>. Every stem across all of them gets totalled here by colour.</p>`;return}
+  const total=rows.reduce((s,[,v])=>s+v,0),buy=rows.reduce((s,[,v])=>s+Math.ceil(v-1e-9),0);
+  bsk.innerHTML=head+`
+    <p class="bsk-lead">${items.length} project${items.length===1?'':'s'}. Part stems are rounded up in the Buy column.</p>
+    <div class="bitems">${items.map(c=>`<span class="bitem">${c.name}<button type="button" data-b="rm" data-id="${c.id}" aria-label="Remove ${c.name}">×</button></span>`).join('')}</div>
+    <div>
+      <h4>Stems (30 cm)</h4>
+      <div class="tot-wrap"><table class="tot">
+        <thead><tr><th>Colour</th><th class="n">Needed</th><th class="n">Buy</th></tr></thead>
+        <tbody>${rows.map(([k,v])=>`<tr><td><span class="colname"><span class="sw" style="background:${C[k]}"></span>${NAMES[k]}</span></td><td class="n">${fmtQ(v)}</td><td class="n">${Math.ceil(v-1e-9)}</td></tr>`).join('')}</tbody>
+        <tfoot><tr><td>Total</td><td class="n">${fmtQ(total)}</td><td class="n">${buy}</td></tr></tfoot>
+      </table></div>
+    </div>
+    ${Object.keys(ex).length?`<div><h4>Also need</h4><ul class="extras">${Object.entries(ex).map(([x,n])=>`<li>${x}${n>1?` <span class="muted">· for ${n} projects</span>`:''}</li>`).join('')}</ul></div>`:''}
+    <div class="bsk-actions">
+      <button class="btn primary" type="button" data-b="copy">Copy shopping list</button>
+      <button class="btn" type="button" data-b="clear">Clear basket</button>
+      <span class="bstat" id="bstat" role="status"></span>
+    </div>
+    <textarea id="bfallback" aria-label="Shopping list text" readonly hidden></textarea>`;
+}
+function listText(){
+  const {items,rows,ex}=basketTotals();
+  let t='Fuzzy Garden shopping list\nProjects: '+items.map(c=>c.name).join(', ')+'\n\nChenille stems (30 cm):\n';
+  t+=rows.map(([k,v])=>`- ${NAMES[k]}: buy ${Math.ceil(v-1e-9)} (need ${fmtQ(v)})`).join('\n');
+  const e=Object.keys(ex);if(e.length)t+='\n\nAlso need:\n'+e.map(x=>'- '+x).join('\n');
+  return t;
+}
+bsk.addEventListener('click',e=>{
+  const b=e.target.closest('[data-b]');if(!b)return;const a=b.dataset.b;
+  if(a==='close')bdlg.close();
+  if(a==='rm'){toggleBasket(b.dataset.id);renderBasket()}
+  if(a==='clear'){
+    if(!clearArm){clearArm=true;b.textContent='Tap again to clear';b.classList.add('primary');return}
+    basket=[];saveBasket();updateFab();renderBasket();
+  }
+  if(a==='copy'){
+    const txt=listText(),st=document.getElementById('bstat'),ta=document.getElementById('bfallback');
+    const fallback=()=>{ta.hidden=false;ta.value=txt;ta.focus();ta.select();st.textContent='Copy the text below'};
+    try{navigator.clipboard.writeText(txt).then(()=>{st.textContent='Copied ✓'},fallback)}catch(err){fallback()}
+  }
+});
+fab.addEventListener('click',()=>{renderBasket();bdlg.showModal()});
+bdlg.addEventListener('click',e=>{if(e.target===bdlg)bdlg.close()});
+bdlg.addEventListener('close',()=>{if(!dlg.open)renderGrid()});
+
+/* ---------- celebration ---------- */
+function celebrate(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const host=fdlg.open?fdlg:dlg.open?dlg:document.body;
+  const box=document.createElement('div');box.className='confetti';box.setAttribute('aria-hidden','true');
+  const cols=[C.pink,C.hotpink,C.yellow,C.green,C.lilac,C.orange,C.blue,C.red];
+  for(let i=0;i<44;i++){
+    const s=document.createElement('i'),a=Math.random()*Math.PI*2,d=120+Math.random()*300;
+    s.style.setProperty('--x',(Math.cos(a)*d).toFixed(0)+'px');
+    s.style.setProperty('--y',(Math.sin(a)*d+80).toFixed(0)+'px');
+    s.style.setProperty('--r',(Math.random()*720-360).toFixed(0)+'deg');
+    s.style.background=cols[i%cols.length];s.style.animationDelay=(Math.random()*.15).toFixed(2)+'s';
+    box.append(s);
+  }
+  host.append(box);setTimeout(()=>box.remove(),1900);
+}
+
+/* ---------- keyboard ---------- */
+document.addEventListener('keydown',e=>{
+  if(e.altKey||e.ctrlKey||e.metaKey)return;
+  if(fdlg.open){
+    if(e.key==='ArrowRight'){e.preventDefault();focusNext()}
+    else if(e.key==='ArrowLeft'){e.preventDefault();focusBack()}
+    return;
+  }
+  if(dlg.open&&!bdlg.open){
+    const i=current;
+    if(e.key==='ArrowRight'){e.preventDefault();openCraft(CRAFTS[(i+1)%CRAFTS.length].id,{focusTitle:true})}
+    else if(e.key==='ArrowLeft'){e.preventDefault();openCraft(CRAFTS[(i-1+CRAFTS.length)%CRAFTS.length].id,{focusTitle:true})}
+  }
+});
 
 /* ---------- boot ---------- */
-renderChips();renderGrid();
-const h=location.hash.slice(1);if(h&&CRAFTS.some(c=>c.id===h))openCraft(h);
+renderChips();renderPalette();renderGrid();renderHeroStats();updateFab();
+function fromHash(){const h=location.hash.slice(1);if(h&&byId(h)&&!(dlg.open&&CRAFTS[current].id===h))openCraft(h)}
+window.addEventListener('hashchange',fromHash);
+fromHash();
 </script>
+
 </body>
 </html>
