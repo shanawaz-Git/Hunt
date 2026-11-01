@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Vault Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="builder.css">
+</head>
+<body class="builder">
+  <div class="crt" aria-hidden="true"></div>
+
+  <header class="b-head">
+    <div class="b-in">
+      <div class="brand"><span class="led"></span><span>vault builder</span></div>
+      <p class="b-warn">⚠ local tool · do NOT upload this page to your site</p>
+    </div>
+  </header>
+
+  <main class="b-main">
+    <!-- ============ START ============ -->
+    <section id="start">
+      <h1 class="title glitch" data-text="BUILD THE VAULT">BUILD THE VAULT</h1>
+      <p class="subtitle">Add your memories, photos, notes and dates. Everything is encrypted right here in your browser — nothing is uploaded anywhere.</p>
+
+      <div class="b-cards">
+        <div class="frame b-card">
+          <h3>edit existing vault</h3>
+          <p class="muted" id="existingInfo">checking for vault.js…</p>
+          <form id="unlockForm" class="b-row" hidden autocomplete="off">
+            <input type="password" id="unlockPass" placeholder="any valid passcode" aria-label="Passcode">
+            <button class="btn" type="submit">unlock</button>
+          </form>
+          <label class="btn sm ghost">load a vault.js file<input type="file" id="loadVault" accept=".js,.txt,text/javascript,application/javascript" hidden></label>
+          <p class="status" id="unlockStatus"></p>
+        </div>
+
+        <div class="frame b-card">
+          <h3>create new vault</h3>
+          <p class="muted">Start from scratch. You will set a passcode for each person who gets access.</p>
+          <button class="btn" id="newVault" type="button">new vault</button>
+          <label class="btn sm ghost">import plaintext backup (.json)<input type="file" id="importBackup" accept=".json,application/json" hidden></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EDITOR ============ -->
+    <section id="editor" hidden>
+      <nav class="tabs b-tabs" role="tablist" aria-label="Builder sections">
+        <button role="tab" data-p="settings"><i>00</i>settings</button>
+        <button role="tab" data-p="access"><i>01</i>access <em data-count="access">0</em></button>
+        <button role="tab" data-p="memories"><i>02</i>memories <em data-count="memories">0</em></button>
+        <button role="tab" data-p="gallery"><i>03</i>gallery <em data-count="gallery">0</em></button>
+        <button role="tab" data-p="notes"><i>04</i>notes <em data-count="notes">0</em></button>
+        <button role="tab" data-p="dates"><i>05</i>dates <em data-count="dates">0</em></button>
+        <button role="tab" data-p="export" class="exp"><i>06</i>export</button>
+      </nav>
+
+      <!-- SETTINGS -->
+      <section class="b-panel" data-p="settings">
+        <h2 class="b-h">~/settings</h2>
+        <p class="muted">What shows on the home screen after unlocking.</p>
+        <div class="b-fields two">
+          <label class="f"><span>vault title</span><input data-meta="title" placeholder="Our Little Universe"></label>
+          <label class="f"><span>subtitle</span><input data-meta="subtitle" placeholder="a private archive of everything we are"></label>
+          <label class="f"><span>names (comma separated)</span><input data-meta="names" placeholder="Me, You"></label>
+          <label class="f"><span>together since (drives the live counter)</span><input type="date" data-meta="since"></label>
+          <label class="f wide"><span>tagline (typed line at the bottom of home)</span><input data-meta="tagline" placeholder="some files are too important to leave unencrypted."></label>
+          <label class="f"><span>auto-lock after inactivity (minutes, 0 = never)</span><input type="number" min="0" max="240" step="1" data-meta="idleLock"></label>
+        </div>
+      </section>
+
+      <!-- ACCESS -->
+      <section class="b-panel" data-p="access" hidden>
+        <h2 class="b-h">~/access</h2>
+        <p class="muted">Each person gets their own passcode. The vault greets them by name. Passcodes are never stored — if every passcode is forgotten, the vault cannot be opened. Keep a plaintext backup (export tab) somewhere safe offline.</p>
+        <div id="accessList" class="b-list"></div>
+        <div class="b-row b-wrap">
+          <button class="btn" id="addPerson" type="button">+ add person</button>
+          <button class="btn sm danger" id="rekey" type="button">re-key vault</button>
+        </div>
+        <p class="muted small">Re-key = new encryption key, everyone sets a passcode again. Use it to fully revoke someone who already had access.</p>
+      </section>
+
+      <!-- MEMORIES -->
+      <section class="b-panel" data-p="memories" hidden>
+        <h2 class="b-h">~/memories</h2>
+        <p class="muted">Shown as a timeline, oldest first. Photo is optional.</p>
+        <div id="list-memories" class="b-list"></div>
+        <button class="btn" data-add="memories" type="button">+ add memory</button>
+      </section>
+
+      <!-- GALLERY -->
+      <section class="b-panel" data-p="gallery" hidden>
+        <h2 class="b-h">~/gallery</h2>
+        <p class="muted">Photos are resized to 1600px and compressed before encryption. Use JPG/PNG/WebP (convert iPhone HEIC first).</p>
+        <div class="b-row b-wrap">
+          <label class="btn">+ add photos<input type="file" id="bulkPhotos" accept="image/*" multiple hidden></label>
+        </div>
+        <div id="list-gallery" class="b-list"></div>
+      </section>
+
+      <!-- NOTES -->
+      <section class="b-panel" data-p="notes" hidden>
+        <h2 class="b-h">~/notes</h2>
+        <p class="muted">Letters, inside jokes, promises. Line breaks are kept.</p>
+        <div id="list-notes" class="b-list"></div>
+        <button class="btn" data-add="notes" type="button">+ add note</button>
+      </section>
+
+      <!-- DATES -->
+      <section class="b-panel" data-p="dates" hidden>
+        <h2 class="b-h">~/dates</h2>
+        <p class="muted">Yearly dates (birthdays, anniversaries) count down to the next one. One-time dates count down, or show days since.</p>
+        <div id="list-dates" class="b-list"></div>
+        <button class="btn" data-add="dates" type="button">+ add date</button>
+      </section>
+
+      <!-- EXPORT -->
+      <section class="b-panel" data-p="export" hidden>
+        <h2 class="b-h">~/export</h2>
+        <pre class="frame b-summary" id="summary"></pre>
+        <div class="b-row b-wrap">
+          <button class="btn" id="buildBtn" type="button">▸ encrypt &amp; download vault.js</button>
+        </div>
+        <ol class="b-steps">
+          <li>Replace the old <b>vault.js</b> in your site folder with the downloaded one (same name, same folder as index.html).</li>
+          <li>Open index.html and unlock to check it.</li>
+          <li>Re-upload <b>vault.js</b> to your host. That is the only file that changes.</li>
+        </ol>
+        <div class="b-backup frame">
+          <h3>plaintext backup</h3>
+          <p class="muted">Unencrypted copy of all content (no passcodes). Keep it offline — a USB drive, not cloud. It lets you rebuild the vault if passcodes are lost.</p>
+          <div class="b-row b-wrap">
+            <button class="btn sm" id="backupBtn" type="button">download backup .json</button>
+          </div>
+        </div>
+        <pre class="b-log" id="buildLog" aria-live="polite"></pre>
+      </section>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="vault.js"></script>
+  <script src="crypto.js"></script>
+  <script src="builder.js"></script>
+</body>
+</html>
